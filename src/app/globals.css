@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Setting base font for the application */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Defining custom CSS variables for theming */
+@layer base {
+  :root {
+    /* Core background and foreground colors */
+    --background: 0 0% 100%; /* White */
+    --foreground: 0 0% 3.9%; /* Near black */
+    --foreground-highlight: 0 0% 15%; /* Near black */
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 0 0% 3.9%; /* Near black */
+    --popover: 0 0% 100%; /* White */
+    --popover-foreground: 0 0% 3.9%; /* Near black */
+    
+    /* Primary color palette (blue-based) */
+    --primary-foreground: 0 0% 100%; /* Near black */
+    --primary: 204 91% 43%; /* Core blue */
+    --primary-light: 195 97% 55%; /* Lighter blue (blue-300) */
+    --primary-dark: 211 89% 28%; /* Darker blue (blue-800) */
+    --primary-accent: 199 98% 48%; /* Medium blue (blue-400) */
+    --primary-highlight: 209 88% 33%; /* Deep blue (blue-700) */
+    --primary-block: 215 91% 60%; /* Vibrant blue (blue-600) */
+    --primary-placeholder: 203 83% 83%; /* Very light blue (blue-200) */
+    --primary-high-bright: 215 91% 60%; /* Vibrant blue (same as block) */
+    --primary-low-bright: 60 0% 95%; /* Muted light blue */
+
+    /* Secondary and muted colors */
+    --secondary: 0 0% 96.1%; /* Light gray */
+    --secondary-foreground: 0 0% 9%; /* Dark gray */
+    --secondary-background: 210 20% 10%; /* Dark muted blue */
+    --muted: 0 0% 96.1%; /* Light gray */
+    --muted-foreground: 0 0% 45.1%; /* Medium gray */
+
+    /* Accent and destructive colors */
+    --accent: 0 0% 96.1%; /* Light gray */
+    --accent-foreground: 0 0% 9%; /* Dark gray */
+    --destructive: 0 84.2% 60.2%; /* Red */
+    --destructive-foreground: 0 0% 98%; /* Near white */
+
+    /* Border and input styles */
+    --border: 0 0% 89.8%; /* Light gray border */
+    --input: 0 0% 89.8%; /* Light gray input */
+    --ring: 0 0% 3.9%; /* Dark ring */
+    --radius: 0.5rem; /* Border radius */
+
+    /* Sidebar specific styles */
+    --sidebar-background: 0 0% 98%; /* Off-white */
+    --sidebar-foreground: 240 5.3% 26.1%; /* Dark blue-gray */
+    --sidebar-primary: 199 98% 48%; /* Blue (matches primary-accent) */
+    --sidebar-primary-foreground: 0 0% 98%; /* Near white */
+    --sidebar-accent: 240 4.8% 95.9%; /* Very light blue-gray */
+    --sidebar-accent-foreground: 230 5.9% 10%; /* Dark blue-gray */
+    --sidebar-border: 220 13% 91%; /* Light gray-blue */
+    --sidebar-ring: 217.2 91.2% 59.8%; /* Vibrant blue ring */
+  }
+}
