@@ -52,14 +52,115 @@ export async function getArticlesHandler(searchParams: URLSearchParams) {
     }
   }
 
+  // Handle Top Articles logic
+  if (top_articles_ === "true") {
+    const now = new Date();
+    const startOfThisMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
+    const startOfNextMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 1));
+
+    let matchTop = { ...matchConditions, createdAt: { $gte: startOfThisMonth, $lt: startOfNextMonth } };
+
+    let topArticles = await ArticleModel.aggregate([
+      { $match: matchTop },
+      { $sort: { voteCount: -1 } },
+      { $limit: 6 }
+    ]);
+
+    if (topArticles.length < 6) {
+      const startOfPrevMonth = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() - 1, 1));
+      const startOfCurrentMonth = new Date(startOfThisMonth);
+
+      matchTop.createdAt = { $gte: startOfPrevMonth, $lt: startOfCurrentMonth };
+
+      topArticles = await ArticleModel.aggregate([
+        { $match: { ...matchConditions, createdAt: matchTop.createdAt } },
+        { $sort: { voteCount: -1 } },
+        { $limit: 6 }
+      ]);
+    }
+
+    const articleIds = topArticles.map(a => a._id);
+
+    const articles = await ArticleModel.aggregate([
+      { $match: { _id: { $in: articleIds } } },
+      { $addFields: { __order: { $indexOfArray: [articleIds, "$_id"] } } },
+      { $sort: { __order: 1 } },
+      {
+        $lookup: {
+          from: "users",
+          let: { publisherId: { $toObjectId: "$publisherID" } },
+          pipeline: [
+            { $match: { $expr: { $eq: ["$_id", "$$publisherId"] } } }
+          ],
+          as: "publisher"
+        }
+      },
+      {
+        $addFields: {
+          publisher: { $arrayElemAt: ["$publisher", 0] }
+        }
+      }
+    ]);
+
+    const transformed_articles: Article[] = await Promise.all(
+      articles.map(async (article) => {
+        let role_name = "";
+        let position_name = "";
+
+        if (article.publisher?.roleID) {
+          const role = await RoleModel.findById(article.publisher.roleID);
+          role_name = role?.name || "";
+        }
+
+        if (role_name.toLocaleLowerCase() === "author" && article.publisher?.positionID) {
+          const position = await PositionModel.findById(article.publisher.positionID);
+          position_name = position?.name || "";
+        }
+
+        const link = article_link + article._id;
+
+        return {
+          _id: article._id.toString(),
+          wp_id: article.wp_id,
+          title: article.title,
+          oneLiner: article.oneLiner,
+          publishedIn: article.publishedIn,
+          featuredImage: article.featuredImage,
+          publisherID: article.publisherID?.toString?.() || "",
+          voteCount: article.voteCount,
+          postTags: article.postTags,
+          updatedAt: article.updatedAt?.toISOString?.() || "",
+          category: article.category,
+          author: article.author,
+          link: link,
+          publisher: [
+            {
+              name: article.publisher?.name || "",
+              username: article.publisher?.username || "",
+              role: role_name,
+              position: position_name,
+            },
+          ],
+        };
+      })
+    );
+
+    return {
+      success: true,
+      articles: transformed_articles,
+      totalPages: 1,
+      currentPage: 1,
+      totalArticles: transformed_articles.length,
+      status: 200,
+    };
+  }
+
+  // Default behavior (not top articles)
   const totalArticles = await ArticleModel.countDocuments(matchConditions);
   const totalPages = Math.ceil(totalArticles / limit_);
   const skip = (page_ - 1) * limit_;
 
-  let sortStage: { [key: string]: 1 | -1 } = { createdAt: -1 };
-  if (top_articles_ === "true") {
-    sortStage = { voteCount: -1 };
-  }
+  const sortStage: { [key: string]: 1 | -1 } = { createdAt: -1 };
 
   const articles = await ArticleModel.aggregate([
     { $match: matchConditions },
@@ -139,7 +240,6 @@ export async function getArticlesHandler(searchParams: URLSearchParams) {
           },
         ],
       };
-
     })
   );
 

@@ -19,7 +19,7 @@ export default async function CredtsPage() {
                         role="The Main Programmer"
                         bio="I'm Suyog Prasai—just a student with Wi-Fi, a vision, and too much caffeine. I built Parewa to turn boring school notices into something you'd actually want to read. Let’s just say—I debug for fun."
                         imageUrl="/team/Suyog.jpg"
-                        tags={['design', 'logic', 'vibecoder']}
+                        tags={['design', 'logic',]}
                         photoPosition="left"
                         socialLinks={{
                             github: 'https://github.com/suyogprasai',
@@ -74,7 +74,7 @@ export default async function CredtsPage() {
                         }}
                     />
                     <CreditsCard
-                        name="XXXX Nigma"
+                        name="6210 Nigma"
                         role="Creative Head"
                         bio="Created the custom loading animation for the app and contributed creative feedback to enhance its visual appeal and user experience."
                         imageUrl="/team/Nigma.jpeg"
