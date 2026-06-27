@@ -1,0 +1,18 @@
+{
+  "name": "@parewa/sanity-config",
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "license": "GPL-3.0-only",
+  "exports": {
+    ".": "./index.ts",
+    "./schemas": "./schemas/index.ts",
+    "./queries": "./queries/index.ts"
+  },
+  "dependencies": {
+    "next-sanity": "^9.0.0",
+    "sanity": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.43"
+  }
+}
