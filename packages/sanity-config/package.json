@@ -9,8 +9,10 @@
     "./queries": "./queries/index.ts"
   },
   "dependencies": {
-    "next-sanity": "^9.0.0",
-    "sanity": "^3.0.0"
+    "next-sanity": "^9.0.0"
+  },
+  "peerDependencies": {
+    "sanity": ">=3"
   },
   "devDependencies": {
     "@types/node": "^20.19.43"
