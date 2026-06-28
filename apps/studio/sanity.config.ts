@@ -1,6 +1,7 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
+import { colorInput } from '@sanity/color-input'
 import { schemaTypes } from '@parewa/sanity-config'
 
 import { structure } from './structure'
@@ -15,7 +16,9 @@ export default defineConfig({
     plugins: [
         structureTool({ structure }),
 
-        visionTool()
+        visionTool(),
+
+        colorInput()
     ],
 
     schema: {

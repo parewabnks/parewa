@@ -16,7 +16,11 @@ import {
   BellIcon,
   EnvelopeIcon,
   HeartIcon,
+  MarkerIcon
+
 } from '@sanity/icons'
+
+
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -57,6 +61,7 @@ export const structure: StructureResolver = (S) =>
               S.documentTypeListItem('teacher').title('Teachers').icon(BookIcon),
               S.documentTypeListItem('student').title('Students').icon(UserIcon),
               S.documentTypeListItem('alumni').title('Alumni').icon(LeaveIcon),
+              S.documentTypeListItem('staff').title('Staff').icon(EnvelopeIcon),
             ])
         ),
 
@@ -74,6 +79,7 @@ export const structure: StructureResolver = (S) =>
               S.documentTypeListItem('house').title('Houses').icon(HomeIcon),
               S.documentTypeListItem('position').title('Positions').icon(LockIcon),
               S.documentTypeListItem('role').title('Roles').icon(UserIcon),
+              S.documentTypeListItem('credit').title('Credits').icon(HeartIcon),
             ])
         ),
 
@@ -104,9 +110,6 @@ export const structure: StructureResolver = (S) =>
                 .title('Footer')
                 .icon(HomeIcon)
                 .id('footer'),
-                
-              S.documentTypeListItem('category').title('Categories').icon(TagIcon),
-              S.documentTypeListItem('credit').title('Credits').icon(UserIcon),
             ])
         ),
     ])
