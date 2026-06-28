@@ -87,9 +87,24 @@ export const structure: StructureResolver = (S) =>
             .id('settings')
             .title('Settings')
             .items([
-              S.documentTypeListItem('general').title('General').icon(CaseIcon),
-              S.documentTypeListItem('menu').title('Menu').icon(ProjectsIcon),
-              S.documentTypeListItem('footer').title('Footer').icon(HomeIcon),
+              S.documentListItem()
+                .schemaType('general')
+                .title('General')
+                .icon(CaseIcon)
+                .id('general'),
+
+              S.documentListItem()
+                .schemaType('menu')
+                .title('Menu')
+                .icon(ProjectsIcon)
+                .id('menu'),
+
+              S.documentListItem()
+                .schemaType('footer')
+                .title('Footer')
+                .icon(HomeIcon)
+                .id('footer'),
+                
               S.documentTypeListItem('category').title('Categories').icon(TagIcon),
               S.documentTypeListItem('credit').title('Credits').icon(UserIcon),
             ])

@@ -13,14 +13,32 @@ export default defineConfig({
     dataset: 'development',
 
     plugins: [
-        
-        structureTool({ structure }), 
-        
-        visionTool()
+        structureTool({ structure }),
 
+        visionTool()
     ],
 
     schema: {
         types: schemaTypes,
     },
+
+    document: {
+        actions: (prev, { schemaType }) => {
+            if (schemaType in ["general", "menu", "footer"]) {
+                return prev.filter(({ action }) =>
+                    action ? ["publish", "discardChanges", "restore"].includes(action) : false
+                )
+            }
+            return prev
+        },
+
+        newDocumentOptions: (prev, {creationContext}) => {
+            if (creationContext.type === "global") {
+                return prev.filter(({ templateId }) =>
+                    !["general", "menu", "footer"].includes(templateId)
+                )
+            }
+            return prev
+        }
+    }
 })
