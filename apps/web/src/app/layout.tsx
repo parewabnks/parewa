@@ -1,14 +1,13 @@
 import { Roboto, Lato, Oswald, Bebas_Neue } from "next/font/google";
 import "@/app/globals.css";
 
-import { metadata } from "@/config/site-config";
+export { metadata } from "@/config/site-config";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner"
 
 import { AppSidebar } from "@/components/layout/Sidebar";
 import { SanityLive } from "@/sanity/live";
-
 
 const roboto = Roboto({
   subsets: ["latin"],
