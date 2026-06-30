@@ -1,10 +1,10 @@
-import {defineCliConfig} from 'sanity/cli'
+import { defineCliConfig } from 'sanity/cli'
 
-import { projectId, dataset} from "./env"
+import { projectId, dataset } from "./env"
 
 export default defineCliConfig({
   api: {
-    
+
     projectId: projectId,
 
     dataset: dataset
@@ -15,5 +15,15 @@ export default defineCliConfig({
      * Learn more at https://www.sanity.io/docs/studio/latest-version-of-sanity#k47faf43faf56
      */
     autoUpdates: true,
+  },
+  typegen: {
+    
+    enabled: true,
+
+    path: '../web/src/**/*.{ts,tsx,js,jsx}',
+
+    schema: './schema.json',
+
+    generates: '../web/src/sanity/types.ts',
   },
 })
