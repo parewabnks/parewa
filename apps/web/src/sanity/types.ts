@@ -15,6 +15,45 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type SanityImageAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+};
+
+export type Slider = {
+  _id: string;
+  _type: "slider";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+};
+
+export type SanityImageCrop = {
+  _type: "sanity.imageCrop";
+  top?: number;
+  bottom?: number;
+  left?: number;
+  right?: number;
+};
+
+export type SanityImageHotspot = {
+  _type: "sanity.imageHotspot";
+  x?: number;
+  y?: number;
+  height?: number;
+  width?: number;
+};
+
 export type RoleReference = {
   _ref: string;
   _type: "reference";
@@ -47,13 +86,61 @@ export type Slug = {
   source?: string;
 };
 
+export type CategoryReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "category";
+};
+
+export type SocialsReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "socials";
+};
+
+export type LinksReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "links";
+};
+
 export type Menu = {
   _id: string;
   _type: "menu";
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  name?: string;
+  title?: string;
+  categories?: CategoryReference;
+  socials?: SocialsReference;
+  links?: LinksReference;
+};
+
+export type Links = {
+  _id: string;
+  _type: "links";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  link?: string;
+};
+
+export type AnnouncementReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "announcement";
+};
+
+export type SliderReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "slider";
 };
 
 export type General = {
@@ -62,7 +149,16 @@ export type General = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  name?: string;
+  title?: string;
+  announcement?: AnnouncementReference;
+  categories?: CategoryReference;
+  slider?: Array<
+    {
+      _key: string;
+    } & SliderReference
+  >;
+  terms?: string;
+  privacy?: string;
 };
 
 export type Footer = {
@@ -71,14 +167,54 @@ export type Footer = {
   _createdAt: string;
   _updatedAt: string;
   _rev: string;
-  name?: string;
+  title?: string;
+  text?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  socials?: SocialsReference;
+  categories?: CategoryReference;
 };
 
-export type SanityImageAssetReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+export type Category = {
+  _id: string;
+  _type: "category";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+};
+
+export type Socials = {
+  _id: string;
+  _type: "socials";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  icon?: IconPicker;
+  link?: string;
+};
+
+export type IconPicker = {
+  _type: "iconPicker";
+  provider?: string;
+  name?: string;
+  svg?: string;
 };
 
 export type Credit = {
@@ -98,31 +234,6 @@ export type Credit = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-};
-
-export type SanityImageCrop = {
-  _type: "sanity.imageCrop";
-  top?: number;
-  bottom?: number;
-  left?: number;
-  right?: number;
-};
-
-export type SanityImageHotspot = {
-  _type: "sanity.imageHotspot";
-  x?: number;
-  y?: number;
-  height?: number;
-  width?: number;
-};
-
-export type Category = {
-  _id: string;
-  _type: "category";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name?: string;
 };
 
 export type Scholarship = {
@@ -572,18 +683,27 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | SanityImageAssetReference
+  | Slider
+  | SanityImageCrop
+  | SanityImageHotspot
   | RoleReference
   | PositionReference
   | Staff
   | Slug
+  | CategoryReference
+  | SocialsReference
+  | LinksReference
   | Menu
+  | Links
+  | AnnouncementReference
+  | SliderReference
   | General
   | Footer
-  | SanityImageAssetReference
-  | Credit
-  | SanityImageCrop
-  | SanityImageHotspot
   | Category
+  | Socials
+  | IconPicker
+  | Credit
   | Scholarship
   | Newsletter
   | Fundraiser
