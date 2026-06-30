@@ -7,12 +7,16 @@ import { schemaTypes } from '@parewa/sanity-config'
 
 import { structure } from './structure'
 
+import { projectId, dataset} from "./env"
+
+
 export default defineConfig({
     name: 'default',
     title: 'parewa',
 
-    projectId: 'h6v0hg60',
-    dataset: 'development',
+    projectId: projectId,
+
+    dataset: dataset,
 
     plugins: [
         structureTool({ structure }),

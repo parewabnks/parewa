@@ -5,11 +5,11 @@
   "main": "package.json",
   "license": "GPL-3.0-only",
   "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
     "build": "sanity build",
     "deploy": "sanity deploy",
-    "deploy-graphql": "sanity graphql deploy",
-    "dev": "sanity dev",
-    "start": "sanity start"
+    "deploy-graphql": "sanity graphql deploy"
   },
   "keywords": [
     "sanity"
