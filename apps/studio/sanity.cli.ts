@@ -17,13 +17,10 @@ export default defineCliConfig({
     autoUpdates: true,
   },
   typegen: {
-    
-    enabled: true,
+    path: "../web/src/**/*.{ts,tsx,js,jsx}",
 
-    path: '../web/src/**/*.{ts,tsx,js,jsx}',
+    schema: "./schema.json",
 
-    schema: './schema.json',
-
-    generates: '../web/src/sanity/types.ts',
-  },
+    generates: "../web/src/sanity/types.ts",
+  }
 })

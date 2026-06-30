@@ -749,10 +749,11 @@ export type AllSanitySchemaTypes =
 
 // Source: ../web/src/config/site-config.ts
 // Variable: METADATA_QUERY
-// Query: *[_type == "general"][0]{    _id,    metaTitle,    title,    terms,    announcement->{      _id,      // whatever fields you actually need from the announcement doc    },    categories->{      _id,      // whatever fields you actually need from the category doc    }  }
+// Query: *[_type == "general"][0]{    _id,    metaTitle,    metaDescription,    title,    terms,    announcement->{      _id,      // whatever fields you actually need from the announcement doc    },    categories->{      _id,      // whatever fields you actually need from the category doc    }  }
 export type METADATA_QUERY_RESULT = {
   _id: string;
   metaTitle: string | null;
+  metaDescription: string | null;
   title: string | null;
   terms: string | null;
   announcement: {
@@ -767,6 +768,6 @@ export type METADATA_QUERY_RESULT = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '\n  *[_type == "general"][0]{\n    _id,\n    metaTitle,\n    title,\n    terms,\n    announcement->{\n      _id,\n      // whatever fields you actually need from the announcement doc\n    },\n    categories->{\n      _id,\n      // whatever fields you actually need from the category doc\n    }\n  }\n': METADATA_QUERY_RESULT;
+    '\n  *[_type == "general"][0]{\n    _id,\n    metaTitle,\n    metaDescription,\n    title,\n    terms,\n    announcement->{\n      _id,\n      // whatever fields you actually need from the announcement doc\n    },\n    categories->{\n      _id,\n      // whatever fields you actually need from the category doc\n    }\n  }\n': METADATA_QUERY_RESULT;
   }
 }

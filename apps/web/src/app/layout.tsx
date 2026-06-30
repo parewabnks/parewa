@@ -43,6 +43,11 @@ export default function RootLayout({
       lang="en"
       className={`${roboto.variable} ${lato.variable} ${oswald.variable} ${bebas_neue.variable} h-full antialiased`}
     >
+      <head>
+        <meta name="apple-mobile-web-app-title" content="Parewa" />
+
+      </head>
+
       <body className="min-h-full flex flex-col">
 
         <SidebarProvider defaultOpen={false}>
