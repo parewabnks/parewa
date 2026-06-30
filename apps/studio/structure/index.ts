@@ -112,4 +112,21 @@ export const structure: StructureResolver = (S) =>
                 .id('footer'),
             ])
         ),
+
+      S.divider(),
+
+      S.listItem()
+        .title('Misc')
+        .icon(CaseIcon)
+        .child(
+          S.list()
+            .id('misc')
+            .title('Miscellaneous')
+            .items([
+              S.documentTypeListItem('slider').title('Sliders'),
+              S.documentTypeListItem('category').title('Categories'),
+              S.documentTypeListItem('socials').title('Social Media'),
+              S.documentTypeListItem('links').title('Links')
+            ])
+        ),
     ])

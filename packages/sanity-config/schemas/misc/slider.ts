@@ -1,9 +1,11 @@
 import { defineField, defineType } from 'sanity'
+import { HomeIcon as icon } from "@sanity/icons";
 
 export default defineType({
-    name: "event",
-    title: "Events",
+    name: "slider",
+    title: "Slider",
     type: "document",
+    icon,
     fields: [
         defineField({
             name: "title",
@@ -11,14 +13,9 @@ export default defineType({
             type: "string",
         }),
         defineField({
-            name: "startDate",
-            title: "Start Date",
-            type: "date",
-        }),
-        defineField({
-            name: "endDate",
-            title: "End Date",
-            type: "date",
+            name: "image",
+            title: "Image",
+            type: "image",
         }),
     ]
 })

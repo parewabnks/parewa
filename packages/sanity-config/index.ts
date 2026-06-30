@@ -17,8 +17,7 @@ import position from './schemas/organization/position'
 import role from './schemas/organization/role'
 
 // settings
-import category from './schemas/settings/category'
-import credit from './schemas/settings/credit'
+import credit from './schemas/organization/credit'
 import footer from './schemas/settings/footer'
 import general from './schemas/settings/general'
 import menu from './schemas/settings/menu'
@@ -28,6 +27,12 @@ import alumni from './schemas/users/alumni'
 import staff from './schemas/users/staff'
 import student from './schemas/users/student'
 import teacher from './schemas/users/teacher'
+
+// misc
+import category from './schemas/misc/category'
+import slider from './schemas/misc/slider'
+import socials from './schemas/misc/socials'
+import links from './schemas/misc/link'
 
 export const schemaTypes = [
 
@@ -46,15 +51,20 @@ export const schemaTypes = [
     role,
 
     // settings
-    category,
     credit,
     footer,
     general,
     menu,
-
+    
     // users
     alumni,
     staff,
     student,
     teacher,
+    
+    // misc
+    slider,
+    socials,
+    category,
+    links
 ]

@@ -6,9 +6,29 @@ export default defineType({
     type: "document",
     fields: [
         defineField({
-            name: "name",
-            title: "Name",
-            type: "string"
-        })
+            name: "title",
+            title: "Title",
+            type: "string",
+            readOnly: true
+
+        }),
+        defineField({
+            name: "categories",
+            title: "Active Categories",
+            type: "reference",
+            to: [{ type: "category" }],
+        }),
+        defineField({
+            name: "socials",
+            title: "Active Socials",
+            type: "reference",
+            to: [{ type: "socials" }]
+        }),
+        defineField({
+            name: "links",
+            title: "Link Buttons",
+            type: "reference",
+            to: [{ type: "links" }]
+        }),
     ]
 });

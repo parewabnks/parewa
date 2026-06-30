@@ -9,6 +9,21 @@ export default defineType({
             name: "title",
             title: "Title",
             type: "string"
-        })
+        }),
+        defineField({
+            name: "slug",
+            title: "Slug",
+            type: "slug",
+            options: {
+                source: "title",
+                maxLength: 100,
+            },
+        }),
+        defineField({
+            name: "content",
+            title: "Content",
+            type: "array",
+            of: [{ type: "block" }]
+        }),
     ]
 });
