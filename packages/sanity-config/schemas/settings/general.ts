@@ -30,6 +30,14 @@ export default defineType({
         }),
 
         defineField({
+            name: "siteTitle",
+            title: "Site Title",
+            type: "string",
+            group: "content",
+            description: "The title of the site.",
+        }),
+
+        defineField({
             name: "announcement",
             title: "Active Announcement",
             type: "reference",
@@ -40,9 +48,9 @@ export default defineType({
         defineField({
             name: "categories",
             title: "Active Categories",
-            type: "reference",
+            type: "array",
             group: "content",
-            to: [{ type: "category" }],
+            of: [{ type: "reference", to: [{ type: "category" }] }],
             description: "The category currently featured or active across the site.",
         }),
         defineField({

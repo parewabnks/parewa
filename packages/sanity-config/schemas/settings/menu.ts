@@ -10,25 +10,24 @@ export default defineType({
             title: "Title",
             type: "string",
             readOnly: true
-
         }),
         defineField({
             name: "categories",
             title: "Active Categories",
-            type: "reference",
-            to: [{ type: "category" }],
+            type: "array",
+            of: [{ type: "reference", to: [{ type: "category" }] }],
         }),
         defineField({
             name: "socials",
             title: "Active Socials",
-            type: "reference",
-            to: [{ type: "socials" }]
+            type: "array",
+            of: [{ type: "reference", to: [{ type: "socials" }] }],
         }),
         defineField({
             name: "links",
             title: "Link Buttons",
-            type: "reference",
-            to: [{ type: "links" }]
+            type: "array",
+            of: [{ type: "reference", to: [{ type: "links" }] }]
         }),
     ]
 });

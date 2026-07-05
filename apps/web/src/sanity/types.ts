@@ -15,6 +15,16 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type Links = {
+  _id: string;
+  _type: "links";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  link?: string;
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -114,19 +124,21 @@ export type Menu = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  categories?: CategoryReference;
-  socials?: SocialsReference;
-  links?: LinksReference;
-};
-
-export type Links = {
-  _id: string;
-  _type: "links";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  link?: string;
+  categories?: Array<
+    {
+      _key: string;
+    } & CategoryReference
+  >;
+  socials?: Array<
+    {
+      _key: string;
+    } & SocialsReference
+  >;
+  links?: Array<
+    {
+      _key: string;
+    } & LinksReference
+  >;
 };
 
 export type AnnouncementReference = {
@@ -150,8 +162,13 @@ export type General = {
   _updatedAt: string;
   _rev: string;
   title?: string;
+  siteTitle?: string;
   announcement?: AnnouncementReference;
-  categories?: CategoryReference;
+  categories?: Array<
+    {
+      _key: string;
+    } & CategoryReference
+  >;
   slider?: Array<
     {
       _key: string;
@@ -159,18 +176,6 @@ export type General = {
   >;
   terms?: string;
   privacy?: string;
-  metaTitle?: string;
-  metaDescription?: string;
-  metaImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  metaKeywords?: Array<string>;
-  noIndex?: boolean;
-  canonicalUrl?: string;
 };
 
 export type Footer = {
@@ -695,6 +700,7 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | Links
   | SanityImageAssetReference
   | Slider
   | SanityImageCrop
@@ -707,7 +713,6 @@ export type AllSanitySchemaTypes =
   | SocialsReference
   | LinksReference
   | Menu
-  | Links
   | AnnouncementReference
   | SliderReference
   | General
@@ -747,27 +752,28 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint;
 
-// Source: ../web/src/config/site-config.ts
-// Variable: METADATA_QUERY
-// Query: *[_type == "general"][0]{    _id,    metaTitle,    metaDescription,    title,    terms,    announcement->{      _id,      // whatever fields you actually need from the announcement doc    },    categories->{      _id,      // whatever fields you actually need from the category doc    }  }
-export type METADATA_QUERY_RESULT = {
-  _id: string;
-  metaTitle: string | null;
-  metaDescription: string | null;
-  title: string | null;
+// Source: ../web/src/components/layout/Sidebar.tsx
+// Variable: CATEGORY_QUERY
+// Query: *[_type == "menu"][0]{  categories[]->{    title  }}
+export type CATEGORY_QUERY_RESULT = {
+  categories: Array<{
+    title: string | null;
+  }> | null;
+} | null;
+
+// Source: ../web/src/components/layout/Sidebar.tsx
+// Variable: GENERAL_QUERY
+// Query: *[_type == "general"][0]{  terms,  siteTitle,}
+export type GENERAL_QUERY_RESULT = {
   terms: string | null;
-  announcement: {
-    _id: string;
-  } | null;
-  categories: {
-    _id: string;
-  } | null;
+  siteTitle: string | null;
 } | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '\n  *[_type == "general"][0]{\n    _id,\n    metaTitle,\n    metaDescription,\n    title,\n    terms,\n    announcement->{\n      _id,\n      // whatever fields you actually need from the announcement doc\n    },\n    categories->{\n      _id,\n      // whatever fields you actually need from the category doc\n    }\n  }\n': METADATA_QUERY_RESULT;
+    '*[_type == "menu"][0]{\n  categories[]->{\n    title\n  }\n}': CATEGORY_QUERY_RESULT;
+    '*[_type == "general"][0]{\n  terms,\n  siteTitle,\n}': GENERAL_QUERY_RESULT;
   }
 }
