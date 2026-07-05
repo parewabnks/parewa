@@ -100,12 +100,6 @@ export const structure: StructureResolver = (S) =>
                 .id('general'),
 
               S.documentListItem()
-                .schemaType('menu')
-                .title('Menu')
-                .icon(ProjectsIcon)
-                .id('menu'),
-
-              S.documentListItem()
                 .schemaType('footer')
                 .title('Footer')
                 .icon(HomeIcon)

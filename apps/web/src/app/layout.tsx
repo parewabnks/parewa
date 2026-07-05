@@ -6,8 +6,11 @@ export { metadata } from "@/config/site-config";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner"
 
-import { AppSidebar } from "@/components/layout/Sidebar";
-import { SanityLive } from "@/sanity/live";
+import { AppSidebar } from "@/components/layout/sidebar";
+
+import { sanityFetch, SanityLive } from "@/sanity/live";
+
+import { defineQuery } from "next-sanity";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -33,11 +36,22 @@ const lato = Lato({
   variable: '--font-lato',
 })
 
-export default function RootLayout({
+const GENERAL_QUERY = defineQuery(`*[_type == "general"][0]{
+  terms,
+  siteTitle,
+  categories[]->{
+    title
+  }
+}`)
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const { data: general } = await sanityFetch({ query: GENERAL_QUERY });
+
   return (
     <html
       lang="en"
@@ -52,8 +66,8 @@ export default function RootLayout({
 
         <SidebarProvider defaultOpen={false}>
 
-          <AppSidebar />
-          
+          <AppSidebar general={general} />
+
           <SidebarInset>
 
             {children}

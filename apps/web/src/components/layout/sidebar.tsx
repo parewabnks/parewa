@@ -8,33 +8,18 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 
-import { defineQuery, groq } from "next-sanity";
-
-import { sanityFetch } from "@/sanity/live";
 
 import Image from "next/image";
 
-const CATEGORY_QUERY = defineQuery(`*[_type == "menu"][0]{
-  categories[]->{
-    title
-  }
-}`);
+import { GENERAL_QUERY_RESULT } from "@/sanity/types";
 
-const GENERAL_QUERY = defineQuery(`*[_type == "general"][0]{
-  terms,
-  siteTitle,
-}`)
-
-export async function AppSidebar() {
-
-  const { data: menu } = await sanityFetch({ query: CATEGORY_QUERY });
-
-  const { data: general } = await sanityFetch({ query: GENERAL_QUERY });
-
+export function AppSidebar({ general }: { general: GENERAL_QUERY_RESULT }) {
   return (
     <Sidebar
       variant="sidebar"
-      collapsible="offcanvas">
+      collapsible="offcanvas"
+      className="absolute z-100"
+      >
       <SidebarContent>
         <div className="px-8 py-10">
           <div className="flex items-center justify-between mb-4">
@@ -46,11 +31,13 @@ export async function AppSidebar() {
               <X className="h-5 w-5" />
             </SidebarTrigger>
           </div>
-
+          
           <div>
-            {(menu !== null) && menu.categories?.map((item) => (
+            {(general !== null) && general.categories?.map((item) => (
               <SidebarMenuItem key={item.title} className="mb-2 list-none text-lg font-medium">
-                <a href={"articles?category=" + item.title}>{item.title}</a>
+                <Link href={`articles?category=${item.title}`}>
+                  {item.title}
+                </Link>
               </SidebarMenuItem>
             ))}
           </div>

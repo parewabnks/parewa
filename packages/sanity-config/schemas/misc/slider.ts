@@ -13,6 +13,11 @@ export default defineType({
             type: "string",
         }),
         defineField({
+            name: "author",
+            title: "Author",
+            type: "string",
+        }),
+        defineField({
             name: "image",
             title: "Image",
             type: "image",

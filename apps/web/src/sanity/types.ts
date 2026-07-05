@@ -39,6 +39,7 @@ export type Slider = {
   _updatedAt: string;
   _rev: string;
   title?: string;
+  author?: string;
   image?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
@@ -96,11 +97,25 @@ export type Slug = {
   source?: string;
 };
 
+export type AnnouncementReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "announcement";
+};
+
 export type CategoryReference = {
   _ref: string;
   _type: "reference";
   _weak?: boolean;
   [internalGroqTypeReferenceTo]?: "category";
+};
+
+export type SliderReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "slider";
 };
 
 export type SocialsReference = {
@@ -117,44 +132,6 @@ export type LinksReference = {
   [internalGroqTypeReferenceTo]?: "links";
 };
 
-export type Menu = {
-  _id: string;
-  _type: "menu";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  categories?: Array<
-    {
-      _key: string;
-    } & CategoryReference
-  >;
-  socials?: Array<
-    {
-      _key: string;
-    } & SocialsReference
-  >;
-  links?: Array<
-    {
-      _key: string;
-    } & LinksReference
-  >;
-};
-
-export type AnnouncementReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "announcement";
-};
-
-export type SliderReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "slider";
-};
-
 export type General = {
   _id: string;
   _type: "general";
@@ -169,10 +146,20 @@ export type General = {
       _key: string;
     } & CategoryReference
   >;
-  slider?: Array<
+  sliders?: Array<
     {
       _key: string;
     } & SliderReference
+  >;
+  socials?: Array<
+    {
+      _key: string;
+    } & SocialsReference
+  >;
+  links?: Array<
+    {
+      _key: string;
+    } & LinksReference
   >;
   terms?: string;
   privacy?: string;
@@ -709,12 +696,11 @@ export type AllSanitySchemaTypes =
   | PositionReference
   | Staff
   | Slug
+  | AnnouncementReference
   | CategoryReference
+  | SliderReference
   | SocialsReference
   | LinksReference
-  | Menu
-  | AnnouncementReference
-  | SliderReference
   | General
   | Footer
   | Category
@@ -752,28 +738,40 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint;
 
-// Source: ../web/src/components/layout/Sidebar.tsx
-// Variable: CATEGORY_QUERY
-// Query: *[_type == "menu"][0]{  categories[]->{    title  }}
-export type CATEGORY_QUERY_RESULT = {
+// Source: ../web/src/app/layout.tsx
+// Variable: GENERAL_QUERY
+// Query: *[_type == "general"][0]{  terms,  siteTitle,  categories[]->{    title  }}
+export type GENERAL_QUERY_RESULT = {
+  terms: string | null;
+  siteTitle: string | null;
   categories: Array<{
     title: string | null;
   }> | null;
 } | null;
 
-// Source: ../web/src/components/layout/Sidebar.tsx
-// Variable: GENERAL_QUERY
-// Query: *[_type == "general"][0]{  terms,  siteTitle,}
-export type GENERAL_QUERY_RESULT = {
-  terms: string | null;
+// Source: ../web/src/app/page.tsx
+// Variable: SLIDER_QUERY
+// Query: *[_type == "general"][0]{  siteTitle,  sliders[]->{    title,    author,    image  }}
+export type SLIDER_QUERY_RESULT = {
   siteTitle: string | null;
+  sliders: Array<{
+    title: string | null;
+    author: string | null;
+    image: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+  }> | null;
 } | null;
 
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '*[_type == "menu"][0]{\n  categories[]->{\n    title\n  }\n}': CATEGORY_QUERY_RESULT;
-    '*[_type == "general"][0]{\n  terms,\n  siteTitle,\n}': GENERAL_QUERY_RESULT;
+    '*[_type == "general"][0]{\n  terms,\n  siteTitle,\n  categories[]->{\n    title\n  }\n}': GENERAL_QUERY_RESULT;
+    '*[_type == "general"][0]{\n  siteTitle,\n  sliders[]->{\n    title,\n    author,\n    image\n  }\n}': SLIDER_QUERY_RESULT;
   }
 }

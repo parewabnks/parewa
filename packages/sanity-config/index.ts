@@ -17,7 +17,6 @@ import role from './schemas/organization/role'
 import credit from './schemas/organization/credit'
 import footer from './schemas/settings/footer'
 import general from './schemas/settings/general'
-import menu from './schemas/settings/menu'
 
 // users
 import alumni from './schemas/users/alumni'
@@ -51,7 +50,6 @@ export const schemaTypes = [
     credit,
     footer,
     general,
-    menu,
     
     // users
     alumni,

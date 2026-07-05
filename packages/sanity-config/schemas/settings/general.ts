@@ -11,8 +11,8 @@ export default defineType({
             default: true,
         },
         {
-            name: "slider",
-            title: "Slider",
+            name: "sliders",
+            title: "Sliders",
         },
         {
             ...ALL_FIELDS_GROUP,
@@ -54,15 +54,30 @@ export default defineType({
             description: "The category currently featured or active across the site.",
         }),
         defineField({
-            name: "slider",
+            name: "sliders",
             title: "Sliders",
             type: "array",
-            group: "slider",
+            group: "sliders",
             of: [{
                 type: "reference",
                 to: [{ type: "slider" }]
             }],
             description: "Slides shown in the homepage hero/slider, in order.",
+        }),
+        defineField({
+            name: "socials",
+            title: "Active Socials",
+            type: "array",
+            group: "content",
+
+            of: [{ type: "reference", to: [{ type: "socials" }] }],
+        }),
+        defineField({
+            name: "links",
+            title: "Link Buttons",
+            type: "array",
+            group: "content",
+            of: [{ type: "reference", to: [{ type: "links" }] }]
         }),
         defineField({
             name: "terms",
