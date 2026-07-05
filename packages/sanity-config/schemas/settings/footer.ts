@@ -14,20 +14,19 @@ export default defineType({
         defineField({
             name: "text",
             title: "Text",
-            type: "array",
-            of: [{ type: "block" }]
+            type: "string",
         }),
         defineField({
             name: "socials",
             title: "Active Socials",
-            type: "reference",
-            to: [{ type: "socials" }]
+            type: "array",
+            of: [{ type: "reference", to: [{ type: "socials" }] }]
         }),
         defineField({
             name: "categories",
             title: "Active Categories",
-            type: "reference",
-            to: [{ type: "category" }]
+            type: "array",
+            of: [{ type: "reference", to: [{ type: "category" }] }]
         }),
     ]
 });

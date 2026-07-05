@@ -25,6 +25,33 @@ export type Links = {
   link?: string;
 };
 
+export type Category = {
+  _id: string;
+  _type: "category";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+};
+
+export type Socials = {
+  _id: string;
+  _type: "socials";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  icon?: IconPicker;
+  link?: string;
+};
+
+export type IconPicker = {
+  _type: "iconPicker";
+  provider?: string;
+  name?: string;
+  svg?: string;
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -172,53 +199,17 @@ export type Footer = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  text?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
+  text?: string;
+  socials?: Array<
+    {
       _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
+    } & SocialsReference
+  >;
+  categories?: Array<
+    {
       _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
-  socials?: SocialsReference;
-  categories?: CategoryReference;
-};
-
-export type Category = {
-  _id: string;
-  _type: "category";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-};
-
-export type Socials = {
-  _id: string;
-  _type: "socials";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  icon?: IconPicker;
-  link?: string;
-};
-
-export type IconPicker = {
-  _type: "iconPicker";
-  provider?: string;
-  name?: string;
-  svg?: string;
+    } & CategoryReference
+  >;
 };
 
 export type Credit = {
@@ -688,6 +679,9 @@ export type Geopoint = {
 
 export type AllSanitySchemaTypes =
   | Links
+  | Category
+  | Socials
+  | IconPicker
   | SanityImageAssetReference
   | Slider
   | SanityImageCrop
@@ -703,9 +697,6 @@ export type AllSanitySchemaTypes =
   | LinksReference
   | General
   | Footer
-  | Category
-  | Socials
-  | IconPicker
   | Credit
   | Scholarship
   | Newsletter
@@ -751,7 +742,7 @@ export type GENERAL_QUERY_RESULT = {
 
 // Source: ../web/src/app/page.tsx
 // Variable: SLIDER_QUERY
-// Query: *[_type == "general"][0]{  siteTitle,  sliders[]->{    title,    author,    image  }}
+// Query: *[_type == "general"][0]{  siteTitle,  sliders[]->{    title,    author,    image  },  categories[]->{    title  },  links[]->{    title,    link  }}
 export type SLIDER_QUERY_RESULT = {
   siteTitle: string | null;
   sliders: Array<{
@@ -765,6 +756,31 @@ export type SLIDER_QUERY_RESULT = {
       _type: "image";
     } | null;
   }> | null;
+  categories: Array<{
+    title: string | null;
+  }> | null;
+  links: Array<{
+    title: string | null;
+    link: string | null;
+  }> | null;
+} | null;
+
+// Source: ../web/src/components/layout/footer.tsx
+// Variable: FOOTER_QUERY
+// Query: *[_type == "footer"][0]{  text,  categories[]->{    title  },  socials[]->{    icon{      name,      provider    },    link,    title  }}
+export type FOOTER_QUERY_RESULT = {
+  text: string | null;
+  categories: Array<{
+    title: string | null;
+  }> | null;
+  socials: Array<{
+    icon: {
+      name: string | null;
+      provider: string | null;
+    } | null;
+    link: string | null;
+    title: string | null;
+  }> | null;
 } | null;
 
 // Query TypeMap
@@ -772,6 +788,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "general"][0]{\n  terms,\n  siteTitle,\n  categories[]->{\n    title\n  }\n}': GENERAL_QUERY_RESULT;
-    '*[_type == "general"][0]{\n  siteTitle,\n  sliders[]->{\n    title,\n    author,\n    image\n  }\n}': SLIDER_QUERY_RESULT;
+    '*[_type == "general"][0]{\n  siteTitle,\n  sliders[]->{\n    title,\n    author,\n    image\n  },\n  categories[]->{\n    title\n  },\n  links[]->{\n    title,\n    link\n  }\n}': SLIDER_QUERY_RESULT;
+    '*[_type == "footer"][0]{\n  text,\n  categories[]->{\n    title\n  },\n  socials[]->{\n    icon{\n      name,\n      provider\n    },\n    link,\n    title\n  }\n}': FOOTER_QUERY_RESULT;
   }
 }
