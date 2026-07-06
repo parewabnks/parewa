@@ -1,73 +1,80 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, useTransition } from "react";
+import type * as React from "react";
 
-export default function FooterNewsletter() {
+interface NewsletterResponse {
+  success: boolean;
+  message?: string;
+}
+
+type Status = { type: "success" | "error"; text: string } | null;
+
+export default function FooterNewsletter({ privacyPolicyLink }: { privacyPolicyLink: string }) {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState<Status>(null);
+  const [isPending, startTransition] = useTransition();
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
-    setMessage("");
+    setStatus(null);
 
-    try {
-      const response = await fetch("/api/add_newsletter", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+    startTransition(async () => {
+      try {
+        const response = await fetch("/api/add_newsletter", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        });
 
-      const data = await response.json();
+        const data: NewsletterResponse = await response.json();
 
-      if (data.success) {
-        setMessage("Successfully subscribed to the newsletter!");
-        setEmail("");
-      } else {
-        setMessage(data.message || "Failed to subscribe. Please try again.");
+        if (data.success) {
+          setStatus({ type: "success", text: "Successfully subscribed to the newsletter!" });
+          setEmail("");
+        } else {
+          setStatus({ type: "error", text: data.message ?? "Failed to subscribe. Please try again." });
+        }
+      } catch {
+        setStatus({ type: "error", text: "An error occurred. Please try again later." });
       }
-    } catch (error) {
-      setMessage("An error occurred. Please try again later.");
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
 
   return (
-    <div className="mt-4pt-8">
-      <h3 className="text-xl font-semibold mb-4 text-white font-sans">Newsletter</h3>
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-        <p className="text-sm text-gray-300 mb-2 sm:mb-0">Subscribe to our newsletter for updates.</p>
+    <div className="mt-4 pt-4">
+      <h3 className="mb-4 font-sans text-xl font-semibold text-white">Newsletter</h3>
+      {status && (
+        <p className={`text-xs ${status.type === "success" ? "text-green-400" : "text-red-400"}`}>
+          {status.text}
+        </p>
+      )}
+
+      <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+        <p className="mb-2 text-sm text-primary-foreground sm:mb-0">Subscribe to our newsletter for updates.</p>
+
         <form onSubmit={handleSubmit} className="flex w-full sm:max-w-xs lg:ml-7">
           <input
             type="email"
             placeholder="Enter your email"
-            className="grow rounded-l-md rounded-r-none text-sm bg-gray-800 text-gray-100 border border-gray-700 focus:border-white transition-colors duration-200 py-2 px-3"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            disabled={isLoading}
+            disabled={isPending}
+            className="grow rounded-l-md rounded-r-none bg-muted px-3 py-2 text-sm placeholder-muted-foreground text-primary-foreground transition-colors duration-200 focus:border-accent"
           />
           <button
             type="submit"
-            className="bg-primary-block text-white rounded-l-none rounded-r-md text-sm whitespace-nowrap hover:bg-light-dark transition-colors duration-200 px-4 py-2"
-            disabled={isLoading}
+            disabled={isPending}
+            className="bg-primary hover:bg-primary/90 cursor-pointer whitespace-nowrap rounded-l-none rounded-r-md px-4 py-2 text-sm text-primary-foreground transition-colors duration-200"
           >
-            {isLoading ? "Subscribing..." : "Subscribe"}
+            {isPending ? "Subscribing..." : "Subscribe"}
           </button>
         </form>
       </div>
-      {message && (
-        <p className={`text-xs mt-2 ${message.includes("Successfully") ? "text-green-400" : "text-red-400"}`}>
-          {message}
-        </p>
-      )}
-      <p className="text-xs text-gray-300 mt-2 sm:mt-0">
+      <p className="mt-2 text-xs text-muted-foreground sm:mt-0">
         By subscribing, you agree to our{" "}
-        <a href="/terms_and_conditions.pdf" className="underline hover:text-white">
+        <a href={privacyPolicyLink} className="underline hover:text-primary-foreground">
           Privacy Policy
         </a>
       </p>

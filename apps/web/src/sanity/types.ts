@@ -783,6 +783,13 @@ export type FOOTER_QUERY_RESULT = {
   }> | null;
 } | null;
 
+// Source: ../web/src/components/layout/footer.tsx
+// Variable: PRIVACY_QUERY
+// Query: *[_type == "general"][0]{  privacy}
+export type PRIVACY_QUERY_RESULT = {
+  privacy: string | null;
+} | null;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -790,5 +797,6 @@ declare module "@sanity/client" {
     '*[_type == "general"][0]{\n  terms,\n  siteTitle,\n  categories[]->{\n    title\n  }\n}': GENERAL_QUERY_RESULT;
     '*[_type == "general"][0]{\n  siteTitle,\n  sliders[]->{\n    title,\n    author,\n    image\n  },\n  categories[]->{\n    title\n  },\n  links[]->{\n    title,\n    link\n  }\n}': SLIDER_QUERY_RESULT;
     '*[_type == "footer"][0]{\n  text,\n  categories[]->{\n    title\n  },\n  socials[]->{\n    icon{\n      name,\n      provider\n    },\n    link,\n    title\n  }\n}': FOOTER_QUERY_RESULT;
+    '*[_type == "general"][0]{\n  privacy\n}': PRIVACY_QUERY_RESULT;
   }
 }

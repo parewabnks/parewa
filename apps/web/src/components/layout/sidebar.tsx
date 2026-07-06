@@ -27,7 +27,7 @@ export function AppSidebar({ general }: { general: GENERAL_QUERY_RESULT }) {
               <Image src="/logo.png" alt="Parewa Logo" width={64} height={64} />
               {general?.siteTitle}
             </Link>
-            <SidebarTrigger>
+            <SidebarTrigger className="text-foreground hover:bg-transparent hover:text-foreground cursor-pointer">
               <X className="h-5 w-5" />
             </SidebarTrigger>
           </div>

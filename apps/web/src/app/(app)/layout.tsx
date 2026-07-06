@@ -1,4 +1,4 @@
-import { Roboto, Lato, Oswald, Bebas_Neue } from "next/font/google";
+import { Oswald, Inter } from "next/font/google";
 import "@/app/globals.css";
 
 export { metadata } from "@/config/site-config";
@@ -11,12 +11,7 @@ import { AppSidebar } from "@/components/layout/sidebar";
 import { sanityFetch, SanityLive } from "@/sanity/live";
 
 import { defineQuery } from "next-sanity";
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: "300",
-  variable: "--font-roboto",
-});
+import Footer from "@/components/layout/footer";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -24,17 +19,11 @@ const oswald = Oswald({
   variable: "--font-oswald",
 });
 
-const bebas_neue = Bebas_Neue({
+const inter = Inter({
   subsets: ["latin"],
-  weight: "400",
-  variable: "--font-bebas_neue",
+  variable: "--font-inter",
+  weight: ["400", "500", "600", "700"]
 });
-
-const lato = Lato({
-  subsets: ['latin'],
-  weight: '400',
-  variable: '--font-lato',
-})
 
 const GENERAL_QUERY = defineQuery(`*[_type == "general"][0]{
   terms,
@@ -55,7 +44,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${roboto.variable} ${lato.variable} ${oswald.variable} ${bebas_neue.variable} h-full antialiased`}
+      className={`${oswald.variable} ${inter.variable} h-full antialiased`}
     >
       <head>
         <meta name="apple-mobile-web-app-title" content="Parewa" />
@@ -71,6 +60,8 @@ export default async function RootLayout({
           <SidebarInset>
 
             {children}
+
+            <Footer />
 
             <SanityLive />
 

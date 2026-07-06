@@ -73,10 +73,7 @@ export default async function Home() {
 
         <ArticleSection />
 
-      </div>
-
-      <Footer />
-      
+      </div>      
     </div>
   );
 }

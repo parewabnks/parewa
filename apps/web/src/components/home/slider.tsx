@@ -50,7 +50,7 @@ export default function Slider({ data }: { data: SliderProps }) {
               />
               <Card className="relative rounded-none h-full bg-transparent">
                 <CardContent className="flex items-center justify-center p-6 h-full">
-                  <span className="text-4xl font-extrabold text-white">{slide.title}</span>
+                  <span className="text-4xl font-extrabold text-white font-heading">{slide.title}</span>
                 </CardContent>
               </Card>
             </div>

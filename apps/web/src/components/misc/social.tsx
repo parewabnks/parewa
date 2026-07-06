@@ -17,7 +17,7 @@ export default function Social({ social }: { social: SocialInt }) {
         rel="noopener noreferrer"
         aria-label={social.title}
       >
-        <Icon className="w-6 h-6 text-gray-300 hover:text-white transition-colors duration-200" />
+        <Icon className="w-6 h-6 text-primary-foreground/90 hover:text-primary-foreground transition-colors duration-200" />
       </Link>
     </div>
   );

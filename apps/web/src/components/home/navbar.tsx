@@ -1,19 +1,11 @@
-"use client"
-
-import { useState } from "react"
-
 function Navbar({ categories, links }: { categories: string[]; links: { title: string; link: string }[] }) {
-  const [activeCategory, setActiveCategory] = useState<string>(categories[0]);
-
   return (
     <div className='flex justify-between'>
       <ul className='flex'>
         {categories.map((category) => (
           <li
             key={category}
-            className={`text-2xl p-5 cursor-pointer ${activeCategory === category ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-700"
-              }`} onClick={() => setActiveCategory(category)}
-          >
+            className={"text-2xl p-5 cursor-pointe text-gray-700"}>
             {category}
           </li>
         ))}
