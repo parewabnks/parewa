@@ -49,8 +49,11 @@ export default function Slider({ data }: { data: SliderProps }) {
                 priority={index === 0}
               />
               <Card className="relative rounded-none h-full bg-transparent">
-                <CardContent className="flex items-center justify-center p-6 h-full">
-                  <span className="text-4xl font-extrabold text-white font-heading">{slide.title}</span>
+                <CardContent className="flex items-end justify-start p-12 h-full">
+                  <div className="max-w-4xl pl-10">
+                    <div className="text-7xl font-extrabold text-primary-foreground font-heading">{slide.title.toUpperCase()}</div>
+                    <div className="text-lg italic mt-3 text-primary-foreground font-sans"> - {slide.author}</div>
+                  </div>
                 </CardContent>
               </Card>
             </div>

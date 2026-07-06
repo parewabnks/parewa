@@ -5,6 +5,7 @@ import Link from "next/link";
 import { SocialInt } from "@/types/social";
 
 export default function Social({ social }: { social: SocialInt }) {
+  
   const Icon = resolveIcon(social.icon.name);
 
   if (!Icon) return null;
