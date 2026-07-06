@@ -32,7 +32,7 @@ export default function Slider({ data }: { data: SliderProps }) {
 
   return (
     <Carousel
-      className="overflow-hidden w-full h-[30vh] md:h-110 relative"
+      className="overflow-hidden w-full h-[30vh] md:h-120 relative"
       plugins={[autoplayPlugin.current]}
       onMouseEnter={autoplayPlugin.current.stop}
       onMouseLeave={autoplayPlugin.current.reset}
@@ -44,7 +44,7 @@ export default function Slider({ data }: { data: SliderProps }) {
               <Image
                 src={slide?.image}
                 alt={slide.title || "Slider Image"}
-                className="object-cover"
+                className="object-cover brightness-75"
                 fill
                 priority={index === 0}
               />

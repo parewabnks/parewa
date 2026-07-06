@@ -5,7 +5,7 @@ import SideCalendar from './cards/side_calendar'
 function Main() {
   return (
     <div className='pt-10 font-bold'>
-        <span className='text-3xl'>
+        <span className='text-5xl font-heading'>
             Top Stories
         </span>
 

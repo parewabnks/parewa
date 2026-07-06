@@ -729,18 +729,22 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint;
 
-// Source: ../web/src/app/layout.tsx
+// Source: ../web/src/app/(app)/(root)/layout.tsx
 // Variable: GENERAL_QUERY
-// Query: *[_type == "general"][0]{  terms,  siteTitle,  categories[]->{    title  }}
+// Query: *[_type == "general"][0]{  terms,  siteTitle,  categories[]->{    title  },  links[]->{    title,    link  }}
 export type GENERAL_QUERY_RESULT = {
   terms: string | null;
   siteTitle: string | null;
   categories: Array<{
     title: string | null;
   }> | null;
+  links: Array<{
+    title: string | null;
+    link: string | null;
+  }> | null;
 } | null;
 
-// Source: ../web/src/app/page.tsx
+// Source: ../web/src/app/(app)/(root)/page.tsx
 // Variable: SLIDER_QUERY
 // Query: *[_type == "general"][0]{  siteTitle,  sliders[]->{    title,    author,    image  },  categories[]->{    title  },  links[]->{    title,    link  }}
 export type SLIDER_QUERY_RESULT = {
@@ -756,6 +760,19 @@ export type SLIDER_QUERY_RESULT = {
       _type: "image";
     } | null;
   }> | null;
+  categories: Array<{
+    title: string | null;
+  }> | null;
+  links: Array<{
+    title: string | null;
+    link: string | null;
+  }> | null;
+} | null;
+
+// Source: ../web/src/app/(app)/(sub)/articles/[articleId]/page.tsx
+// Variable: ARTICLES_QUERY
+// Query: *[_type == "general"][0]{  categories[]->{    title  },  links[]->{    title,    link  }}
+export type ARTICLES_QUERY_RESULT = {
   categories: Array<{
     title: string | null;
   }> | null;
@@ -794,8 +811,9 @@ export type PRIVACY_QUERY_RESULT = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '*[_type == "general"][0]{\n  terms,\n  siteTitle,\n  categories[]->{\n    title\n  }\n}': GENERAL_QUERY_RESULT;
+    '*[_type == "general"][0]{\n  terms,\n  siteTitle,\n  categories[]->{\n    title\n  },\n  links[]->{\n    title,\n    link\n  }\n}': GENERAL_QUERY_RESULT;
     '*[_type == "general"][0]{\n  siteTitle,\n  sliders[]->{\n    title,\n    author,\n    image\n  },\n  categories[]->{\n    title\n  },\n  links[]->{\n    title,\n    link\n  }\n}': SLIDER_QUERY_RESULT;
+    '*[_type == "general"][0]{\n  categories[]->{\n    title\n  },\n  links[]->{\n    title,\n    link\n  }\n}': ARTICLES_QUERY_RESULT;
     '*[_type == "footer"][0]{\n  text,\n  categories[]->{\n    title\n  },\n  socials[]->{\n    icon{\n      name,\n      provider\n    },\n    link,\n    title\n  }\n}': FOOTER_QUERY_RESULT;
     '*[_type == "general"][0]{\n  privacy\n}': PRIVACY_QUERY_RESULT;
   }

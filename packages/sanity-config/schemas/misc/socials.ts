@@ -15,7 +15,10 @@ export default defineType({
         defineField({
             name: "icon",
             title: "Icon",
-            type: "iconPicker"
+            type: "iconPicker",
+            options: {
+                providers: ["f7"]
+            }
         }),
         defineField({
             name: "link",

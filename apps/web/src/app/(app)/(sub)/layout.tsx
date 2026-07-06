@@ -12,6 +12,7 @@ import { sanityFetch, SanityLive } from "@/sanity/live";
 
 import { defineQuery } from "next-sanity";
 import Footer from "@/components/layout/footer";
+import SubHeader from "@/components/layout/sub_header";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -30,6 +31,10 @@ const GENERAL_QUERY = defineQuery(`*[_type == "general"][0]{
   siteTitle,
   categories[]->{
     title
+  },
+  links[]->{
+    title,
+    link
   }
 }`)
 
@@ -59,7 +64,18 @@ export default async function RootLayout({
 
           <SidebarInset>
 
-            {children}
+            <div className="flex items-start relative">
+              <SubHeader
+                title={general?.siteTitle ?? ""}
+                contribute={{
+                  title: general?.links?.[1]?.title ?? "",
+                  link: general?.links?.[1]?.link ?? "",
+                }}
+              />
+              <div className="">
+                {children}
+              </div>
+            </div>
 
             <Footer />
 
@@ -70,7 +86,6 @@ export default async function RootLayout({
           </SidebarInset>
 
         </SidebarProvider>
-
       </body>
     </html>
   );
