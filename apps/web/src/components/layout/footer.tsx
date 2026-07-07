@@ -43,7 +43,7 @@ async function Footer() {
   return (
     <footer className='p-5 relative bg-tertiary text-primary-foreground mt-5 pt-20'>
       <div className="max-w-4xl mx-auto flex flex-col">
-        <div className="flex justify-start gap-20 border-b border-muted-foreground/40 py-5">
+        <div className="flex flex-col md:flex-row justify-start gap-10 md:gap-20 border-b border-muted-foreground/40 py-5">
           <div className="flex flex-col">
             <h2 className="text-4xl font-bold mb-4 font-oswald text-primary-foreground text-center md:text-left font-heading">PAREWA</h2>
             <p className="text-sm text-primary-foreground mb-6 font-roboto mx-auto md:mx-0 max-w-xs text-center md:text-left ">
@@ -58,7 +58,7 @@ async function Footer() {
           <div className="flex flex-col">
             <h3 className="text-base font-semibold mb-3 text-primary-foreground text-center md:text-left">Categories</h3>
             {data?.categories?.map((category) => (
-              <div key={category.title} className="mb-2">
+              <div key={category.title} className="mb-2 text-center md:text-start">
                 <Link href={`/articles?category=${category.title?.toLowerCase()}`} className="text-primary-foreground/90 hover:text-primary-foreground transition-colors duration-200 space-y-2 text-sm text-center md:text-left">
                   {category.title}
                 </Link>

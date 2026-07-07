@@ -7,6 +7,8 @@ import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { Toaster } from "@/components/ui/sonner"
 
 import { AppSidebar } from "@/components/layout/sidebar";
+import Navbar from '@/components/layout/navbar'
+
 
 import { sanityFetch, SanityLive } from "@/sanity/live";
 
@@ -38,6 +40,17 @@ const GENERAL_QUERY = defineQuery(`*[_type == "general"][0]{
   }
 }`)
 
+const ARTICLES_QUERY = defineQuery(`*[_type == "general"][0]{
+  categories[]->{
+    title
+  },
+  links[]->{
+    title,
+    link
+  }
+}`)
+
+
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -45,6 +58,21 @@ export default async function RootLayout({
 }>) {
 
   const { data: general } = await sanityFetch({ query: GENERAL_QUERY });
+
+  const { data } = await sanityFetch({ query: ARTICLES_QUERY });
+
+  const categories =
+    data?.categories
+      ?.map((category) => category.title)
+      .filter((title): title is string => title != null) ?? [];
+
+  const links =
+    data?.links
+      ?.map((link) => ({ title: link.title, link: link.link }))
+      .filter((link):
+        link is { title: string; link: string } => link.title != null && link.link != null) ?? [];
+
+
 
   return (
     <html
@@ -56,7 +84,7 @@ export default async function RootLayout({
 
       </head>
 
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full">
 
         <SidebarProvider defaultOpen={false}>
 
@@ -64,7 +92,7 @@ export default async function RootLayout({
 
           <SidebarInset>
 
-            <div className="flex items-start relative">
+            <div className="flex flex-col md:flex-row md:items-start">
               <SubHeader
                 title={general?.siteTitle ?? ""}
                 contribute={{
@@ -72,7 +100,8 @@ export default async function RootLayout({
                   link: general?.links?.[1]?.link ?? "",
                 }}
               />
-              <div className="">
+              <div className="w-full border-l">
+                <Navbar categories={categories} links={links} className='max-w-5xl' />
                 {children}
               </div>
             </div>

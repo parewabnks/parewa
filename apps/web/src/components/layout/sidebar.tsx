@@ -14,8 +14,6 @@ import { GENERAL_QUERY_RESULT } from "@/sanity/types";
 
 import { Search } from "lucide-react";
 
-import { cn } from "@/lib/utils";
-
 export function AppSidebar({ general }: { general: GENERAL_QUERY_RESULT }) {
   return (
     <Sidebar
@@ -37,7 +35,7 @@ export function AppSidebar({ general }: { general: GENERAL_QUERY_RESULT }) {
             <div className="mt-5">
               {(general !== null) && general.categories?.map((item) => (
                 <SidebarMenuItem key={item.title} className="mb-3 list-none text-md font-extrabold ">
-                  <Link href={`articles?category=${item.title}`}>
+                  <Link href={`articles?category=${item.title?.toLowerCase()}`}>
                     {item.title?.toUpperCase()}
                   </Link>
                 </SidebarMenuItem>
@@ -45,26 +43,37 @@ export function AppSidebar({ general }: { general: GENERAL_QUERY_RESULT }) {
             </div>
             <div className="">
               {general !== null && general.links?.[1] && (
-                <SidebarMenuItem
-                  key={general.links[1].title}
-                  className="mb-3 list-none text-md font-extrabold p-4 cursor-pointer bg-primary text-primary-foreground"
-                >
-                  <Link href={`articles?category=${general.links[1].title}`}>
+                <Link href={general.links[1].link || ""} target="_blank">
+                  <SidebarMenuItem
+                    key={general.links[1].title}
+                    className="mb-3 list-none text-md font-extrabold p-4 cursor-pointer bg-primary text-primary-foreground"
+                  >
                     {general.links[1].title?.toUpperCase()}
-                  </Link>
-                </SidebarMenuItem>
+                  </SidebarMenuItem>
+                </Link>
               )}
             </div>
 
             {general !== null && general.links?.[0] && (
-              <SidebarMenuItem
-                key={general.links[0].title}
-                className="mb-3 list-none text-md font-extrabold p-4 cursor-pointer text-foreground bg-accent border-2 border-foreground"
-              >
-                <Link href={`articles?category=${general.links[0].title}`}>
+              <Link href={general.links[0].link || ""} target="_blank">
+                <SidebarMenuItem
+                  key={general.links[0].title}
+                  className="mb-3 list-none text-md font-extrabold p-4 cursor-pointer text-foreground bg-accent border-2 border-foreground"
+                >
                   {general.links[0].title?.toUpperCase()}
-                </Link>
-              </SidebarMenuItem>
+                </SidebarMenuItem>
+              </Link>
+            )}
+
+            {general !== null && general.links?.[2] && (
+              <Link href={general.links[2].link || ""} target="_blank">
+                <SidebarMenuItem
+                  key={general.links[2].title}
+                  className="mb-3 list-none text-md font-extrabold p-4 cursor-pointer text-foreground bg-accent border-2 border-foreground"
+                >
+                  {general.links[2].title?.toUpperCase()}
+                </SidebarMenuItem>
+              </Link>
             )}
 
           </div>

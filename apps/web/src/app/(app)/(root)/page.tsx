@@ -8,7 +8,7 @@ import { Header } from "@/components/layout/header";
 
 import { urlFor } from "@/sanity/image";
 
-import Navbar from "@/components/home/navbar";
+import Navbar from "@/components/layout/navbar";
 
 import Main from "@/components/home/main";
 import ScholarshipSection from "@/components/home/scholarship";
@@ -61,7 +61,7 @@ export default async function Home() {
 
       <div className="px-[10%]">
 
-        <Navbar categories={categories} links={links} />
+        <Navbar categories={categories} links={links} className="3xl:mx-auto max-w-7xl"/>
 
         <Main />
 

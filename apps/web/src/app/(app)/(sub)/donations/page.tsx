@@ -1,7 +1,7 @@
-
 function Page() {
   return (
-    <div className='px-[10%] min-h-screen'>
+    <div className='min-h-screen'>
+
     </div>
   )
 }

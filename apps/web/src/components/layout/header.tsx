@@ -9,7 +9,7 @@ export function Header({ title }: { title: string | null | undefined }) {
         <div className="flex items-center gap-2">
           <SidebarTrigger2 className="mr-2 hover:bg-transparent hover:text-primary-foreground cursor-pointer" />
           <Link href="/">
-            <p className="text-3xl md:text-4xl font-bold font-sans">{title}</p>
+            <p className="text-4xl font-bold font-sans">{title}</p>
           </Link>
         </div>
       </div>

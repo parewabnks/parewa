@@ -32,7 +32,7 @@ export default function Slider({ data }: { data: SliderProps }) {
 
   return (
     <Carousel
-      className="overflow-hidden w-full h-[30vh] md:h-120 relative"
+      className="overflow-hidden w-full h-[50vh] md:h-120 relative"
       plugins={[autoplayPlugin.current]}
       onMouseEnter={autoplayPlugin.current.stop}
       onMouseLeave={autoplayPlugin.current.reset}
@@ -49,9 +49,9 @@ export default function Slider({ data }: { data: SliderProps }) {
                 priority={index === 0}
               />
               <Card className="relative rounded-none h-full bg-transparent">
-                <CardContent className="flex items-end justify-start p-12 h-full">
-                  <div className="max-w-4xl pl-10">
-                    <div className="text-7xl font-extrabold text-primary-foreground font-heading">{slide.title.toUpperCase()}</div>
+                <CardContent className="flex items-end md:justify-start p-8 md:p-12 h-full">
+                  <div className="max-w-4xl md:pl-10">
+                    <div className="text-5xl md:text-7xl font-extrabold text-primary-foreground font-heading">{slide.title.toUpperCase()}</div>
                     <div className="text-lg italic mt-3 text-primary-foreground font-sans"> - {slide.author}</div>
                   </div>
                 </CardContent>
