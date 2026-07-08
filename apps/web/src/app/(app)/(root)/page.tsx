@@ -11,9 +11,11 @@ import { urlFor } from "@/sanity/image";
 import Navbar from "@/components/layout/navbar";
 
 import Main from "@/components/home/main";
+
 import ScholarshipSection from "@/components/home/scholarship";
+
 import ArticleSection from "@/components/home/article";
-import Footer from "@/components/layout/footer";
+import { Separator } from "@/components/ui/separator";
 
 const SLIDER_QUERY = defineQuery(`*[_type == "general"][0]{
   siteTitle,
@@ -49,7 +51,7 @@ export default async function Home() {
   const links =
     data?.links
       ?.map((link) => ({ title: link.title, link: link.link }))
-      .filter((link): 
+      .filter((link):
         link is { title: string; link: string } => link.title != null && link.link != null) ?? [];
 
   return (
@@ -61,19 +63,25 @@ export default async function Home() {
 
       <div className="px-[10%]">
 
-        <Navbar categories={categories} links={links} className="3xl:mx-auto max-w-7xl"/>
+        <Navbar categories={categories} links={links} className="3xl:mx-auto max-w-7xl" />
 
         <Main />
 
+        <ArticleSection category={categories[0]} />
+
+        <Separator />
+
         <ScholarshipSection />
 
-        <ArticleSection />
+        <Separator />
 
-        <ArticleSection />
+        <ArticleSection category={categories[1]} />
 
-        <ArticleSection />
+        <Separator />
 
-      </div>      
+        <ArticleSection category={categories[2]} />
+
+      </div>
     </div>
   );
 }

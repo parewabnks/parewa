@@ -238,7 +238,6 @@ export type Scholarship = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  slug?: Slug;
   content?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -266,7 +265,6 @@ export type Newsletter = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  slug?: Slug;
   content?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -294,7 +292,6 @@ export type Fundraiser = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  slug?: Slug;
   content?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -322,8 +319,7 @@ export type Event = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  startDate?: string;
-  endDate?: string;
+  datetime?: string;
 };
 
 export type StudentReference = {
@@ -354,7 +350,6 @@ export type Article = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  slug?: Slug;
   one_liner?: string;
   content?: Array<{
     children?: Array<{
@@ -392,7 +387,6 @@ export type Announcement = {
   _updatedAt: string;
   _rev: string;
   title?: string;
-  slug?: Slug;
   content?: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -769,10 +763,12 @@ export type SLIDER_QUERY_RESULT = {
   }> | null;
 } | null;
 
-// Source: ../web/src/app/(app)/(sub)/articles/[articleId]/page.tsx
-// Variable: ARTICLES_QUERY
-// Query: *[_type == "general"][0]{  categories[]->{    title  },  links[]->{    title,    link  }}
-export type ARTICLES_QUERY_RESULT = {
+// Source: ../web/src/app/(app)/(sub)/layout.tsx
+// Variable: SUB_GENERAL_QUERY
+// Query: *[_type == "general"][0]{  terms,  siteTitle,  categories[]->{    title  },  links[]->{    title,    link  }}
+export type SUB_GENERAL_QUERY_RESULT = {
+  terms: string | null;
+  siteTitle: string | null;
   categories: Array<{
     title: string | null;
   }> | null;
@@ -781,6 +777,95 @@ export type ARTICLES_QUERY_RESULT = {
     link: string | null;
   }> | null;
 } | null;
+
+// Source: ../web/src/components/home/cards/events.tsx
+// Variable: EVENTS_QUERY
+// Query: *[_type == "event"] {  title,  datetime}
+export type EVENTS_QUERY_RESULT = Array<{
+  title: string | null;
+  datetime: string | null;
+}>;
+
+// Source: ../web/src/components/home/main.tsx
+// Variable: MAIN_ARTICLES_QUERY
+// Query: *[_type == "article"] | order(_createdAt desc)[0...3]{  _id,  title,  one_liner,  featured_image,  "author": author->,  tags,  _createdAt}
+export type MAIN_ARTICLES_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  one_liner: string | null;
+  featured_image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  author:
+    | {
+        _id: string;
+        _type: "alumni";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        name?: string;
+        roll_number?: string;
+        username?: Slug;
+        batch?: string;
+        graduation_year?: number;
+        role?: RoleReference;
+        display_picture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+      }
+    | {
+        _id: string;
+        _type: "student";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        name?: string;
+        roll?: string;
+        username?: Slug;
+        batch?: string;
+        house?: HouseReference;
+        role?: RoleReference;
+        position?: PositionReference;
+        display_picture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+      }
+    | {
+        _id: string;
+        _type: "teacher";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        name?: string;
+        initials?: string;
+        department?: DepartmentReference;
+        username?: Slug;
+        role?: RoleReference;
+        position?: PositionReference;
+        display_picture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+      }
+    | null;
+  tags: Array<string> | null;
+  _createdAt: string;
+}>;
 
 // Source: ../web/src/components/layout/footer.tsx
 // Variable: FOOTER_QUERY
@@ -811,9 +896,12 @@ export type PRIVACY_QUERY_RESULT = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '*[_type == "general"][0]{\n  terms,\n  siteTitle,\n  categories[]->{\n    title\n  },\n  links[]->{\n    title,\n    link\n  }\n}': GENERAL_QUERY_RESULT;
+    '*[_type == "general"][0]{\n  terms,\n  siteTitle,\n  categories[]->{\n    title\n  },\n  links[]->{\n    title,\n    link\n  }\n}':
+      | GENERAL_QUERY_RESULT
+      | SUB_GENERAL_QUERY_RESULT;
     '*[_type == "general"][0]{\n  siteTitle,\n  sliders[]->{\n    title,\n    author,\n    image\n  },\n  categories[]->{\n    title\n  },\n  links[]->{\n    title,\n    link\n  }\n}': SLIDER_QUERY_RESULT;
-    '*[_type == "general"][0]{\n  categories[]->{\n    title\n  },\n  links[]->{\n    title,\n    link\n  }\n}': ARTICLES_QUERY_RESULT;
+    '*[_type == "event"] {\n  title,\n  datetime\n}': EVENTS_QUERY_RESULT;
+    '*[_type == "article"] | order(_createdAt desc)[0...3]{\n  _id,\n  title,\n  one_liner,\n  featured_image,\n  "author": author->,\n  tags,\n  _createdAt\n}': MAIN_ARTICLES_QUERY_RESULT;
     '*[_type == "footer"][0]{\n  text,\n  categories[]->{\n    title\n  },\n  socials[]->{\n    icon{\n      name,\n      provider\n    },\n    link,\n    title\n  }\n}': FOOTER_QUERY_RESULT;
     '*[_type == "general"][0]{\n  privacy\n}': PRIVACY_QUERY_RESULT;
   }

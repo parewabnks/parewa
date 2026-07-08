@@ -11,14 +11,9 @@ export default defineType({
             type: "string",
         }),
         defineField({
-            name: "startDate",
-            title: "Start Date",
-            type: "date",
-        }),
-        defineField({
-            name: "endDate",
-            title: "End Date",
-            type: "date",
-        }),
+            name: "datetime",
+            title: "Date & Time",
+            type: "datetime",
+        })
     ]
 })
