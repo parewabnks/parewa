@@ -12,14 +12,10 @@ async function Events() {
   const { data } = await sanityFetch({ query: EVENTS_QUERY });
 
   return (
-    <div className='px-10 flex flex-col gap-7'>
+    <div className='px-10 flex flex-col gap-3'>
       <div className="title font-heading text-2xl w-full text-center text-primary-foreground p-2 relative isolate">
         <div
-          className="absolute w-2/3 h-full -z-10 bg-secondary translate-x-10 translate-y-px"
-          style={{ clipPath: "polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)" }}
-        ></div>
-        <div
-          className="absolute inset-0 bg-primary -z-10 w-2/3 mx-auto"
+          className="absolute inset-0 bg-primary -z-10 w-2/3 min-w-25 max-w-50 mx-auto"
           style={{ clipPath: "polygon(15% 0%, 100% 0%, 85% 100%, 0% 100%)" }}
         ></div>
         Events

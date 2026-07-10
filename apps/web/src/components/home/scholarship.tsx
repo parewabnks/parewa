@@ -1,9 +1,10 @@
 import React from 'react'
+import NewsletterSignupCard from './cards/newsletter'
 
 function ScholarshipSection() {
   return (
-    <div className='w-full h-150 border-2  my-5'>
-      
+    <div className='w-full flex justify-end my-5'>
+      <NewsletterSignupCard />
     </div>
   )
 }

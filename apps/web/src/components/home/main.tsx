@@ -1,10 +1,14 @@
 import { defineQuery } from 'next-sanity'
+
 import MainStory from '@/components/home/cards/main_story'
+
 import SideCalendar from '@/components/home/cards/side_calendar'
+
 import { sanityFetch } from '@/sanity/live';
+
 import { urlFor } from '@/sanity/image';
+
 import get_author_name from '@/helpers/get_author_name';
-import Events from './cards/events';
 
 const MAIN_ARTICLES_QUERY = defineQuery(`*[_type == "article"] | order(_createdAt desc)[0...3]{
   _id,
@@ -31,9 +35,6 @@ async function Main() {
     orientation: ORIENTATIONS[i],
   }))
 
-  console.log(stories.length)
-
-
   return (
     <div className='pt-10 font-bold w-full'>
       <span className='text-4xl md:text-5xl font-heading'>
@@ -41,18 +42,15 @@ async function Main() {
       </span>
 
       <div className="flex justify-between my-6 gap-5 md:gap-0 flex-col md:flex-row">
-        <div className='flex flex-col max-w-[55vw] gap-10'>
+        <div className='flex flex-col w-full xl:max-w-[55vw] gap-10'>
           {stories.map((story, i) => (
+            
             <MainStory key={i} {...story} />
           ))}
         </div>
-        <div className='flex flex-col md:w-[23vw] gap-5'>
-          <SideCalendar />
 
-          <Events />
-        </div>
+        <SideCalendar />
       </div>
-
     </div>
   )
 }

@@ -29,6 +29,7 @@ import category from './schemas/misc/category'
 import slider from './schemas/misc/slider'
 import socials from './schemas/misc/socials'
 import links from './schemas/misc/link'
+import newsletter_email from './schemas/misc/newsletter_email'
 
 export const schemaTypes = [
 
@@ -50,16 +51,17 @@ export const schemaTypes = [
     credit,
     footer,
     general,
-    
+
     // users
     alumni,
     staff,
     student,
     teacher,
-    
+
     // misc
     slider,
     socials,
     category,
-    links
+    links,
+    newsletter_email
 ]

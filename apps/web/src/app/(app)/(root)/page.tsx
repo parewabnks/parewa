@@ -2,20 +2,21 @@ import { defineQuery } from "next-sanity";
 
 import { sanityFetch } from "@/sanity/live";
 
-import Slider from "@/components/home/slider";
-
 import { Header } from "@/components/layout/header";
 
 import { urlFor } from "@/sanity/image";
+
+import { Separator } from "@/components/ui/separator";
+
+import Slider from "@/components/home/slider";
+
+import ArticleSection from "@/components/home/article";
 
 import Navbar from "@/components/layout/navbar";
 
 import Main from "@/components/home/main";
 
 import ScholarshipSection from "@/components/home/scholarship";
-
-import ArticleSection from "@/components/home/article";
-import { Separator } from "@/components/ui/separator";
 
 const SLIDER_QUERY = defineQuery(`*[_type == "general"][0]{
   siteTitle,
@@ -61,7 +62,7 @@ export default async function Home() {
 
       <Slider data={{ slides }} />
 
-      <div className="px-[10%]">
+      <div className="px-2 md:px-[5%] xl:px-[10%]">
 
         <Navbar categories={categories} links={links} className="3xl:mx-auto max-w-7xl" />
 

@@ -120,7 +120,8 @@ export const structure: StructureResolver = (S) =>
               S.documentTypeListItem('slider').title('Sliders'),
               S.documentTypeListItem('category').title('Categories'),
               S.documentTypeListItem('socials').title('Social Media'),
-              S.documentTypeListItem('links').title('Links')
+              S.documentTypeListItem('links').title('Links'),
+              S.documentTypeListItem('newsletter_email').title('Newsletter Emails')
             ])
         ),
     ])

@@ -8,6 +8,8 @@ export const client = createClient({
   dataset: process.env.SANITY_STUDIO_DATASET,
 
   apiVersion: process.env.SANITY_STUDIO_API_VERSION,
+
+  token: process.env.SANITY_STUDIO_TOKEN,
   
   useCdn: false,
 });

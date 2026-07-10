@@ -73,7 +73,7 @@ function MainArticleCard({
   author: string;
 }) {
   return (
-    <Link href={`/article/${article._id}`} className="group block mt-3">
+    <Link href={`/articles/${article._id}`} className="group block mt-3">
       <div className="relative w-full aspect-video overflow-hidden rounded-none">
         {article.featured_image && (
           <Image
@@ -96,14 +96,14 @@ function MainArticleCard({
 
 function SideArticleCard({ article, author }: { article: Article, author: string }) {
   return (
-    <Link href={`/article/${article._id}`} className="group flex gap-3 mt-3">
+    <Link href={`/articles/${article._id}`} className="group flex gap-3 mt-3">
       <div className="relative w-48 h-32 shrink-0 overflow-hidden rounded-none">
         {article.featured_image && (
           <Image
             src={urlFor(article.featured_image).width(200).height(140).url()}
             alt={article.title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform"
+            className="object-cover transition-transform"
           />
         )}
       </div>
