@@ -10,6 +10,7 @@
   --font-sans: var(--font-inter);
   --font-serif: var(--font-noto-serif);
   --font-mono: var(--font-roboto-mono);
+  --font-secondary: var(--font-roboto);
   --font-heading: var(--font-oswald);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);

@@ -12,6 +12,7 @@ const ARTICLES_CARD_QUERY = defineQuery(`*[_type == "article" && category->title
     _id,
     title,
     one_liner,
+    tags,
     _createdAt,
     featured_image,
     "categoryTitle": category->title,
@@ -25,6 +26,7 @@ type Article = {
   _createdAt: string;
   featured_image: any;
   categoryTitle: string;
+  tags: string[];
   author: Teacher | Student | Alumni | null;
 };
 
@@ -73,7 +75,7 @@ function MainArticleCard({
   author: string;
 }) {
   return (
-    <Link href={`/articles/${article._id}`} className="group block mt-3">
+    <Link href={`/articles/article?id=${article._id}`} className="group block mt-3">
       <div className="relative w-full aspect-video overflow-hidden rounded-none">
         {article.featured_image && (
           <Image
@@ -84,11 +86,15 @@ function MainArticleCard({
           />
         )}
       </div>
+
       <div className="font-heading text-4xl mt-3  group-hover:text-primary ">
         {article.title}
       </div>
       <div className="author font-extralight text-md text-primary mt-1 font-mono">
         {author}
+      </div>
+      <div className="author font-light text-foreground w-full sm:w-[80%] group-hover:text-primary font-serif">
+        {article.one_liner}
       </div>
     </Link>
   );
@@ -96,8 +102,8 @@ function MainArticleCard({
 
 function SideArticleCard({ article, author }: { article: Article, author: string }) {
   return (
-    <Link href={`/articles/${article._id}`} className="group flex gap-3 mt-3">
-      <div className="relative w-48 h-32 shrink-0 overflow-hidden rounded-none">
+    <Link href={`/articles/article?id=${article._id}`} className="group flex gap-3 mt-3">
+      <div className="relative w-48 h-42 shrink-0 overflow-hidden rounded-none">
         {article.featured_image && (
           <Image
             src={urlFor(article.featured_image).width(200).height(140).url()}
@@ -108,6 +114,12 @@ function SideArticleCard({ article, author }: { article: Article, author: string
         )}
       </div>
       <div>
+          {article.tags?.[0] && (
+            <div className="tag text-md font-semibold text-primary">
+              {article.tags[0].replace("#", "").charAt(0).toUpperCase() +
+                article.tags[0].replace("#", "").slice(1)}
+            </div>
+          )}
         <h3 className="font-heading text-xl line-clamp-2  group-hover:text-primary ">
           {article.title}
         </h3>

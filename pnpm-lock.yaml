@@ -270,6 +270,9 @@ importers:
       '@parewa/sanity-config':
         specifier: workspace:*
         version: link:../../packages/sanity-config
+      '@portabletext/react':
+        specifier: ^6.2.0
+        version: 6.2.0(react@19.2.4)
       '@sanity/client':
         specifier: ^7.23.0
         version: 7.23.0

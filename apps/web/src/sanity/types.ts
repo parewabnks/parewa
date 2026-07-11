@@ -15,6 +15,15 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type Newsletter_email = {
+  _id: string;
+  _type: "newsletter_email";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  email?: string;
+};
+
 export type Links = {
   _id: string;
   _type: "links";
@@ -23,15 +32,6 @@ export type Links = {
   _rev: string;
   title?: string;
   link?: string;
-};
-
-export type Category = {
-  _id: string;
-  _type: "category";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
 };
 
 export type Socials = {
@@ -376,8 +376,18 @@ export type Article = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  category?: CategoryReference;
   author?: StudentReference | TeacherReference | AlumniReference;
   tags?: Array<string>;
+};
+
+export type Category = {
+  _id: string;
+  _type: "category";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
 };
 
 export type Announcement = {
@@ -672,8 +682,8 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | Newsletter_email
   | Links
-  | Category
   | Socials
   | IconPicker
   | SanityImageAssetReference
@@ -700,6 +710,7 @@ export type AllSanitySchemaTypes =
   | TeacherReference
   | AlumniReference
   | Article
+  | Category
   | Announcement
   | Alumni
   | DepartmentReference
@@ -763,6 +774,278 @@ export type SLIDER_QUERY_RESULT = {
   }> | null;
 } | null;
 
+// Source: ../web/src/app/(app)/(sub)/articles/[articleId]/page.tsx
+// Variable: ARTICLE_QUERY
+// Query: *[_type == "article" && _id == $id][0]{  ...,  author->{    ...,    role->,    position->  },  category->,  "relatedArticles": *[    _type == "article" &&    _id != ^._id &&    category._ref == ^.category._ref  ] | order(_createdAt desc)[0...2]{    _id,    title,    one_liner,    featured_image,    _createdAt,    author->{      ...,      role->,      position->    }  }}
+export type ARTICLE_QUERY_RESULT = {
+  _id: string;
+  _type: "article";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  one_liner?: string;
+  content?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  featured_image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  category: {
+    _id: string;
+    _type: "category";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    title?: string;
+  } | null;
+  author:
+    | {
+        _id: string;
+        _type: "alumni";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        name?: string;
+        roll_number?: string;
+        username?: Slug;
+        batch?: string;
+        graduation_year?: number;
+        role: {
+          _id: string;
+          _type: "role";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          name?: string;
+          color?: Color;
+        } | null;
+        display_picture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+        position: null;
+      }
+    | {
+        _id: string;
+        _type: "student";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        name?: string;
+        roll?: string;
+        username?: Slug;
+        batch?: string;
+        house?: HouseReference;
+        role: {
+          _id: string;
+          _type: "role";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          name?: string;
+          color?: Color;
+        } | null;
+        position: {
+          _id: string;
+          _type: "position";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          name?: string;
+          role?: RoleReference;
+          color?: Color;
+        } | null;
+        display_picture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+      }
+    | {
+        _id: string;
+        _type: "teacher";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        name?: string;
+        initials?: string;
+        department?: DepartmentReference;
+        username?: Slug;
+        role: {
+          _id: string;
+          _type: "role";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          name?: string;
+          color?: Color;
+        } | null;
+        position: {
+          _id: string;
+          _type: "position";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          name?: string;
+          role?: RoleReference;
+          color?: Color;
+        } | null;
+        display_picture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+      }
+    | null;
+  tags?: Array<string>;
+  relatedArticles: Array<{
+    _id: string;
+    title: string | null;
+    one_liner: string | null;
+    featured_image: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+    _createdAt: string;
+    author:
+      | {
+          _id: string;
+          _type: "alumni";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          name?: string;
+          roll_number?: string;
+          username?: Slug;
+          batch?: string;
+          graduation_year?: number;
+          role: {
+            _id: string;
+            _type: "role";
+            _createdAt: string;
+            _updatedAt: string;
+            _rev: string;
+            name?: string;
+            color?: Color;
+          } | null;
+          display_picture?: {
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+          position: null;
+        }
+      | {
+          _id: string;
+          _type: "student";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          name?: string;
+          roll?: string;
+          username?: Slug;
+          batch?: string;
+          house?: HouseReference;
+          role: {
+            _id: string;
+            _type: "role";
+            _createdAt: string;
+            _updatedAt: string;
+            _rev: string;
+            name?: string;
+            color?: Color;
+          } | null;
+          position: {
+            _id: string;
+            _type: "position";
+            _createdAt: string;
+            _updatedAt: string;
+            _rev: string;
+            name?: string;
+            role?: RoleReference;
+            color?: Color;
+          } | null;
+          display_picture?: {
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+        }
+      | {
+          _id: string;
+          _type: "teacher";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          name?: string;
+          initials?: string;
+          department?: DepartmentReference;
+          username?: Slug;
+          role: {
+            _id: string;
+            _type: "role";
+            _createdAt: string;
+            _updatedAt: string;
+            _rev: string;
+            name?: string;
+            color?: Color;
+          } | null;
+          position: {
+            _id: string;
+            _type: "position";
+            _createdAt: string;
+            _updatedAt: string;
+            _rev: string;
+            name?: string;
+            role?: RoleReference;
+            color?: Color;
+          } | null;
+          display_picture?: {
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+        }
+      | null;
+  }>;
+} | null;
+
 // Source: ../web/src/app/(app)/(sub)/layout.tsx
 // Variable: SUB_GENERAL_QUERY
 // Query: *[_type == "general"][0]{  terms,  siteTitle,  categories[]->{    title  },  links[]->{    title,    link  }}
@@ -777,6 +1060,87 @@ export type SUB_GENERAL_QUERY_RESULT = {
     link: string | null;
   }> | null;
 } | null;
+
+// Source: ../web/src/components/home/article.tsx
+// Variable: ARTICLES_CARD_QUERY
+// Query: *[_type == "article" && category->title == $category]   | order(_createdAt desc)[0...4]{    _id,    title,    one_liner,    _createdAt,    featured_image,    "categoryTitle": category->title,    "author": author->  }
+export type ARTICLES_CARD_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  one_liner: string | null;
+  _createdAt: string;
+  featured_image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  categoryTitle: string | null;
+  author:
+    | {
+        _id: string;
+        _type: "alumni";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        name?: string;
+        roll_number?: string;
+        username?: Slug;
+        batch?: string;
+        graduation_year?: number;
+        role?: RoleReference;
+        display_picture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+      }
+    | {
+        _id: string;
+        _type: "student";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        name?: string;
+        roll?: string;
+        username?: Slug;
+        batch?: string;
+        house?: HouseReference;
+        role?: RoleReference;
+        position?: PositionReference;
+        display_picture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+      }
+    | {
+        _id: string;
+        _type: "teacher";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        name?: string;
+        initials?: string;
+        department?: DepartmentReference;
+        username?: Slug;
+        role?: RoleReference;
+        position?: PositionReference;
+        display_picture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+      }
+    | null;
+}>;
 
 // Source: ../web/src/components/home/cards/events.tsx
 // Variable: EVENTS_QUERY
@@ -867,6 +1231,14 @@ export type MAIN_ARTICLES_QUERY_RESULT = Array<{
   _createdAt: string;
 }>;
 
+// Source: ../web/src/components/home/scholarship.tsx
+// Variable: PRIVACY_NEWSLETTER_QUERY
+// Query: *[_type == "general"][0]{  privacy,  terms}
+export type PRIVACY_NEWSLETTER_QUERY_RESULT = {
+  privacy: string | null;
+  terms: string | null;
+} | null;
+
 // Source: ../web/src/components/layout/footer.tsx
 // Variable: FOOTER_QUERY
 // Query: *[_type == "footer"][0]{  text,  categories[]->{    title  },  socials[]->{    icon{      name,      provider    },    link,    title  }}
@@ -900,8 +1272,11 @@ declare module "@sanity/client" {
       | GENERAL_QUERY_RESULT
       | SUB_GENERAL_QUERY_RESULT;
     '*[_type == "general"][0]{\n  siteTitle,\n  sliders[]->{\n    title,\n    author,\n    image\n  },\n  categories[]->{\n    title\n  },\n  links[]->{\n    title,\n    link\n  }\n}': SLIDER_QUERY_RESULT;
+    '*[_type == "article" && _id == $id][0]{\n  ...,\n  author->{\n    ...,\n    role->,\n    position->\n  },\n  category->,\n  "relatedArticles": *[\n    _type == "article" &&\n    _id != ^._id &&\n    category._ref == ^.category._ref\n  ] | order(_createdAt desc)[0...2]{\n    _id,\n    title,\n    one_liner,\n    featured_image,\n    _createdAt,\n    author->{\n      ...,\n      role->,\n      position->\n    }\n  }\n}': ARTICLE_QUERY_RESULT;
+    '*[_type == "article" && category->title == $category] \n  | order(_createdAt desc)[0...4]{\n    _id,\n    title,\n    one_liner,\n    _createdAt,\n    featured_image,\n    "categoryTitle": category->title,\n    "author": author->\n  }': ARTICLES_CARD_QUERY_RESULT;
     '*[_type == "event"] {\n  title,\n  datetime\n}': EVENTS_QUERY_RESULT;
     '*[_type == "article"] | order(_createdAt desc)[0...3]{\n  _id,\n  title,\n  one_liner,\n  featured_image,\n  "author": author->,\n  tags,\n  _createdAt\n}': MAIN_ARTICLES_QUERY_RESULT;
+    '*[_type == "general"][0]{\n  privacy,\n  terms\n}': PRIVACY_NEWSLETTER_QUERY_RESULT;
     '*[_type == "footer"][0]{\n  text,\n  categories[]->{\n    title\n  },\n  socials[]->{\n    icon{\n      name,\n      provider\n    },\n    link,\n    title\n  }\n}': FOOTER_QUERY_RESULT;
     '*[_type == "general"][0]{\n  privacy\n}': PRIVACY_QUERY_RESULT;
   }

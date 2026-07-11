@@ -30,7 +30,7 @@ async function subscribeToNewsletter(email: string) {
   }
 }
 
-export default function NewsletterSignupCard() {
+export default function NewsletterSignupCard({terms, privacy}: {terms: string, privacy: string}) {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [isPending, startTransition] = useTransition();
@@ -53,7 +53,7 @@ export default function NewsletterSignupCard() {
   };
 
   return (
-    <Card className="relative w-full mx-auto lgplus:mx-0 max-w-50 lg:max-w-sm text-foreground ring-0 p-10 rounded-none mt-10 ">
+    <Card className="relative w-full mx-auto max-w-100 text-foreground ring-0 p-10 rounded-none mt-10 ">
       <CardHeader className="p-0 mb-6">
         <CardTitle className="text-foreground text-4xl font-extrabold leading-tight mt-2">
           Join the Newsletter
@@ -80,13 +80,13 @@ export default function NewsletterSignupCard() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={isPending}
-              className="w-full h-12 p-3 lgplus:p-7 border-light text-black placeholder-gray-400 bg-white rounded-none focus:ring-2 focus:ring-primary-light_dark text-base"
+              className="w-full h-12 p-3 xl:p-7 border-light text-foreground placeholder-muted-foreground bg-background rounded-none focus:ring-2 focus:ring-primary text-base"
             />
           </div>
           <Button
             type="button"
             onClick={handleSubmit}
-            className="w-full h-12 p-7 border border-primary bg-white flex justify-start text-primary font-bold text-lg rounded-none hover:bg-white transition disabled:opacity-50"
+            className="w-full h-12 p-7 border border-primary bg-background flex justify-start text-primary font-bold text-lg rounded-none hover:bg-white transition disabled:opacity-50"
             disabled={isPending}
           >
             {isPending ? (
@@ -103,25 +103,25 @@ export default function NewsletterSignupCard() {
         {message && (
           <p
             className={`mt-4 text-center text-sm font-medium ${
-              message.includes("successfully") ? "text-primary-block" : "text-red-600"
+              message.includes("successfully") ? "text-primary" : "text-destructive"
             }`}
           >
             {message}
           </p>
         )}
-        <p className="text-xs mt-6 text-left mx-auto text-gray-600 w-[80%] lgplus:w-[95%] ml-3">
+        <p className="text-xs mt-6 text-left mx-auto text-muted-foreground w-[80%] xl:w-[95%] ml-3">
           By signing up, I agree to receive emails from Parewa and to the{" "}
           <a
-            href="/terms_and_conditions.pdf"
-            className="underline font-bold text-primary hover:text-primary-dark"
+            href={privacy}
+            className="underline font-bold text-primary hover:text-primary/80"
             target="_blank"
           >
             Privacy Policy
           </a>{" "}
           and{" "}
           <a
-            href="/terms_and_conditions.pdf"
-            className="underline font-bold text-primary hover:text-primary-dark"
+            href={terms}
+            className="underline font-bold text-primary hover:text-primary/80"
             target="_blank"
           >
             Terms of Use

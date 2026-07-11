@@ -2,7 +2,7 @@ import "@/app/globals.css";
 
 export { metadata } from "@/config/site-config";
 
-import { Oswald, Inter, Noto_Serif, Roboto_Mono } from "next/font/google";
+import { Oswald, Inter, Noto_Serif, Roboto_Mono, Roboto } from "next/font/google";
 
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
@@ -44,6 +44,12 @@ const robotoMono = Roboto_Mono({
   weight: ["400", "500", "600", "700"],
 });
 
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: '300',
+  variable: '--font-roboto',
+});
+
 const SUB_GENERAL_QUERY = defineQuery(`*[_type == "general"][0]{
   terms,
   siteTitle,
@@ -78,7 +84,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${oswald.variable} ${robotoMono.variable} ${notoSerif.variable} ${inter.variable} h-full antialiased`}
+      className={`${oswald.variable} ${robotoMono.variable} ${roboto.variable} ${notoSerif.variable} ${inter.variable} h-full antialiased`}
     >
       <head>
         <meta name="apple-mobile-web-app-title" content="Parewa" />

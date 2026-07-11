@@ -74,8 +74,6 @@ export default async function Home() {
 
         <ScholarshipSection />
 
-        <Separator />
-
         <ArticleSection category={categories[1]} />
 
         <Separator />

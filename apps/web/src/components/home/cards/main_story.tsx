@@ -1,6 +1,8 @@
 import Image from 'next/image'
+import Link from 'next/link';
 
 interface Props {
+  _id: string;
   featured_image: string;
   title: string;
   author: string;
@@ -9,9 +11,9 @@ interface Props {
   orientation?: 'left' | 'right';
 }
 
-function MainStory({ featured_image, title, author, one_liner, tag, orientation = 'left' }: Props) {
+function MainStory({ _id, featured_image, title, author, one_liner, tag, orientation = 'left' }: Props) {
   return (
-    <div className={`w-full flex flex-col gap-5 md:h-82 ${orientation === 'right' ? 'md:flex-row-reverse' : 'md:flex-row'}`}>
+    <Link className={`w-full flex flex-col gap-5 md:h-82 ${orientation === 'right' ? 'md:flex-row-reverse' : 'md:flex-row'}`} href={`/articles/article?id=${_id}`}>
       <div className="image relative w-full h-64 md:h-auto md:w-1/2">
         <Image
           src={featured_image}
@@ -35,7 +37,7 @@ function MainStory({ featured_image, title, author, one_liner, tag, orientation 
           {one_liner}
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 

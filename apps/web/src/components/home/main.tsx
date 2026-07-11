@@ -27,6 +27,7 @@ async function Main() {
   const { data } = await sanityFetch({ query: MAIN_ARTICLES_QUERY });
 
   const stories = data.map((item, i) => ({
+    _id: item._id,
     featured_image: item.featured_image ? urlFor(item.featured_image).url() : "",
     title: item.title || "",
     author: get_author_name(item.author) || "",
