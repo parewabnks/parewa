@@ -14,14 +14,17 @@ export default defineType({
             validation: (Rule) => Rule.required().min(2),
         }),
         defineField({
-            name: "author",
-            title: "Author",
-            type: "string",
+            name: 'author',
+            title: 'Author',
+            type: 'string',
         }),
         defineField({
             name: 'image',
             title: 'Image',
             type: 'image',
+            options: {
+                hotspot: true,
+            },
         })
     ],
 })

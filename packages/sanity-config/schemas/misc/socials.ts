@@ -25,9 +25,10 @@ export default defineType({
             type: 'string',
         }),
         defineField({
-            name: "icon",
-            title: "Icon",
-            type: "icon",
+            name: 'iconName',
+            title: 'Icon Name',
+            type: 'string',
+            description: 'Icon identifier (e.g., facebook, twitter, linkedin)',
         }),
     ],
 })

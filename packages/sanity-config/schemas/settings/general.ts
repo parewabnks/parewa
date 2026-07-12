@@ -15,13 +15,13 @@ export default defineType({
         { ...ALL_FIELDS_GROUP, hidden: true }
     ],
     preview: {
-        select: { title: "title"}
+        select: { title: 'title'}
     },
     fields: [
         defineField({
-            name: "title",
-            title: "Title",
-            type: "string",
+            name: 'title',
+            title: 'Title',
+            type: 'string',
             readOnly: true,
         }),
         defineField({
@@ -40,7 +40,7 @@ export default defineType({
         defineField({
             name: 'supportEmail',
             title: 'Support Email',
-            type: 'string',
+            type: 'email',
             group: 'general',
         }),
         defineField({
@@ -50,76 +50,76 @@ export default defineType({
             group: 'general',
         }),
         defineField({
-            name: "announcement",
-            title: "Active Announcement",
-            type: "reference",
-            group: "content",
-            to: [{ type: "announcement" }],
+            name: 'announcement',
+            title: 'Active Announcement',
+            type: 'reference',
+            group: 'content',
+            to: [{ type: 'announcement' }],
         }),
         defineField({
-            name: "categories",
-            title: "Active Categories",
-            type: "array",
-            group: "content",
-            of: [{ type: "reference", to: [{ type: "category" }] }],
+            name: 'categories',
+            title: 'Active Categories',
+            type: 'array',
+            group: 'content',
+            of: [{ type: 'reference', to: [{ type: 'category' }] }],
         }),
         defineField({
-            name: "sliders",
-            title: "Sliders",
-            type: "array",
-            group: "sliders",
+            name: 'sliders',
+            title: 'Sliders',
+            type: 'array',
+            group: 'sliders',
             of: [{
-                type: "reference",
-                to: [{ type: "slider" }]
+                type: 'reference',
+                to: [{ type: 'slider' }]
             }],
         }),
         defineField({
-            name: "socials",
-            title: "Active Socials",
-            type: "array",
-            group: "content",
-
-            of: [{ type: "reference", to: [{ type: "socials" }] }],
-        }), defineField({
-            name: "links",
-            title: "Link Buttons",
-            type: "array",
-            group: "content",
-            of: [{ type: "reference", to: [{ type: "link" }] }]
+            name: 'socials',
+            title: 'Active Socials',
+            type: 'array',
+            group: 'content',
+            of: [{ type: 'reference', to: [{ type: 'socials' }] }],
         }),
         defineField({
-            name: "terms",
-            title: "Terms of Conditions",
-            type: "url",
-            group: "content",
-            description: "Link to the Terms and Conditions page.",
+            name: 'links',
+            title: 'Link Buttons',
+            type: 'array',
+            group: 'content',
+            of: [{ type: 'reference', to: [{ type: 'link' }] }]
         }),
         defineField({
-            name: "privacy",
-            title: "Privacy Policy",
-            type: "url",
-            group: "content",
-            description: "Link to the Privacy Policy page.",
+            name: 'terms',
+            title: 'Terms of Conditions',
+            type: 'url',
+            group: 'content',
+            description: 'Link to the Terms and Conditions page.',
         }),
         defineField({
-            name: "footer_text",
-            title: "Footer Text",
-            type: "string",
-            group: "footer"
+            name: 'privacy',
+            title: 'Privacy Policy',
+            type: 'url',
+            group: 'content',
+            description: 'Link to the Privacy Policy page.',
         }),
         defineField({
-            name: "footer_socials",
-            title: "Active Socials",
-            type: "array",
-            of: [{ type: "reference", to: [{ type: "socials" }] }],
-            group: "footer"
+            name: 'footerText',
+            title: 'Footer Text',
+            type: 'string',
+            group: 'footer'
         }),
         defineField({
-            name: "footer_categories",
-            title: "Active Categories",
-            type: "array",
-            of: [{ type: "reference", to: [{ type: "category" }] }],
-            group: "footer"
+            name: 'footerSocials',
+            title: 'Active Socials',
+            type: 'array',
+            of: [{ type: 'reference', to: [{ type: 'socials' }] }],
+            group: 'footer'
+        }),
+        defineField({
+            name: 'footerCategories',
+            title: 'Active Categories',
+            type: 'array',
+            of: [{ type: 'reference', to: [{ type: 'category' }] }],
+            group: 'footer'
         }),
     ],
 })

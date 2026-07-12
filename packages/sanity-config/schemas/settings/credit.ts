@@ -1,26 +1,28 @@
-import { defineField, defineType } from "sanity";
-import { User as icon } from "lucide-react"
+import { defineField, defineType } from 'sanity'
+import { User } from 'lucide-react'
 
 export default defineType({
-    name: "credit",
-    title: "Credits",
-    type: "document",
-    icon,
+    name: 'credit',
+    title: 'Credits',
+    type: 'document',
+    icon: User,
     fields: [
         defineField({
-            name: "name",
-            title: "Name",
-            type: "string"
+            name: 'name',
+            title: 'Name',
+            type: 'string',
+            validation: (Rule) => Rule.required(),
         }),
         defineField({
-            name: "roll",
-            title: "Roll",
-            type: "string",
+            name: 'roll',
+            title: 'Roll',
+            type: 'string',
+            validation: (Rule) => Rule.required(),
         }),
         defineField({
-            name: "subtitle",
-            title: "Subtitle",
-            type: "string",
+            name: 'subtitle',
+            title: 'Subtitle',
+            type: 'string',
         }),
         defineField({
             name: 'description',
@@ -29,9 +31,9 @@ export default defineType({
             rows: 3,
         }),
         defineField({
-            name: "display_picture",
-            title: "Display Picture",
-            type: "image",
+            name: 'displayPicture',
+            title: 'Display Picture',
+            type: 'image',
             options: {
                 hotspot: true
             }
@@ -39,10 +41,9 @@ export default defineType({
     ],
     preview: {
         select: {
-            name: "name",
-            roll: "roll",
-            media: "display_picture",
-
+            name: 'name',
+            roll: 'roll',
+            media: 'displayPicture',
         },
         prepare({ name, roll, media }) {
             return {
@@ -51,4 +52,4 @@ export default defineType({
             }
         },
     },
-});
+})
