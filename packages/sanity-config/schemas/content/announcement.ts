@@ -1,8 +1,10 @@
 import {defineField, defineType} from 'sanity'
+import { Megaphone } from 'lucide-react'
 
 export default defineType({
   name: 'announcement',
   title: 'Announcement',
+  icon: Megaphone,
   type: 'document',
   fields: [
     defineField({

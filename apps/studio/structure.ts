@@ -1,4 +1,4 @@
-import type {StructureResolver} from 'sanity/structure'
+import type { StructureResolver } from 'sanity/structure'
 
 const structure: StructureResolver = (S) =>
   S.list()
@@ -57,6 +57,7 @@ const structure: StructureResolver = (S) =>
               S.documentTypeListItem('house').title('Houses'),
               S.documentTypeListItem('position').title('Positions'),
               S.documentTypeListItem('role').title('Roles'),
+              S.documentTypeListItem('credit').title('Credits'),
             ])
         ),
 
@@ -66,8 +67,10 @@ const structure: StructureResolver = (S) =>
           S.list()
             .title('Settings')
             .items([
-              S.documentTypeListItem('general').title('General Settings'),
-              S.documentTypeListItem('credit').title('Credits'),
+              S.documentListItem()
+                .schemaType('general')
+                .title('General')
+                .id('general')
             ])
         ),
     ])

@@ -1,8 +1,10 @@
 import {defineField, defineType} from 'sanity'
+import { Mail } from 'lucide-react'
 
 export default defineType({
   name: 'newsletter',
   title: 'Newsletter',
+  icon: Mail,
   type: 'document',
   fields: [
     defineField({

@@ -1,8 +1,10 @@
 import {defineField, defineType} from 'sanity'
+import { Award } from 'lucide-react'
 
 export default defineType({
   name: 'scholarship',
   title: 'Scholarship',
+  icon: Award,
   type: 'document',
   fields: [
     defineField({

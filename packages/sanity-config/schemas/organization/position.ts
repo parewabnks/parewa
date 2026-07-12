@@ -1,8 +1,10 @@
-import {defineField, defineType} from 'sanity'
+import { defineField, defineType } from 'sanity'
+import { Briefcase } from 'lucide-react'
 
 export default defineType({
   name: 'position',
   title: 'Position',
+  icon: Briefcase,
   type: 'document',
   fields: [
     defineField({
@@ -15,8 +17,14 @@ export default defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
-      options: {source: 'title'},
+      options: { source: 'title' },
       validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: "role",
+      title: "Role",
+      type: "reference",
+      to: [{ type: "role" }],
     }),
     defineField({
       name: 'description',

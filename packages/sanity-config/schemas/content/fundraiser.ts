@@ -1,8 +1,10 @@
 import {defineField, defineType} from 'sanity'
+import { Gift } from 'lucide-react'
 
 export default defineType({
   name: 'fundraiser',
   title: 'Fundraiser',
+  icon: Gift,
   type: 'document',
   fields: [
     defineField({

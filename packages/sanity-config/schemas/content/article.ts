@@ -1,8 +1,10 @@
 import {defineField, defineType} from 'sanity'
+import { FileText } from 'lucide-react'
 
 export default defineType({
   name: 'article',
   title: 'Article',
+  icon: FileText,
   type: 'document',
   fields: [
     defineField({

@@ -17,9 +17,11 @@
   "dependencies": {
     "@parewa/sanity-config": "workspace:*",
     "@sanity/vision": "^6.4.0",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
+    "lucide-react": "^1.24.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
     "sanity": "^6.4.0",
+    "sanity-plugin-iconify": "^4.0.1",
     "styled-components": "^6.1.18"
   },
   "devDependencies": {
