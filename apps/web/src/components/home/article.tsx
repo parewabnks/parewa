@@ -119,7 +119,8 @@ function SideArticleCard({ article, author }: { article: Article, author: string
               {article.tags[0].replace("#", "").charAt(0).toUpperCase() +
                 article.tags[0].replace("#", "").slice(1)}
             </div>
-          )}
+          )}     
+
         <h3 className="font-heading text-xl line-clamp-2  group-hover:text-primary ">
           {article.title}
         </h3>

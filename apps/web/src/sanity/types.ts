@@ -388,6 +388,7 @@ export type Category = {
   _updatedAt: string;
   _rev: string;
   title?: string;
+  slug?: Slug;
 };
 
 export type Announcement = {
@@ -817,6 +818,7 @@ export type ARTICLE_QUERY_RESULT = {
     _updatedAt: string;
     _rev: string;
     title?: string;
+    slug?: Slug;
   } | null;
   author:
     | {
@@ -1046,6 +1048,89 @@ export type ARTICLE_QUERY_RESULT = {
   }>;
 } | null;
 
+// Source: ../web/src/app/(app)/(sub)/articles/page.tsx
+// Variable: ARTICLES_QUERY
+// Query: *[_type == "article" && category->slug.current == $categorySlug]  | order(_createdAt desc)[0...7]{    _id,    title,    one_liner,    tags,    _createdAt,    featured_image,    "categoryTitle": category->title,    "categorySlug": category->slug.current,    "author": author->  }
+export type ARTICLES_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  one_liner: string | null;
+  tags: Array<string> | null;
+  _createdAt: string;
+  featured_image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  categoryTitle: string | null;
+  categorySlug: string | null;
+  author:
+    | {
+        _id: string;
+        _type: "alumni";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        name?: string;
+        roll_number?: string;
+        username?: Slug;
+        batch?: string;
+        graduation_year?: number;
+        role?: RoleReference;
+        display_picture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+      }
+    | {
+        _id: string;
+        _type: "student";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        name?: string;
+        roll?: string;
+        username?: Slug;
+        batch?: string;
+        house?: HouseReference;
+        role?: RoleReference;
+        position?: PositionReference;
+        display_picture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+      }
+    | {
+        _id: string;
+        _type: "teacher";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        name?: string;
+        initials?: string;
+        department?: DepartmentReference;
+        username?: Slug;
+        role?: RoleReference;
+        position?: PositionReference;
+        display_picture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+      }
+    | null;
+}>;
+
 // Source: ../web/src/app/(app)/(sub)/layout.tsx
 // Variable: SUB_GENERAL_QUERY
 // Query: *[_type == "general"][0]{  terms,  siteTitle,  categories[]->{    title  },  links[]->{    title,    link  }}
@@ -1063,11 +1148,12 @@ export type SUB_GENERAL_QUERY_RESULT = {
 
 // Source: ../web/src/components/home/article.tsx
 // Variable: ARTICLES_CARD_QUERY
-// Query: *[_type == "article" && category->title == $category]   | order(_createdAt desc)[0...4]{    _id,    title,    one_liner,    _createdAt,    featured_image,    "categoryTitle": category->title,    "author": author->  }
+// Query: *[_type == "article" && category->title == $category]   | order(_createdAt desc)[0...4]{    _id,    title,    one_liner,    tags,    _createdAt,    featured_image,    "categoryTitle": category->title,    "author": author->  }
 export type ARTICLES_CARD_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
   one_liner: string | null;
+  tags: Array<string> | null;
   _createdAt: string;
   featured_image: {
     asset?: SanityImageAssetReference;
@@ -1273,7 +1359,8 @@ declare module "@sanity/client" {
       | SUB_GENERAL_QUERY_RESULT;
     '*[_type == "general"][0]{\n  siteTitle,\n  sliders[]->{\n    title,\n    author,\n    image\n  },\n  categories[]->{\n    title\n  },\n  links[]->{\n    title,\n    link\n  }\n}': SLIDER_QUERY_RESULT;
     '*[_type == "article" && _id == $id][0]{\n  ...,\n  author->{\n    ...,\n    role->,\n    position->\n  },\n  category->,\n  "relatedArticles": *[\n    _type == "article" &&\n    _id != ^._id &&\n    category._ref == ^.category._ref\n  ] | order(_createdAt desc)[0...2]{\n    _id,\n    title,\n    one_liner,\n    featured_image,\n    _createdAt,\n    author->{\n      ...,\n      role->,\n      position->\n    }\n  }\n}': ARTICLE_QUERY_RESULT;
-    '*[_type == "article" && category->title == $category] \n  | order(_createdAt desc)[0...4]{\n    _id,\n    title,\n    one_liner,\n    _createdAt,\n    featured_image,\n    "categoryTitle": category->title,\n    "author": author->\n  }': ARTICLES_CARD_QUERY_RESULT;
+    '\n  *[_type == "article" && category->slug.current == $categorySlug]\n  | order(_createdAt desc)[0...7]{\n    _id,\n    title,\n    one_liner,\n    tags,\n    _createdAt,\n    featured_image,\n    "categoryTitle": category->title,\n    "categorySlug": category->slug.current,\n    "author": author->\n  }\n': ARTICLES_QUERY_RESULT;
+    '*[_type == "article" && category->title == $category] \n  | order(_createdAt desc)[0...4]{\n    _id,\n    title,\n    one_liner,\n    tags,\n    _createdAt,\n    featured_image,\n    "categoryTitle": category->title,\n    "author": author->\n  }': ARTICLES_CARD_QUERY_RESULT;
     '*[_type == "event"] {\n  title,\n  datetime\n}': EVENTS_QUERY_RESULT;
     '*[_type == "article"] | order(_createdAt desc)[0...3]{\n  _id,\n  title,\n  one_liner,\n  featured_image,\n  "author": author->,\n  tags,\n  _createdAt\n}': MAIN_ARTICLES_QUERY_RESULT;
     '*[_type == "general"][0]{\n  privacy,\n  terms\n}': PRIVACY_NEWSLETTER_QUERY_RESULT;

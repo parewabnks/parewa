@@ -59,9 +59,9 @@ async function Footer() {
             <h3 className="text-base font-semibold mb-3 text-primary-foreground text-center md:text-left">Categories</h3>
             {data?.categories?.map((category) => (
               <div key={category.title} className="mb-2 text-center md:text-start">
-                <Link href={`/articles?category=${category.title?.toLowerCase()}`} className="text-primary-foreground/90 hover:text-primary-foreground transition-colors duration-200 space-y-2 text-sm text-center md:text-left">
+                {/* <Link href={`/articles?category=${category.s}`} className="text-primary-foreground/90 hover:text-primary-foreground transition-colors duration-200 space-y-2 text-sm text-center md:text-left">
                   {category.title}
-                </Link>
+                </Link> */}
               </div>
             ))}
           </div>
