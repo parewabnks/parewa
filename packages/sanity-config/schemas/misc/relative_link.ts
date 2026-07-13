@@ -1,22 +1,22 @@
 import { defineField, defineType } from 'sanity'
-import { Globe } from 'lucide-react'
+import { Link } from 'lucide-react'
 
 export default defineType({
-  name: 'socials',
-  title: 'Socials',
-  icon: Globe,
+  name: 'rlink',
+  title: 'Relative Link',
+  icon: Link,
   type: 'document',
   fields: [
     defineField({
-      name: 'platform',
-      title: 'Platform',
+      name: 'title',
+      title: 'Title',
       type: 'string',
       validation: (Rule) => Rule.required().min(2),
     }),
     defineField({
       name: 'url',
       title: 'URL',
-      type: 'url',
+      type: 'string',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -25,9 +25,9 @@ export default defineType({
       type: 'string',
     }),
     defineField({
-      name: 'icon',
-      title: 'Icon',
-      type: 'icon',
+      name: 'openInNewTab',
+      title: 'Open in New Tab',
+      type: 'boolean',
     }),
   ],
 })

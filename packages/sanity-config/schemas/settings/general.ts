@@ -81,8 +81,29 @@ export default defineType({
       of: [{ type: 'reference', to: [{ type: 'socials' }] }],
     }),
     defineField({
+      name: 'about',
+      title: 'About Page',
+      type: 'reference',
+      group: 'content',
+      to: [{ type: 'rlink' }]
+    }),
+    defineField({
+      name: 'sebsdb',
+      title: 'SEBS DB',
+      type: 'reference',
+      group: 'content',
+      to: [{ type: 'rlink' }]
+    }),
+    defineField({
+      name: 'supportUs',
+      title: 'Support Us',
+      type: 'reference',
+      group: 'content',
+      to: [{ type: 'rlink' }]
+    }),
+    defineField({
       name: 'links',
-      title: 'Link Buttons',
+      title: 'Links',
       type: 'array',
       group: 'content',
       of: [{ type: 'reference', to: [{ type: 'link' }] }]
@@ -92,14 +113,12 @@ export default defineType({
       title: 'Terms of Conditions',
       type: 'url',
       group: 'content',
-      description: 'Link to the Terms and Conditions page.',
     }),
     defineField({
       name: 'privacy',
       title: 'Privacy Policy',
       type: 'url',
       group: 'content',
-      description: 'Link to the Privacy Policy page.',
     }),
     defineField({
       name: 'footerText',
