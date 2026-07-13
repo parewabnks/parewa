@@ -930,6 +930,42 @@ export type UNSUBSCRIBE_NEWSLETTER_QUERY_RESULT = {
   subscribed: boolean | null;
 } | null;
 
+// Source: ../web/src/components/home/main.tsx
+// Variable: MAIN_ARTICLES_QUERY
+// Query: *[_type == "article"] | order(_createdAt desc)[0...3]{    _id,    slug,    title,    oneLiner,    featuredImage,    "author": author->{    _id,    _type,    "displayName": select(      _type == "student" => roll + " " + fullName,      _type == "teacher" => fullName,      _type == "alumni" => roll + " " + fullName,      fullName      ),    },    tags,    publishedAt  }
+export type MAIN_ARTICLES_QUERY_RESULT = Array<{
+  _id: string;
+  slug: Slug | null;
+  title: string | null;
+  oneLiner: string | null;
+  featuredImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  author:
+    | {
+        _id: string;
+        _type: "alumni";
+        displayName: string | null;
+      }
+    | {
+        _id: string;
+        _type: "student";
+        displayName: string | null;
+      }
+    | {
+        _id: string;
+        _type: "teacher";
+        displayName: string | null;
+      }
+    | null;
+  tags: Array<string> | null;
+  publishedAt: string | null;
+}>;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -940,5 +976,6 @@ declare module "@sanity/client" {
     '\n  *[_type == "event" && date >= $startDate && date < $endDate]{\n    date,\n    location,\n    "slug": slug.current,\n    title\n  }\n': GET_EVENTS_QUERY_RESULT;
     '\n  *[_type == "newsletterEmail" && email == $email]{\n    _id,\n    email,\n    subscribed\n  }[0]\n':
       SUBSCRIBE_NEWSLETTER_QUERY_RESULT | UNSUBSCRIBE_NEWSLETTER_QUERY_RESULT;
+    '\n  *[_type == "article"] | order(_createdAt desc)[0...3]{\n    _id,\n    slug,\n    title,\n    oneLiner,\n    featuredImage,\n    "author": author->{\n    _id,\n    _type,\n    "displayName": select(\n      _type == "student" => roll + " " + fullName,\n      _type == "teacher" => fullName,\n      _type == "alumni" => roll + " " + fullName,\n      fullName\n      ),\n    },\n    tags,\n    publishedAt\n  }\n': MAIN_ARTICLES_QUERY_RESULT;
   }
 }

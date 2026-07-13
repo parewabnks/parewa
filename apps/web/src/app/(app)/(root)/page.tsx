@@ -1,10 +1,12 @@
 import { sanityFetch } from "@/sanity/live";
 import { defineQuery } from "next-sanity";
 
-import { Header } from "@/components/layout/Header";
+import Navbar from "@/components/layout/Navbar";
 import Slider from "@/components/home/Slider";
+import { Header } from "@/components/layout/Header";
 import { urlFor } from "@/sanity/image";
-import { slideSchema } from "@/schemas/backend_schemas/slideSchema";
+import { categoriesSchema, rlinkSchema, slideSchema } from "@/schemas/backend_schemas/homePageSchema";
+import Main from "@/components/home/main";
 
 const HOME_PAGE_QUERY = defineQuery(`
   *[_type == "general"][0]{
@@ -46,14 +48,55 @@ export default async function Home() {
     }];
   }) || [];
 
+  const categories = home?.categories?.flatMap((category) => {
+    const parsed = categoriesSchema.safeParse(category);
+    if (!parsed.success) return [];
+
+    return [{
+      slug: parsed.data.slug,
+      title: parsed.data.title
+    }];
+  }) || [];
+
+  const supportUsParsed = rlinkSchema.safeParse(home?.supportUs);
+
+  const aboutParsed = rlinkSchema.safeParse(home?.about);
+
+  const supportUs = supportUsParsed.success
+    ? supportUsParsed.data
+    : {
+      label: "Support Us",
+      openInNewTab: false,
+      url: "/support-us",
+    };
+
+  const about = aboutParsed.success
+    ? aboutParsed.data
+    : {
+      label: "About Us",
+      openInNewTab: false,
+      url: "/about",
+    };
+
   return (
     <div className="h-full">
       <Header title={home?.logoText ?? ""} />
 
       <Slider slides={slides} />
 
-      <div className="px-2 md:px-[5%] xl:px-[10%]">
-        
+      <div className="px-2 md:px-[5%] xl:px-[9%]">
+
+        <Navbar
+          categories={categories}
+          supportUs={supportUs}
+          about={about}
+          className="3xl:mx-auto max-w-7xl"
+        />
+
+        <div className="px-5">
+          <Main />
+
+        </div>
       </div>
     </div>
   );
