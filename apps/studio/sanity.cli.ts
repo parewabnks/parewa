@@ -1,4 +1,4 @@
-import {defineCliConfig} from 'sanity/cli'
+import { defineCliConfig } from 'sanity/cli'
 import { dataset, projectId } from './env'
 
 export default defineCliConfig({
@@ -13,4 +13,9 @@ export default defineCliConfig({
      */
     autoUpdates: true,
   },
+  typegen: {
+    path: "../web/src/**/*.{ts,tsx,js,jsx}",
+    schema: "./schema.json",
+    generates: "../web/src/sanity/types.ts",
+  }
 })

@@ -39,6 +39,54 @@ export default defineType({
             of: [{ type: 'block' }],
         }),
         defineField({
+            name: 'donors',
+            title: 'Donors',
+            type: 'array',
+            of: [
+                {
+                    type: 'object',
+                    fields: [
+                        defineField({
+                            name: 'donor',
+                            title: 'Donor',
+                            type: 'reference',
+                            to: [
+                                { type: 'student' },
+                                { type: 'teacher' },
+                                { type: 'alumni' },
+                                { type: 'staff' },
+                                { type: 'guest' },
+                            ],
+                            validation: (Rule) => Rule.required(),
+                        }),
+                        defineField({
+                            name: 'amount',
+                            title: 'Amount',
+                            type: 'number',
+                            validation: (Rule) => Rule.required().min(0),
+                        }),
+                        defineField({
+                            name: 'currency',
+                            title: 'Currency',
+                            type: 'string',
+                            options: {
+                                list: [
+                                    { title: 'USD', value: 'USD' },
+                                    { title: 'EUR', value: 'EUR' },
+                                    { title: 'GBP', value: 'GBP' },
+                                    { title: 'INR', value: 'INR' },
+                                    { title: 'PKR', value: 'PKR' },
+                                    { title: 'NPR', value: 'NPR' },
+                                ],
+                            },
+                            validation: (Rule) => Rule.required(),
+                        }),
+                    ]
+                }
+            ],
+            description: 'Track donors with their contribution amount and currency',
+        }),
+        defineField({
             name: 'deadline',
             title: 'Deadline',
             type: 'date',
