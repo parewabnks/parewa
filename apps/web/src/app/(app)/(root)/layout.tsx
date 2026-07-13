@@ -40,7 +40,7 @@ const roboto = Roboto({
 });
 
 
-const HOME_PAGE_QUERY = defineQuery(`
+const HOME_LAYOUT_QUERY = defineQuery(`
   *[_type == "general"][0]{
     logoText,
     announcement->{
@@ -86,8 +86,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
-  const { data: general } = await sanityFetch({ query: HOME_PAGE_QUERY });
+
+  const { data: general } = await sanityFetch({ query: HOME_LAYOUT_QUERY });
 
   return (
     <html

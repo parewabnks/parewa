@@ -6,7 +6,7 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
-import { HOME_PAGE_QUERY_RESULT } from "@/sanity/types";
+import { HOME_LAYOUT_QUERY_RESULT } from "@/sanity/types";
 import { Search } from "lucide-react";
 import { Icon } from "@iconify/react";
 
@@ -39,7 +39,7 @@ function NavLink({
   );
 }
 
-export function AppSidebar({ general }: { general: HOME_PAGE_QUERY_RESULT }) {
+export function AppSidebar({ general }: { general: HOME_LAYOUT_QUERY_RESULT }) {
   return (
     <Sidebar
       variant="sidebar"
@@ -87,7 +87,7 @@ export function AppSidebar({ general }: { general: HOME_PAGE_QUERY_RESULT }) {
 
               <div className="links my-4">
                 {general?.links && (
-                  <div className="flex flex-col text-md font-mono">
+                  <div className="flex flex-col text-md font-mono font-bold">
                     {general.links.map((link) => (
                       <Link
                         key={link.label}

@@ -788,9 +788,9 @@ export type AllSanitySchemaTypes =
   | Geopoint;
 
 // Source: ../web/src/app/(app)/(root)/layout.tsx
-// Variable: HOME_PAGE_QUERY
+// Variable: HOME_LAYOUT_QUERY
 // Query: *[_type == "general"][0]{    logoText,    announcement->{      _id    },    categories[]->{      "slug": slug.current,       title     },    socials[]->{      "icon": icon.name,      label,      platform,      url    },    privacy,    terms,    sebsdb->{      label,      openInNewTab,      url    },    supportUs->{      label,      openInNewTab,      url    },    about->{      label,      openInNewTab,      url    },    links[]->{      label,      openInNewTab,      url    }  }
-export type HOME_PAGE_QUERY_RESULT = {
+export type HOME_LAYOUT_QUERY_RESULT = {
   logoText: string | null;
   announcement: {
     _id: string;
@@ -827,6 +827,38 @@ export type HOME_PAGE_QUERY_RESULT = {
     openInNewTab: boolean | null;
     url: string | null;
   }> | null;
+} | null;
+
+// Source: ../web/src/app/(app)/(root)/page.tsx
+// Variable: HOME_PAGE_QUERY
+// Query: *[_type == "general"][0]{    logoText,    sliders[]->{      title,      author,      image    },    categories[]->{    "slug": slug.current,     title     },    supportUs->{      label,      openInNewTab,      url    },    about->{      label,      openInNewTab,      url    },  }
+export type HOME_PAGE_QUERY_RESULT = {
+  logoText: string | null;
+  sliders: Array<{
+    title: string | null;
+    author: string | null;
+    image: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+  }> | null;
+  categories: Array<{
+    slug: string | null;
+    title: string | null;
+  }> | null;
+  supportUs: {
+    label: string | null;
+    openInNewTab: boolean | null;
+    url: string | null;
+  } | null;
+  about: {
+    label: string | null;
+    openInNewTab: boolean | null;
+    url: string | null;
+  } | null;
 } | null;
 
 // Source: ../web/src/app/api/(frontend_queries)/get_articles/route.ts
@@ -902,7 +934,8 @@ export type UNSUBSCRIBE_NEWSLETTER_QUERY_RESULT = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '\n  *[_type == "general"][0]{\n    logoText,\n    announcement->{\n      _id\n    },\n    categories[]->{\n      "slug": slug.current,\n       title \n    },\n    socials[]->{\n      "icon": icon.name,\n      label,\n      platform,\n      url\n    },\n    privacy,\n    terms,\n    sebsdb->{\n      label,\n      openInNewTab,\n      url\n    },\n    supportUs->{\n      label,\n      openInNewTab,\n      url\n    },\n    about->{\n      label,\n      openInNewTab,\n      url\n    },\n    links[]->{\n      label,\n      openInNewTab,\n      url\n    }\n  }\n': HOME_PAGE_QUERY_RESULT;
+    '\n  *[_type == "general"][0]{\n    logoText,\n    announcement->{\n      _id\n    },\n    categories[]->{\n      "slug": slug.current,\n       title \n    },\n    socials[]->{\n      "icon": icon.name,\n      label,\n      platform,\n      url\n    },\n    privacy,\n    terms,\n    sebsdb->{\n      label,\n      openInNewTab,\n      url\n    },\n    supportUs->{\n      label,\n      openInNewTab,\n      url\n    },\n    about->{\n      label,\n      openInNewTab,\n      url\n    },\n    links[]->{\n      label,\n      openInNewTab,\n      url\n    }\n  }\n': HOME_LAYOUT_QUERY_RESULT;
+    '\n  *[_type == "general"][0]{\n    logoText,\n    sliders[]->{\n      title,\n      author,\n      image\n    },\n    categories[]->{\n    "slug": slug.current,\n     title \n    },\n    supportUs->{\n      label,\n      openInNewTab,\n      url\n    },\n    about->{\n      label,\n      openInNewTab,\n      url\n    },\n  }\n': HOME_PAGE_QUERY_RESULT;
     '\n  *[\n  _type == "article" &&\n  publishedAt >= $startDate &&\n  publishedAt < $endDate &&\n  (\n    $search_string == "" ||\n    title match $searchPattern ||\n    oneLiner match $searchPattern ||\n    pt::text(content) match $searchPattern ||\n    category->title match $searchPattern ||\n    count(tags[@ match $searchPattern]) > 0\n  )\n]\n| order(publishedAt desc) {\n    _id,\n    title,\n    oneLiner,\n    "slug": slug.current,\n    publishedAt,\n    tags,\n    featuredImage,\n    "category": category->{\n      _id,\n      title,\n      "slug": slug.current\n    },\n    "author": author->{\n      _id,\n      _type,\n      "displayName": select(\n        _type == "student" => roll + " " + fullName,\n        _type == "teacher" => fullName,\n        _type == "alumni" => roll + " " + fullName,\n        fullName\n      ),\n    }\n  }\n': GET_ARTICLES_QUERY_RESULT;
     '\n  *[_type == "event" && date >= $startDate && date < $endDate]{\n    date,\n    location,\n    "slug": slug.current,\n    title\n  }\n': GET_EVENTS_QUERY_RESULT;
     '\n  *[_type == "newsletterEmail" && email == $email]{\n    _id,\n    email,\n    subscribed\n  }[0]\n':
