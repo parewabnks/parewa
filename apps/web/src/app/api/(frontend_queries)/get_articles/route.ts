@@ -37,7 +37,7 @@ const GET_ARTICLES_QUERY = defineQuery(`
       "displayName": select(
         _type == "student" => roll + " " + fullName,
         _type == "teacher" => fullName,
-        _type == "alumnus" => fullName + " '" + batch,
+        _type == "alumni" => roll + " " + fullName,
         fullName
       ),
     }

@@ -10,8 +10,7 @@ export default defineType({
     defineField({
       name: 'email',
       title: 'Email',
-      type: 'string',
-      validation: (Rule) => Rule.required().email(),
+      type: 'email',
     }),
     defineField({
       name: 'name',

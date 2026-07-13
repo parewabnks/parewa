@@ -51,10 +51,7 @@ export default defineType({
               title: 'Donor',
               type: 'reference',
               to: [
-                { type: 'student' },
-                { type: 'teacher' },
                 { type: 'alumni' },
-                { type: 'staff' },
                 { type: 'guest' },
               ],
               validation: (Rule) => Rule.required(),

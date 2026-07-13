@@ -6,7 +6,7 @@ import { convertToUTC } from "@/helpers/date_conversion";
 import { client } from "@/sanity/client";
 
 const GET_EVENTS_QUERY = defineQuery(`
-  *[_type == "event" && date >= "2026-07-13" && date < "2026-07-14"]{
+  *[_type == "event" && date >= $startDate && date < $endDate]{
     date,
     location,
     "slug": slug.current,
