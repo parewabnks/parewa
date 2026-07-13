@@ -780,3 +780,63 @@ export type AllSanitySchemaTypes =
   | SanityAssetSourceData
   | SanityImageAsset
   | Geopoint;
+
+// Source: ../web/src/app/api/(frontend_queries)/get_articles/route.ts
+// Variable: GET_ARTICLES_QUERY
+// Query: *[  _type == "article" &&  publishedAt >= $startDate &&  publishedAt < $endDate &&  (    $search_string == "" ||    title match $searchPattern ||    oneLiner match $searchPattern ||    pt::text(content) match $searchPattern ||    category->title match $searchPattern ||    count(tags[@ match $searchPattern]) > 0  )]| order(publishedAt desc) {    _id,    title,    oneLiner,    "slug": slug.current,    publishedAt,    tags,    featuredImage,    "category": category->{      _id,      title,      "slug": slug.current    },    "author": author->{      _id,      _type,      "displayName": select(        _type == "student" => roll + " " + fullName,        _type == "teacher" => fullName,        _type == "alumnus" => fullName + " '" + batch,        fullName      ),    }  }
+export type GET_ARTICLES_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  oneLiner: string | null;
+  slug: string | null;
+  publishedAt: string | null;
+  tags: Array<string> | null;
+  featuredImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  category: {
+    _id: string;
+    title: string | null;
+    slug: string | null;
+  } | null;
+  author:
+    | {
+        _id: string;
+        _type: "alumni";
+        displayName: string | null;
+      }
+    | {
+        _id: string;
+        _type: "student";
+        displayName: string | null;
+      }
+    | {
+        _id: string;
+        _type: "teacher";
+        displayName: string | null;
+      }
+    | null;
+}>;
+
+// Source: ../web/src/app/api/(frontend_queries)/get_events/route.ts
+// Variable: GET_EVENTS_QUERY
+// Query: *[_type == "event" && date >= "2026-07-13" && date < "2026-07-14"]{    date,    location,    "slug": slug.current,    title  }
+export type GET_EVENTS_QUERY_RESULT = Array<{
+  date: string | null;
+  location: string | null;
+  slug: string | null;
+  title: string | null;
+}>;
+
+// Query TypeMap
+import "@sanity/client";
+declare module "@sanity/client" {
+  interface SanityQueries {
+    '\n  *[\n  _type == "article" &&\n  publishedAt >= $startDate &&\n  publishedAt < $endDate &&\n  (\n    $search_string == "" ||\n    title match $searchPattern ||\n    oneLiner match $searchPattern ||\n    pt::text(content) match $searchPattern ||\n    category->title match $searchPattern ||\n    count(tags[@ match $searchPattern]) > 0\n  )\n]\n| order(publishedAt desc) {\n    _id,\n    title,\n    oneLiner,\n    "slug": slug.current,\n    publishedAt,\n    tags,\n    featuredImage,\n    "category": category->{\n      _id,\n      title,\n      "slug": slug.current\n    },\n    "author": author->{\n      _id,\n      _type,\n      "displayName": select(\n        _type == "student" => roll + " " + fullName,\n        _type == "teacher" => fullName,\n        _type == "alumnus" => fullName + " \'" + batch,\n        fullName\n      ),\n    }\n  }\n': GET_ARTICLES_QUERY_RESULT;
+    '\n  *[_type == "event" && date >= "2026-07-13" && date < "2026-07-14"]{\n    date,\n    location,\n    "slug": slug.current,\n    title\n  }\n': GET_EVENTS_QUERY_RESULT;
+  }
+}
