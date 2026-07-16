@@ -7,6 +7,7 @@ import { Header } from "@/components/layout/Header";
 import { urlFor } from "@/sanity/image";
 import { categoriesSchema, rlinkSchema, slideSchema } from "@/schemas/backend_schemas/homePageSchema";
 import Main from "@/components/home/main";
+import ArticlesSection from "@/components/cards/ArticlesSection";
 
 const HOME_PAGE_QUERY = defineQuery(`
   *[_type == "general"][0]{
@@ -85,17 +86,18 @@ export default async function Home() {
       <Slider slides={slides} />
 
       <div className="px-2 md:px-[5%] xl:px-[9%]">
-
         <Navbar
           categories={categories}
           supportUs={supportUs}
           about={about}
           className="3xl:mx-auto max-w-7xl"
         />
-
         <div className="px-5">
           <Main />
 
+          {categories.slice(0, 4).map((category) => (
+            <ArticlesSection key={category.slug} category={category} />
+          ))}
         </div>
       </div>
     </div>

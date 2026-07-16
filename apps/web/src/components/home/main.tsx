@@ -1,7 +1,7 @@
 import { defineQuery } from 'next-sanity';
 import { sanityFetch } from '@/sanity/live';
 import MainStory from '../cards/MainStory';
-import { mainSchema } from '@/schemas/backend_schemas/mainSchema';
+import { articlesResultSchema } from '@/schemas/backend_schemas/mainSchema';
 import { urlFor } from '@/sanity/image';
 import SideCalendar from '../cards/SideCalendar';
 
@@ -33,18 +33,14 @@ async function Main() {
 
   const { data } = await sanityFetch({ query: MAIN_ARTICLES_QUERY });
 
-  console.log(data)
-
-  const parsedArticles = mainSchema.safeParse(data);
-
-  console.log(parsedArticles)
+  const parsedArticles = articlesResultSchema.safeParse({ total: data.length, articles: data });
 
   const stories = parsedArticles.success
-    ? parsedArticles.data.map((article, index) => {
-      const firstTag = article.tags?.find((tag) => typeof tag === 'string');
+    ? parsedArticles.data.articles.map((article, index) => {
+      const firstTag = article.tags?.[0];
 
       return {
-        _id: article._id,
+        slug: article.slug.current,
         featured_image: article.featuredImage
           ? urlFor(article.featuredImage).url()
           : 'https://placehold.co/960x640/png',
@@ -67,8 +63,8 @@ async function Main() {
         <div className='flex flex-col w-full xl:max-w-[55vw] gap-3'>
           {stories.map((story) => (
             <MainStory
-              key={story._id}
-              _id={story._id}
+              key={story.slug}
+              slug={story.slug}
               featured_image={story.featured_image}
               title={story.title}
               author={story.author}
@@ -78,8 +74,6 @@ async function Main() {
             />
           ))}
         </div>
-        {/* Sidecalendar */}
-
         <SideCalendar />
       </div>
     </div>

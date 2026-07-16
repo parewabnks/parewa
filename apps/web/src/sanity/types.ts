@@ -861,46 +861,91 @@ export type HOME_PAGE_QUERY_RESULT = {
   } | null;
 } | null;
 
-// Source: ../web/src/app/api/(frontend_queries)/get_articles/route.ts
-// Variable: GET_ARTICLES_QUERY
-// Query: *[  _type == "article" &&  publishedAt >= $startDate &&  publishedAt < $endDate &&  (    $search_string == "" ||    title match $searchPattern ||    oneLiner match $searchPattern ||    pt::text(content) match $searchPattern ||    category->title match $searchPattern ||    count(tags[@ match $searchPattern]) > 0  )]| order(publishedAt desc) {    _id,    title,    oneLiner,    "slug": slug.current,    publishedAt,    tags,    featuredImage,    "category": category->{      _id,      title,      "slug": slug.current    },    "author": author->{      _id,      _type,      "displayName": select(        _type == "student" => roll + " " + fullName,        _type == "teacher" => fullName,        _type == "alumni" => roll + " " + fullName,        fullName      ),    }  }
-export type GET_ARTICLES_QUERY_RESULT = Array<{
-  _id: string;
-  title: string | null;
-  oneLiner: string | null;
-  slug: string | null;
-  publishedAt: string | null;
-  tags: Array<string> | null;
-  featuredImage: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  } | null;
-  category: {
+// Source: ../web/src/app/(app)/(sub)/articles/page.tsx
+// Variable: ARTICLES_QUERY
+// Query: {    "total": count(*[      _type == "article" &&      ($category == "" || category->slug.current == $category) &&      publishedAt >= $startDate &&      publishedAt < $endDate &&      (        $search_string == "" ||        title match $searchPattern ||        oneLiner match $searchPattern ||        pt::text(content) match $searchPattern ||        category->title match $searchPattern ||        count(tags[@ match $searchPattern]) > 0      )    ]),    "articles": *[      _type == "article" &&      ($category == "" || category->slug.current == $category) &&      publishedAt >= $startDate &&      publishedAt < $endDate &&      (        $search_string == "" ||        title match $searchPattern ||        oneLiner match $searchPattern ||        pt::text(content) match $searchPattern ||        category->title match $searchPattern ||        count(tags[@ match $searchPattern]) > 0      )    ]    | order(publishedAt desc)[$start...$end] {      _id,      slug,      title,      oneLiner,      featuredImage,      "author": author->{        _id,        _type,        "displayName": select(          _type == "student" => roll + " " + fullName,          _type == "teacher" => fullName,          _type == "alumni" => roll + " " + fullName,          fullName        ),      },      tags,      publishedAt,      "category": category->{        _id,        title,        "slug": slug.current      }    }  }
+export type ARTICLES_QUERY_RESULT = {
+  total: number;
+  articles: Array<{
     _id: string;
+    slug: Slug | null;
     title: string | null;
-    slug: string | null;
+    oneLiner: string | null;
+    featuredImage: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+    author:
+      | {
+          _id: string;
+          _type: "alumni";
+          displayName: string | null;
+        }
+      | {
+          _id: string;
+          _type: "student";
+          displayName: string | null;
+        }
+      | {
+          _id: string;
+          _type: "teacher";
+          displayName: string | null;
+        }
+      | null;
+    tags: Array<string> | null;
+    publishedAt: string | null;
+    category: {
+      _id: string;
+      title: string | null;
+      slug: string | null;
+    } | null;
+  }>;
+};
+
+// Source: ../web/src/app/(app)/(sub)/layout.tsx
+// Variable: SUB_LAYOUT_QUERY
+// Query: *[_type == "general"][0]{    logoText,    announcement->{      _id    },    categories[]->{      "slug": slug.current,       title     },    socials[]->{      "icon": icon.name,      label,      platform,      url    },    privacy,    terms,    sebsdb->{      label,      openInNewTab,      url    },    supportUs->{      label,      openInNewTab,      url    },    about->{      label,      openInNewTab,      url    },    links[]->{      label,      openInNewTab,      url    }  }
+export type SUB_LAYOUT_QUERY_RESULT = {
+  logoText: string | null;
+  announcement: {
+    _id: string;
   } | null;
-  author:
-    | {
-        _id: string;
-        _type: "alumni";
-        displayName: string | null;
-      }
-    | {
-        _id: string;
-        _type: "student";
-        displayName: string | null;
-      }
-    | {
-        _id: string;
-        _type: "teacher";
-        displayName: string | null;
-      }
-    | null;
-}>;
+  categories: Array<{
+    slug: string | null;
+    title: string | null;
+  }> | null;
+  socials: Array<{
+    icon: string | null;
+    label: string | null;
+    platform: string | null;
+    url: string | null;
+  }> | null;
+  privacy: string | null;
+  terms: string | null;
+  sebsdb: {
+    label: string | null;
+    openInNewTab: boolean | null;
+    url: string | null;
+  } | null;
+  supportUs: {
+    label: string | null;
+    openInNewTab: boolean | null;
+    url: string | null;
+  } | null;
+  about: {
+    label: string | null;
+    openInNewTab: boolean | null;
+    url: string | null;
+  } | null;
+  links: Array<{
+    label: string | null;
+    openInNewTab: boolean | null;
+    url: string | null;
+  }> | null;
+} | null;
 
 // Source: ../web/src/app/api/(frontend_queries)/get_events/route.ts
 // Variable: GET_EVENTS_QUERY
@@ -929,6 +974,42 @@ export type UNSUBSCRIBE_NEWSLETTER_QUERY_RESULT = {
   email: string | null;
   subscribed: boolean | null;
 } | null;
+
+// Source: ../web/src/components/cards/ArticlesSection.tsx
+// Variable: ARTICLES_CARD_QUERY
+// Query: *[_type == "article" && category->slug.current == $category]  | order(_createdAt desc)[0...4] {    _id,    slug,    title,    oneLiner,    featuredImage,    "author": author->{      _id,      _type,      "displayName": select(        _type == "student" => roll + " " + fullName,        _type == "teacher" => fullName,        _type == "alumni" => roll + " " + fullName,        fullName      ),    },    tags,    publishedAt  }
+export type ARTICLES_CARD_QUERY_RESULT = Array<{
+  _id: string;
+  slug: Slug | null;
+  title: string | null;
+  oneLiner: string | null;
+  featuredImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  author:
+    | {
+        _id: string;
+        _type: "alumni";
+        displayName: string | null;
+      }
+    | {
+        _id: string;
+        _type: "student";
+        displayName: string | null;
+      }
+    | {
+        _id: string;
+        _type: "teacher";
+        displayName: string | null;
+      }
+    | null;
+  tags: Array<string> | null;
+  publishedAt: string | null;
+}>;
 
 // Source: ../web/src/components/home/main.tsx
 // Variable: MAIN_ARTICLES_QUERY
@@ -966,16 +1047,43 @@ export type MAIN_ARTICLES_QUERY_RESULT = Array<{
   publishedAt: string | null;
 }>;
 
+// Source: ../web/src/components/layout/Footer.tsx
+// Variable: FOOTER_QUERY
+// Query: *[_type == "general"][0]{    footerText,    footerCategories[]->{      "slug": slug.current,      title    },    footerSocials[]->{      "icon": icon.name,      label,      platform,      url    },    links[]->{      label,      openInNewTab,      url    },    privacy,    logoText  }
+export type FOOTER_QUERY_RESULT = {
+  footerText: string | null;
+  footerCategories: Array<{
+    slug: string | null;
+    title: string | null;
+  }> | null;
+  footerSocials: Array<{
+    icon: string | null;
+    label: string | null;
+    platform: string | null;
+    url: string | null;
+  }> | null;
+  links: Array<{
+    label: string | null;
+    openInNewTab: boolean | null;
+    url: string | null;
+  }> | null;
+  privacy: string | null;
+  logoText: string | null;
+} | null;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '\n  *[_type == "general"][0]{\n    logoText,\n    announcement->{\n      _id\n    },\n    categories[]->{\n      "slug": slug.current,\n       title \n    },\n    socials[]->{\n      "icon": icon.name,\n      label,\n      platform,\n      url\n    },\n    privacy,\n    terms,\n    sebsdb->{\n      label,\n      openInNewTab,\n      url\n    },\n    supportUs->{\n      label,\n      openInNewTab,\n      url\n    },\n    about->{\n      label,\n      openInNewTab,\n      url\n    },\n    links[]->{\n      label,\n      openInNewTab,\n      url\n    }\n  }\n': HOME_LAYOUT_QUERY_RESULT;
+    '\n  *[_type == "general"][0]{\n    logoText,\n    announcement->{\n      _id\n    },\n    categories[]->{\n      "slug": slug.current,\n       title \n    },\n    socials[]->{\n      "icon": icon.name,\n      label,\n      platform,\n      url\n    },\n    privacy,\n    terms,\n    sebsdb->{\n      label,\n      openInNewTab,\n      url\n    },\n    supportUs->{\n      label,\n      openInNewTab,\n      url\n    },\n    about->{\n      label,\n      openInNewTab,\n      url\n    },\n    links[]->{\n      label,\n      openInNewTab,\n      url\n    }\n  }\n':
+      HOME_LAYOUT_QUERY_RESULT | SUB_LAYOUT_QUERY_RESULT;
     '\n  *[_type == "general"][0]{\n    logoText,\n    sliders[]->{\n      title,\n      author,\n      image\n    },\n    categories[]->{\n    "slug": slug.current,\n     title \n    },\n    supportUs->{\n      label,\n      openInNewTab,\n      url\n    },\n    about->{\n      label,\n      openInNewTab,\n      url\n    },\n  }\n': HOME_PAGE_QUERY_RESULT;
-    '\n  *[\n  _type == "article" &&\n  publishedAt >= $startDate &&\n  publishedAt < $endDate &&\n  (\n    $search_string == "" ||\n    title match $searchPattern ||\n    oneLiner match $searchPattern ||\n    pt::text(content) match $searchPattern ||\n    category->title match $searchPattern ||\n    count(tags[@ match $searchPattern]) > 0\n  )\n]\n| order(publishedAt desc) {\n    _id,\n    title,\n    oneLiner,\n    "slug": slug.current,\n    publishedAt,\n    tags,\n    featuredImage,\n    "category": category->{\n      _id,\n      title,\n      "slug": slug.current\n    },\n    "author": author->{\n      _id,\n      _type,\n      "displayName": select(\n        _type == "student" => roll + " " + fullName,\n        _type == "teacher" => fullName,\n        _type == "alumni" => roll + " " + fullName,\n        fullName\n      ),\n    }\n  }\n': GET_ARTICLES_QUERY_RESULT;
+    '\n  {\n    "total": count(*[\n      _type == "article" &&\n      ($category == "" || category->slug.current == $category) &&\n      publishedAt >= $startDate &&\n      publishedAt < $endDate &&\n      (\n        $search_string == "" ||\n        title match $searchPattern ||\n        oneLiner match $searchPattern ||\n        pt::text(content) match $searchPattern ||\n        category->title match $searchPattern ||\n        count(tags[@ match $searchPattern]) > 0\n      )\n    ]),\n    "articles": *[\n      _type == "article" &&\n      ($category == "" || category->slug.current == $category) &&\n      publishedAt >= $startDate &&\n      publishedAt < $endDate &&\n      (\n        $search_string == "" ||\n        title match $searchPattern ||\n        oneLiner match $searchPattern ||\n        pt::text(content) match $searchPattern ||\n        category->title match $searchPattern ||\n        count(tags[@ match $searchPattern]) > 0\n      )\n    ]\n    | order(publishedAt desc)[$start...$end] {\n      _id,\n      slug,\n      title,\n      oneLiner,\n      featuredImage,\n      "author": author->{\n        _id,\n        _type,\n        "displayName": select(\n          _type == "student" => roll + " " + fullName,\n          _type == "teacher" => fullName,\n          _type == "alumni" => roll + " " + fullName,\n          fullName\n        ),\n      },\n      tags,\n      publishedAt,\n      "category": category->{\n        _id,\n        title,\n        "slug": slug.current\n      }\n    }\n  }\n': ARTICLES_QUERY_RESULT;
     '\n  *[_type == "event" && date >= $startDate && date < $endDate]{\n    date,\n    location,\n    "slug": slug.current,\n    title\n  }\n': GET_EVENTS_QUERY_RESULT;
     '\n  *[_type == "newsletterEmail" && email == $email]{\n    _id,\n    email,\n    subscribed\n  }[0]\n':
       SUBSCRIBE_NEWSLETTER_QUERY_RESULT | UNSUBSCRIBE_NEWSLETTER_QUERY_RESULT;
+    '\n  *[_type == "article" && category->slug.current == $category]\n  | order(_createdAt desc)[0...4] {\n    _id,\n    slug,\n    title,\n    oneLiner,\n    featuredImage,\n    "author": author->{\n      _id,\n      _type,\n      "displayName": select(\n        _type == "student" => roll + " " + fullName,\n        _type == "teacher" => fullName,\n        _type == "alumni" => roll + " " + fullName,\n        fullName\n      ),\n    },\n    tags,\n    publishedAt\n  }\n': ARTICLES_CARD_QUERY_RESULT;
     '\n  *[_type == "article"] | order(_createdAt desc)[0...3]{\n    _id,\n    slug,\n    title,\n    oneLiner,\n    featuredImage,\n    "author": author->{\n    _id,\n    _type,\n    "displayName": select(\n      _type == "student" => roll + " " + fullName,\n      _type == "teacher" => fullName,\n      _type == "alumni" => roll + " " + fullName,\n      fullName\n      ),\n    },\n    tags,\n    publishedAt\n  }\n': MAIN_ARTICLES_QUERY_RESULT;
+    '\n  *[_type == "general"][0]{\n    footerText,\n    footerCategories[]->{\n      "slug": slug.current,\n      title\n    },\n    footerSocials[]->{\n      "icon": icon.name,\n      label,\n      platform,\n      url\n    },\n    links[]->{\n      label,\n      openInNewTab,\n      url\n    },\n    privacy,\n    logoText\n  }\n': FOOTER_QUERY_RESULT;
   }
 }

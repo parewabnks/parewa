@@ -7,6 +7,7 @@ import EventCard from "./EventCard"
 interface Event {
   title: string
   datetime: string
+  slug: string
 }
 
 interface ApiEvent {
@@ -69,8 +70,8 @@ function SideCalendar() {
           {events.length === 0 ? (
             <p className="text-center text-lg mt-6 text-muted-foreground ">No events</p>
           ) : (
-            events.map((event, i) => (
-              <EventCard key={i} title={event.title} datetime={event.datetime} />
+            events.map((event) => (
+              <EventCard key={event.slug} title={event.title} datetime={event.datetime} />
             ))
           )}
         </div>

@@ -66,7 +66,7 @@ export function AppSidebar({ general }: { general: HOME_LAYOUT_QUERY_RESULT }) {
               {general?.categories?.map((item) => (
                 <SidebarMenuItem
                   key={item.slug ?? item.title}
-                  className="mb-3 list-none text-md font-extrabold"
+                  className="mb-3 list-none text-base font-extrabold"
                 >
                   <Link href={`/articles?category=${item.slug ?? ""}`}>
                     {item.title?.toUpperCase()}
@@ -78,16 +78,16 @@ export function AppSidebar({ general }: { general: HOME_LAYOUT_QUERY_RESULT }) {
             <ul className="mt-4">
               <NavLink
                 data={general?.supportUs}
-                className="mb-3 list-none text-md font-extrabold p-4 cursor-pointer bg-primary text-primary-foreground block"
+                className="mb-3 list-none text-base font-extrabold p-4 cursor-pointer bg-primary text-primary-foreground block"
               />
               <NavLink
                 data={general?.about}
-                className="mb-3 list-none text-md font-extrabold p-4 cursor-pointer text-foreground bg-accent border-2 border-foreground block"
+                className="mb-3 list-none text-base font-extrabold p-4 cursor-pointer text-foreground bg-accent border-2 border-foreground block"
               />
 
               <div className="links my-4">
                 {general?.links && (
-                  <div className="flex flex-col text-md font-mono font-bold">
+                  <div className="flex flex-col text-base font-mono font-bold">
                     {general.links.map((link) => (
                       <Link
                         key={link.label}
@@ -105,7 +105,7 @@ export function AppSidebar({ general }: { general: HOME_LAYOUT_QUERY_RESULT }) {
 
               <NavLink
                 data={general?.sebsdb}
-                className="mb-3 list-none text-md font-extrabold p-4 cursor-pointer text-foreground bg-accent border-2 border-foreground block"
+                className="mb-3 list-none text-base font-extrabold p-4 cursor-pointer text-foreground bg-accent border-2 border-foreground block"
               />
             </ul>
 
