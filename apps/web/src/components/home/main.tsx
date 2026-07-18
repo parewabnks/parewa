@@ -1,29 +1,37 @@
 import { defineQuery } from 'next-sanity';
 import { sanityFetch } from '@/sanity/live';
 import MainStory from '../cards/MainStory';
-import { articlesResultSchema } from '@/schemas/backend_schemas/mainSchema';
+import { articlesResultSchema } from '@/schemas/backend_schemas/homePageSchema';
 import { urlFor } from '@/sanity/image';
 import SideCalendar from '../cards/SideCalendar';
 
 const MAIN_ARTICLES_QUERY = defineQuery(`
   *[_type == "article"] | order(_createdAt desc)[0...3]{
     _id,
-    slug,
+    "slug": slug.current,
     title,
     oneLiner,
     featuredImage,
-    "author": author->{
-    _id,
-    _type,
-    "displayName": select(
-      _type == "student" => roll + " " + fullName,
-      _type == "teacher" => fullName,
-      _type == "alumni" => roll + " " + fullName,
-      fullName
-      ),
-    },
+    publishedAt,
     tags,
-    publishedAt
+    category->{
+      _id,
+      title,
+      "slug": slug.current
+    },
+    author->{
+      ...,
+      "role": role->title,
+      "position": position->title,
+      "department": department->title,
+      "house": house->title,
+      "displayName": select(
+        _type == "student" => roll + " " + fullName,
+        _type == "teacher" => fullName,
+        _type == "alumni" => roll + " " + fullName,
+        fullName
+      )
+    }
   }
 `)
 
@@ -40,7 +48,7 @@ async function Main() {
       const firstTag = article.tags?.[0];
 
       return {
-        slug: article.slug.current,
+        slug: article.slug,
         featured_image: article.featuredImage
           ? urlFor(article.featuredImage).url()
           : 'https://placehold.co/960x640/png',

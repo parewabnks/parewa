@@ -45,6 +45,7 @@ export default defineType({
       title: 'House',
       type: 'reference',
       to: { type: 'house' },
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'role',
@@ -55,12 +56,12 @@ export default defineType({
         _ref: 'student',
       },
       readOnly: true,
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'email',
       title: 'Email',
       type: 'email',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'grade',

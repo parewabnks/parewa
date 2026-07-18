@@ -3,39 +3,46 @@ import Image from "next/image";
 import { Separator } from "../ui/separator";
 import { sanityFetch } from "@/sanity/live";
 import Link from "next/link";
-import { articlesResultSchema, type ArticleSchema } from "@/schemas/backend_schemas/mainSchema";
-import type { z } from "zod";
+import { type Article } from "@/schemas/backend_schemas/articleSchema";
+import { articlesResultSchema } from "@/schemas/backend_schemas/homePageSchema";
 import { urlFor } from "@/sanity/image";
 
-type MainArticle = z.infer<typeof ArticleSchema>;
+type MainArticle = Article;
 
 const ARTICLES_CARD_QUERY = defineQuery(`
   *[_type == "article" && category->slug.current == $category]
-  | order(_createdAt desc)[0...4] {
+  | order(publishedAt desc)[0...4] {
     _id,
-    slug,
+    "slug": slug.current,
     title,
     oneLiner,
     featuredImage,
-    "author": author->{
+    publishedAt,
+    tags,
+    category->{
       _id,
-      _type,
+      title,
+      "slug": slug.current
+    },
+    author->{
+      ...,
+      "role": role->title,
+      "position": position->title,
+      "department": department->title,
+      "house": house->title,
       "displayName": select(
         _type == "student" => roll + " " + fullName,
         _type == "teacher" => fullName,
         _type == "alumni" => roll + " " + fullName,
         fullName
-      ),
-    },
-    tags,
-    publishedAt
+      )
+    }
   }
 `);
 
 async function ArticlesSection({ category }: { category: { slug: string, title: string } }) {
 
-  const { data: main } = await sanityFetch({
-    query: ARTICLES_CARD_QUERY,
+  const { data: main } = await sanityFetch({query: ARTICLES_CARD_QUERY,
     params: { category: category.slug },
   });
 
@@ -45,9 +52,9 @@ async function ArticlesSection({ category }: { category: { slug: string, title: 
 
   return (
     <div className="w-full my-5 py-5">
-      <div className="category font-heading text-6xl mb-8">
+      <Link href={`/articles?category=${category.slug}`} className="category font-heading text-6xl mb-8 transition-colors block">
         {category.title}
-      </div>
+      </Link>
       <div className="flex flex-col lg:flex-row gap-10">
         <div className="w-full lg:w-2/3">
           <Separator />
@@ -72,7 +79,7 @@ function MainArticleCard({ article }: { article: MainArticle }) {
   const featuredImage = article.featuredImage;
 
   return (
-    <Link className="group" href={`/articles/article?id=${article.slug?.current}`}>
+    <Link className="group" href={`/articles/article?id=${article.slug}`}>
       <div className="relative w-full aspect-video overflow-hidden rounded-none">
         {featuredImage?.asset?._ref ? (
           <Image
@@ -98,7 +105,7 @@ function MainArticleCard({ article }: { article: MainArticle }) {
 
 function SideArticleCard({ article }: { article: MainArticle }) {
   return (
-    <Link href={`/articles/article?id=${article.slug?.current}`} className="group flex gap-3 mt-3">
+    <Link href={`/articles/article?id=${article.slug}`} className="group flex gap-3 mt-3">
       <div className="relative w-48 h-42 shrink-0 overflow-hidden rounded-none">
         {article.featuredImage?.asset?._ref && (
           <Image

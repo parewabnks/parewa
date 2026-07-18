@@ -23,6 +23,7 @@ export default defineType({
       name: 'email',
       title: 'Email',
       type: 'string',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'contactNumber',
@@ -48,6 +49,7 @@ export default defineType({
         _ref: 'guest',
       },
       readOnly: true,
+      validation: (Rule) => Rule.required(),
     }),
   ],
 })

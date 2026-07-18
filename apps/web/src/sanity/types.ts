@@ -218,39 +218,6 @@ export type Link = {
   openInNewTab?: boolean;
 };
 
-export type RoleReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "role";
-};
-
-export type PositionReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "position";
-};
-
-export type Staff = {
-  _id: string;
-  _type: "staff";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  fullName?: string;
-  email?: string;
-  role?: RoleReference;
-  position?: PositionReference;
-  displayPicture?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-};
-
 export type AlumniReference = {
   _ref: string;
   _type: "reference";
@@ -383,6 +350,13 @@ export type Fundraiser = {
   deadline?: string;
 };
 
+export type RoleReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "role";
+};
+
 export type Guest = {
   _id: string;
   _type: "guest";
@@ -457,6 +431,7 @@ export type Article = {
     crop?: SanityImageCrop;
     _type: "image";
   };
+  imageDescription?: string;
   category?: CategoryReference;
   author?: StudentReference | TeacherReference | AlumniReference;
   tags?: Array<string>;
@@ -540,6 +515,13 @@ export type DepartmentReference = {
   _type: "reference";
   _weak?: boolean;
   [internalGroqTypeReferenceTo]?: "department";
+};
+
+export type PositionReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "position";
 };
 
 export type Teacher = {
@@ -753,15 +735,13 @@ export type AllSanitySchemaTypes =
   | NewsletterEmail
   | Rlink
   | Link
-  | RoleReference
-  | PositionReference
-  | Staff
   | AlumniReference
   | GuestReference
   | Scholarship
   | Slug
   | Newsletter
   | Fundraiser
+  | RoleReference
   | Guest
   | Event
   | StudentReference
@@ -771,6 +751,7 @@ export type AllSanitySchemaTypes =
   | Announcement
   | Alumni
   | DepartmentReference
+  | PositionReference
   | Teacher
   | Department
   | HouseReference
@@ -861,14 +842,128 @@ export type HOME_PAGE_QUERY_RESULT = {
   } | null;
 } | null;
 
-// Source: ../web/src/app/(app)/(sub)/articles/page.tsx
-// Variable: ARTICLES_QUERY
-// Query: {    "total": count(*[      _type == "article" &&      ($category == "" || category->slug.current == $category) &&      publishedAt >= $startDate &&      publishedAt < $endDate &&      (        $search_string == "" ||        title match $searchPattern ||        oneLiner match $searchPattern ||        pt::text(content) match $searchPattern ||        category->title match $searchPattern ||        count(tags[@ match $searchPattern]) > 0      )    ]),    "articles": *[      _type == "article" &&      ($category == "" || category->slug.current == $category) &&      publishedAt >= $startDate &&      publishedAt < $endDate &&      (        $search_string == "" ||        title match $searchPattern ||        oneLiner match $searchPattern ||        pt::text(content) match $searchPattern ||        category->title match $searchPattern ||        count(tags[@ match $searchPattern]) > 0      )    ]    | order(publishedAt desc)[$start...$end] {      _id,      slug,      title,      oneLiner,      featuredImage,      "author": author->{        _id,        _type,        "displayName": select(          _type == "student" => roll + " " + fullName,          _type == "teacher" => fullName,          _type == "alumni" => roll + " " + fullName,          fullName        ),      },      tags,      publishedAt,      "category": category->{        _id,        title,        "slug": slug.current      }    }  }
-export type ARTICLES_QUERY_RESULT = {
-  total: number;
-  articles: Array<{
+// Source: ../web/src/app/(app)/(sub)/articles/[articleId]/page.tsx
+// Variable: ARTICLE_DETAIL_QUERY
+// Query: *[_type == "article" && slug.current == $slug][0]{    ...,    "slug": slug.current,    author->{      ...,      "role": role->title,      "position": position->title,      "department": department->title,      "house": house->title,      "displayName": select(        _type == "student" => roll + " " + fullName,        _type == "teacher" => fullName,        _type == "alumni" => roll + " " + fullName,        fullName      )    },    category->{      _id,      title,      "slug": slug.current    },    "relatedArticles": *[      _type == "article" &&      _id != ^._id &&      category._ref == ^.category._ref    ] | order(publishedAt desc)[0...3]{      _id,      "slug": slug.current,      title,      oneLiner,      featuredImage,      publishedAt,      tags,      category->{        _id,        title,        "slug": slug.current      },      author->{        ...,        "role": role->title,        "position": position->title,        "department": department->title,        "house": house->title,        "displayName": select(          _type == "student" => roll + " " + fullName,          _type == "teacher" => fullName,          _type == "alumni" => roll + " " + fullName,          fullName        )      }    },    "latestArticles": *[      _type == "article" &&      _id != ^._id    ] | order(publishedAt desc)[0...2]{      _id,      "slug": slug.current,      title,      oneLiner,      featuredImage,      publishedAt,      tags,      category->{        _id,        title,        "slug": slug.current      },      author->{        ...,        "role": role->title,        "position": position->title,        "department": department->title,        "house": house->title,        "displayName": select(          _type == "student" => roll + " " + fullName,          _type == "teacher" => fullName,          _type == "alumni" => roll + " " + fullName,          fullName        )      }    }  }
+export type ARTICLE_DETAIL_QUERY_RESULT = {
+  _id: string;
+  _type: "article";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug: string | null;
+  oneLiner?: string;
+  content?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  featuredImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  imageDescription?: string;
+  category: {
     _id: string;
-    slug: Slug | null;
+    title: string | null;
+    slug: string | null;
+  } | null;
+  author:
+    | {
+        _id: string;
+        _type: "alumni";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        fullName?: string;
+        email?: string;
+        contactNumber?: string;
+        batch?: string;
+        graduatedYear?: number;
+        roll?: string;
+        role: string | null;
+        isActive?: boolean;
+        displayPicture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+        position: null;
+        department: null;
+        house: null;
+        displayName: string | null;
+      }
+    | {
+        _id: string;
+        _type: "student";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        fullName?: string;
+        roll?: string;
+        batch?: string;
+        house: string | null;
+        role: string | null;
+        email?: string;
+        grade?: string;
+        position: string | null;
+        displayPicture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+        department: null;
+        displayName: string | null;
+      }
+    | {
+        _id: string;
+        _type: "teacher";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        fullName?: string;
+        initials?: string;
+        email?: string;
+        department: string | null;
+        role: string | null;
+        position: string | null;
+        displayPicture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+        house: null;
+        displayName: string | null;
+      }
+    | null;
+  tags?: Array<string>;
+  publishedAt?: string;
+  relatedArticles: Array<{
+    _id: string;
+    slug: string | null;
     title: string | null;
     oneLiner: string | null;
     featuredImage: {
@@ -878,30 +973,282 @@ export type ARTICLES_QUERY_RESULT = {
       crop?: SanityImageCrop;
       _type: "image";
     } | null;
-    author:
-      | {
-          _id: string;
-          _type: "alumni";
-          displayName: string | null;
-        }
-      | {
-          _id: string;
-          _type: "student";
-          displayName: string | null;
-        }
-      | {
-          _id: string;
-          _type: "teacher";
-          displayName: string | null;
-        }
-      | null;
-    tags: Array<string> | null;
     publishedAt: string | null;
+    tags: Array<string> | null;
     category: {
       _id: string;
       title: string | null;
       slug: string | null;
     } | null;
+    author:
+      | {
+          _id: string;
+          _type: "alumni";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          fullName?: string;
+          email?: string;
+          contactNumber?: string;
+          batch?: string;
+          graduatedYear?: number;
+          roll?: string;
+          role: string | null;
+          isActive?: boolean;
+          displayPicture?: {
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+          position: null;
+          department: null;
+          house: null;
+          displayName: string | null;
+        }
+      | {
+          _id: string;
+          _type: "student";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          fullName?: string;
+          roll?: string;
+          batch?: string;
+          house: string | null;
+          role: string | null;
+          email?: string;
+          grade?: string;
+          position: string | null;
+          displayPicture?: {
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+          department: null;
+          displayName: string | null;
+        }
+      | {
+          _id: string;
+          _type: "teacher";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          fullName?: string;
+          initials?: string;
+          email?: string;
+          department: string | null;
+          role: string | null;
+          position: string | null;
+          displayPicture?: {
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+          house: null;
+          displayName: string | null;
+        }
+      | null;
+  }>;
+  latestArticles: Array<{
+    _id: string;
+    slug: string | null;
+    title: string | null;
+    oneLiner: string | null;
+    featuredImage: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+    publishedAt: string | null;
+    tags: Array<string> | null;
+    category: {
+      _id: string;
+      title: string | null;
+      slug: string | null;
+    } | null;
+    author:
+      | {
+          _id: string;
+          _type: "alumni";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          fullName?: string;
+          email?: string;
+          contactNumber?: string;
+          batch?: string;
+          graduatedYear?: number;
+          roll?: string;
+          role: string | null;
+          isActive?: boolean;
+          displayPicture?: {
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+          position: null;
+          department: null;
+          house: null;
+          displayName: string | null;
+        }
+      | {
+          _id: string;
+          _type: "student";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          fullName?: string;
+          roll?: string;
+          batch?: string;
+          house: string | null;
+          role: string | null;
+          email?: string;
+          grade?: string;
+          position: string | null;
+          displayPicture?: {
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+          department: null;
+          displayName: string | null;
+        }
+      | {
+          _id: string;
+          _type: "teacher";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          fullName?: string;
+          initials?: string;
+          email?: string;
+          department: string | null;
+          role: string | null;
+          position: string | null;
+          displayPicture?: {
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+          house: null;
+          displayName: string | null;
+        }
+      | null;
+  }>;
+} | null;
+
+// Source: ../web/src/app/(app)/(sub)/articles/page.tsx
+// Variable: ARTICLES_QUERY
+// Query: {    "total": count(*[      _type == "article" &&      ($category == "" || category->slug.current == $category) &&      publishedAt >= $startDate &&      publishedAt < $endDate &&      (        $search_string == "" ||        title match $searchPattern ||        oneLiner match $searchPattern ||        pt::text(content) match $searchPattern ||        category->title match $searchPattern ||        count(tags[@ match $searchPattern]) > 0      )    ]),    "articles": *[      _type == "article" &&      ($category == "" || category->slug.current == $category) &&      publishedAt >= $startDate &&      publishedAt < $endDate &&      (        $search_string == "" ||        title match $searchPattern ||        oneLiner match $searchPattern ||        pt::text(content) match $searchPattern ||        category->title match $searchPattern ||        count(tags[@ match $searchPattern]) > 0      )    ] | order(publishedAt desc) [$start...$end] {      _id,      "slug": slug.current,      title,      oneLiner,      featuredImage,      publishedAt,      tags,      "category": category->{        _id,        title,        "slug": slug.current      },      author->{        ...,        "role": role->title,        "position": position->title,        "department": department->title,        "house": house->title,        "displayName": select(          _type == "student" => roll + " " + fullName,          _type == "teacher" => fullName,          _type == "alumni" => roll + " " + fullName,          fullName        )      }    }  }
+export type ARTICLES_QUERY_RESULT = {
+  total: number;
+  articles: Array<{
+    _id: string;
+    slug: string | null;
+    title: string | null;
+    oneLiner: string | null;
+    featuredImage: {
+      asset?: SanityImageAssetReference;
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+    publishedAt: string | null;
+    tags: Array<string> | null;
+    category: {
+      _id: string;
+      title: string | null;
+      slug: string | null;
+    } | null;
+    author:
+      | {
+          _id: string;
+          _type: "alumni";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          fullName?: string;
+          email?: string;
+          contactNumber?: string;
+          batch?: string;
+          graduatedYear?: number;
+          roll?: string;
+          role: string | null;
+          isActive?: boolean;
+          displayPicture?: {
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+          position: null;
+          department: null;
+          house: null;
+          displayName: string | null;
+        }
+      | {
+          _id: string;
+          _type: "student";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          fullName?: string;
+          roll?: string;
+          batch?: string;
+          house: string | null;
+          role: string | null;
+          email?: string;
+          grade?: string;
+          position: string | null;
+          displayPicture?: {
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+          department: null;
+          displayName: string | null;
+        }
+      | {
+          _id: string;
+          _type: "teacher";
+          _createdAt: string;
+          _updatedAt: string;
+          _rev: string;
+          fullName?: string;
+          initials?: string;
+          email?: string;
+          department: string | null;
+          role: string | null;
+          position: string | null;
+          displayPicture?: {
+            asset?: SanityImageAssetReference;
+            media?: unknown;
+            hotspot?: SanityImageHotspot;
+            crop?: SanityImageCrop;
+            _type: "image";
+          };
+          house: null;
+          displayName: string | null;
+        }
+      | null;
   }>;
 };
 
@@ -977,10 +1324,10 @@ export type UNSUBSCRIBE_NEWSLETTER_QUERY_RESULT = {
 
 // Source: ../web/src/components/cards/ArticlesSection.tsx
 // Variable: ARTICLES_CARD_QUERY
-// Query: *[_type == "article" && category->slug.current == $category]  | order(_createdAt desc)[0...4] {    _id,    slug,    title,    oneLiner,    featuredImage,    "author": author->{      _id,      _type,      "displayName": select(        _type == "student" => roll + " " + fullName,        _type == "teacher" => fullName,        _type == "alumni" => roll + " " + fullName,        fullName      ),    },    tags,    publishedAt  }
+// Query: *[_type == "article" && category->slug.current == $category]  | order(publishedAt desc)[0...4] {    _id,    "slug": slug.current,    title,    oneLiner,    featuredImage,    publishedAt,    tags,    category->{      _id,      title,      "slug": slug.current    },    author->{      ...,      "role": role->title,      "position": position->title,      "department": department->title,      "house": house->title,      "displayName": select(        _type == "student" => roll + " " + fullName,        _type == "teacher" => fullName,        _type == "alumni" => roll + " " + fullName,        fullName      )    }  }
 export type ARTICLES_CARD_QUERY_RESULT = Array<{
   _id: string;
-  slug: Slug | null;
+  slug: string | null;
   title: string | null;
   oneLiner: string | null;
   featuredImage: {
@@ -990,33 +1337,95 @@ export type ARTICLES_CARD_QUERY_RESULT = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   } | null;
+  publishedAt: string | null;
+  tags: Array<string> | null;
+  category: {
+    _id: string;
+    title: string | null;
+    slug: string | null;
+  } | null;
   author:
     | {
         _id: string;
         _type: "alumni";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        fullName?: string;
+        email?: string;
+        contactNumber?: string;
+        batch?: string;
+        graduatedYear?: number;
+        roll?: string;
+        role: string | null;
+        isActive?: boolean;
+        displayPicture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+        position: null;
+        department: null;
+        house: null;
         displayName: string | null;
       }
     | {
         _id: string;
         _type: "student";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        fullName?: string;
+        roll?: string;
+        batch?: string;
+        house: string | null;
+        role: string | null;
+        email?: string;
+        grade?: string;
+        position: string | null;
+        displayPicture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+        department: null;
         displayName: string | null;
       }
     | {
         _id: string;
         _type: "teacher";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        fullName?: string;
+        initials?: string;
+        email?: string;
+        department: string | null;
+        role: string | null;
+        position: string | null;
+        displayPicture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+        house: null;
         displayName: string | null;
       }
     | null;
-  tags: Array<string> | null;
-  publishedAt: string | null;
 }>;
 
 // Source: ../web/src/components/home/main.tsx
 // Variable: MAIN_ARTICLES_QUERY
-// Query: *[_type == "article"] | order(_createdAt desc)[0...3]{    _id,    slug,    title,    oneLiner,    featuredImage,    "author": author->{    _id,    _type,    "displayName": select(      _type == "student" => roll + " " + fullName,      _type == "teacher" => fullName,      _type == "alumni" => roll + " " + fullName,      fullName      ),    },    tags,    publishedAt  }
+// Query: *[_type == "article"] | order(_createdAt desc)[0...3]{    _id,    "slug": slug.current,    title,    oneLiner,    featuredImage,    publishedAt,    tags,    category->{      _id,      title,      "slug": slug.current    },    author->{      ...,      "role": role->title,      "position": position->title,      "department": department->title,      "house": house->title,      "displayName": select(        _type == "student" => roll + " " + fullName,        _type == "teacher" => fullName,        _type == "alumni" => roll + " " + fullName,        fullName      )    }  }
 export type MAIN_ARTICLES_QUERY_RESULT = Array<{
   _id: string;
-  slug: Slug | null;
+  slug: string | null;
   title: string | null;
   oneLiner: string | null;
   featuredImage: {
@@ -1026,25 +1435,87 @@ export type MAIN_ARTICLES_QUERY_RESULT = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   } | null;
+  publishedAt: string | null;
+  tags: Array<string> | null;
+  category: {
+    _id: string;
+    title: string | null;
+    slug: string | null;
+  } | null;
   author:
     | {
         _id: string;
         _type: "alumni";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        fullName?: string;
+        email?: string;
+        contactNumber?: string;
+        batch?: string;
+        graduatedYear?: number;
+        roll?: string;
+        role: string | null;
+        isActive?: boolean;
+        displayPicture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+        position: null;
+        department: null;
+        house: null;
         displayName: string | null;
       }
     | {
         _id: string;
         _type: "student";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        fullName?: string;
+        roll?: string;
+        batch?: string;
+        house: string | null;
+        role: string | null;
+        email?: string;
+        grade?: string;
+        position: string | null;
+        displayPicture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+        department: null;
         displayName: string | null;
       }
     | {
         _id: string;
         _type: "teacher";
+        _createdAt: string;
+        _updatedAt: string;
+        _rev: string;
+        fullName?: string;
+        initials?: string;
+        email?: string;
+        department: string | null;
+        role: string | null;
+        position: string | null;
+        displayPicture?: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+        };
+        house: null;
         displayName: string | null;
       }
     | null;
-  tags: Array<string> | null;
-  publishedAt: string | null;
 }>;
 
 // Source: ../web/src/components/layout/Footer.tsx
@@ -1078,12 +1549,13 @@ declare module "@sanity/client" {
     '\n  *[_type == "general"][0]{\n    logoText,\n    announcement->{\n      _id\n    },\n    categories[]->{\n      "slug": slug.current,\n       title \n    },\n    socials[]->{\n      "icon": icon.name,\n      label,\n      platform,\n      url\n    },\n    privacy,\n    terms,\n    sebsdb->{\n      label,\n      openInNewTab,\n      url\n    },\n    supportUs->{\n      label,\n      openInNewTab,\n      url\n    },\n    about->{\n      label,\n      openInNewTab,\n      url\n    },\n    links[]->{\n      label,\n      openInNewTab,\n      url\n    }\n  }\n':
       HOME_LAYOUT_QUERY_RESULT | SUB_LAYOUT_QUERY_RESULT;
     '\n  *[_type == "general"][0]{\n    logoText,\n    sliders[]->{\n      title,\n      author,\n      image\n    },\n    categories[]->{\n    "slug": slug.current,\n     title \n    },\n    supportUs->{\n      label,\n      openInNewTab,\n      url\n    },\n    about->{\n      label,\n      openInNewTab,\n      url\n    },\n  }\n': HOME_PAGE_QUERY_RESULT;
-    '\n  {\n    "total": count(*[\n      _type == "article" &&\n      ($category == "" || category->slug.current == $category) &&\n      publishedAt >= $startDate &&\n      publishedAt < $endDate &&\n      (\n        $search_string == "" ||\n        title match $searchPattern ||\n        oneLiner match $searchPattern ||\n        pt::text(content) match $searchPattern ||\n        category->title match $searchPattern ||\n        count(tags[@ match $searchPattern]) > 0\n      )\n    ]),\n    "articles": *[\n      _type == "article" &&\n      ($category == "" || category->slug.current == $category) &&\n      publishedAt >= $startDate &&\n      publishedAt < $endDate &&\n      (\n        $search_string == "" ||\n        title match $searchPattern ||\n        oneLiner match $searchPattern ||\n        pt::text(content) match $searchPattern ||\n        category->title match $searchPattern ||\n        count(tags[@ match $searchPattern]) > 0\n      )\n    ]\n    | order(publishedAt desc)[$start...$end] {\n      _id,\n      slug,\n      title,\n      oneLiner,\n      featuredImage,\n      "author": author->{\n        _id,\n        _type,\n        "displayName": select(\n          _type == "student" => roll + " " + fullName,\n          _type == "teacher" => fullName,\n          _type == "alumni" => roll + " " + fullName,\n          fullName\n        ),\n      },\n      tags,\n      publishedAt,\n      "category": category->{\n        _id,\n        title,\n        "slug": slug.current\n      }\n    }\n  }\n': ARTICLES_QUERY_RESULT;
+    '\n  *[_type == "article" && slug.current == $slug][0]{\n    ...,\n    "slug": slug.current,\n    author->{\n      ...,\n      "role": role->title,\n      "position": position->title,\n      "department": department->title,\n      "house": house->title,\n      "displayName": select(\n        _type == "student" => roll + " " + fullName,\n        _type == "teacher" => fullName,\n        _type == "alumni" => roll + " " + fullName,\n        fullName\n      )\n    },\n    category->{\n      _id,\n      title,\n      "slug": slug.current\n    },\n    "relatedArticles": *[\n      _type == "article" &&\n      _id != ^._id &&\n      category._ref == ^.category._ref\n    ] | order(publishedAt desc)[0...3]{\n      _id,\n      "slug": slug.current,\n      title,\n      oneLiner,\n      featuredImage,\n      publishedAt,\n      tags,\n      category->{\n        _id,\n        title,\n        "slug": slug.current\n      },\n      author->{\n        ...,\n        "role": role->title,\n        "position": position->title,\n        "department": department->title,\n        "house": house->title,\n        "displayName": select(\n          _type == "student" => roll + " " + fullName,\n          _type == "teacher" => fullName,\n          _type == "alumni" => roll + " " + fullName,\n          fullName\n        )\n      }\n    },\n    "latestArticles": *[\n      _type == "article" &&\n      _id != ^._id\n    ] | order(publishedAt desc)[0...2]{\n      _id,\n      "slug": slug.current,\n      title,\n      oneLiner,\n      featuredImage,\n      publishedAt,\n      tags,\n      category->{\n        _id,\n        title,\n        "slug": slug.current\n      },\n      author->{\n        ...,\n        "role": role->title,\n        "position": position->title,\n        "department": department->title,\n        "house": house->title,\n        "displayName": select(\n          _type == "student" => roll + " " + fullName,\n          _type == "teacher" => fullName,\n          _type == "alumni" => roll + " " + fullName,\n          fullName\n        )\n      }\n    }\n  }\n': ARTICLE_DETAIL_QUERY_RESULT;
+    '\n  {\n    "total": count(*[\n      _type == "article" &&\n      ($category == "" || category->slug.current == $category) &&\n      publishedAt >= $startDate &&\n      publishedAt < $endDate &&\n      (\n        $search_string == "" ||\n        title match $searchPattern ||\n        oneLiner match $searchPattern ||\n        pt::text(content) match $searchPattern ||\n        category->title match $searchPattern ||\n        count(tags[@ match $searchPattern]) > 0\n      )\n    ]),\n    "articles": *[\n      _type == "article" &&\n      ($category == "" || category->slug.current == $category) &&\n      publishedAt >= $startDate &&\n      publishedAt < $endDate &&\n      (\n        $search_string == "" ||\n        title match $searchPattern ||\n        oneLiner match $searchPattern ||\n        pt::text(content) match $searchPattern ||\n        category->title match $searchPattern ||\n        count(tags[@ match $searchPattern]) > 0\n      )\n    ] | order(publishedAt desc) [$start...$end] {\n      _id,\n      "slug": slug.current,\n      title,\n      oneLiner,\n      featuredImage,\n      publishedAt,\n      tags,\n      "category": category->{\n        _id,\n        title,\n        "slug": slug.current\n      },\n      author->{\n        ...,\n        "role": role->title,\n        "position": position->title,\n        "department": department->title,\n        "house": house->title,\n        "displayName": select(\n          _type == "student" => roll + " " + fullName,\n          _type == "teacher" => fullName,\n          _type == "alumni" => roll + " " + fullName,\n          fullName\n        )\n      }\n    }\n  }\n': ARTICLES_QUERY_RESULT;
     '\n  *[_type == "event" && date >= $startDate && date < $endDate]{\n    date,\n    location,\n    "slug": slug.current,\n    title\n  }\n': GET_EVENTS_QUERY_RESULT;
     '\n  *[_type == "newsletterEmail" && email == $email]{\n    _id,\n    email,\n    subscribed\n  }[0]\n':
       SUBSCRIBE_NEWSLETTER_QUERY_RESULT | UNSUBSCRIBE_NEWSLETTER_QUERY_RESULT;
-    '\n  *[_type == "article" && category->slug.current == $category]\n  | order(_createdAt desc)[0...4] {\n    _id,\n    slug,\n    title,\n    oneLiner,\n    featuredImage,\n    "author": author->{\n      _id,\n      _type,\n      "displayName": select(\n        _type == "student" => roll + " " + fullName,\n        _type == "teacher" => fullName,\n        _type == "alumni" => roll + " " + fullName,\n        fullName\n      ),\n    },\n    tags,\n    publishedAt\n  }\n': ARTICLES_CARD_QUERY_RESULT;
-    '\n  *[_type == "article"] | order(_createdAt desc)[0...3]{\n    _id,\n    slug,\n    title,\n    oneLiner,\n    featuredImage,\n    "author": author->{\n    _id,\n    _type,\n    "displayName": select(\n      _type == "student" => roll + " " + fullName,\n      _type == "teacher" => fullName,\n      _type == "alumni" => roll + " " + fullName,\n      fullName\n      ),\n    },\n    tags,\n    publishedAt\n  }\n': MAIN_ARTICLES_QUERY_RESULT;
+    '\n  *[_type == "article" && category->slug.current == $category]\n  | order(publishedAt desc)[0...4] {\n    _id,\n    "slug": slug.current,\n    title,\n    oneLiner,\n    featuredImage,\n    publishedAt,\n    tags,\n    category->{\n      _id,\n      title,\n      "slug": slug.current\n    },\n    author->{\n      ...,\n      "role": role->title,\n      "position": position->title,\n      "department": department->title,\n      "house": house->title,\n      "displayName": select(\n        _type == "student" => roll + " " + fullName,\n        _type == "teacher" => fullName,\n        _type == "alumni" => roll + " " + fullName,\n        fullName\n      )\n    }\n  }\n': ARTICLES_CARD_QUERY_RESULT;
+    '\n  *[_type == "article"] | order(_createdAt desc)[0...3]{\n    _id,\n    "slug": slug.current,\n    title,\n    oneLiner,\n    featuredImage,\n    publishedAt,\n    tags,\n    category->{\n      _id,\n      title,\n      "slug": slug.current\n    },\n    author->{\n      ...,\n      "role": role->title,\n      "position": position->title,\n      "department": department->title,\n      "house": house->title,\n      "displayName": select(\n        _type == "student" => roll + " " + fullName,\n        _type == "teacher" => fullName,\n        _type == "alumni" => roll + " " + fullName,\n        fullName\n      )\n    }\n  }\n': MAIN_ARTICLES_QUERY_RESULT;
     '\n  *[_type == "general"][0]{\n    footerText,\n    footerCategories[]->{\n      "slug": slug.current,\n      title\n    },\n    footerSocials[]->{\n      "icon": icon.name,\n      label,\n      platform,\n      url\n    },\n    links[]->{\n      label,\n      openInNewTab,\n      url\n    },\n    privacy,\n    logoText\n  }\n': FOOTER_QUERY_RESULT;
   }
 }

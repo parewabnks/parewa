@@ -30,7 +30,6 @@ export default defineType({
       name: 'email',
       title: 'Email',
       type: 'email',
-      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'department',
@@ -48,6 +47,7 @@ export default defineType({
         _ref: 'teacher',
       },
       readOnly: true,
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'position',

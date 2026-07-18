@@ -9,7 +9,6 @@ import scholarship from './schemas/content/scholarship'
 // Users
 import alumni from './schemas/users/alumni'
 import guest from './schemas/users/guest'
-import staff from './schemas/users/staff'
 import student from './schemas/users/student'
 import teacher from './schemas/users/teacher'
 
@@ -40,7 +39,6 @@ export const schemaTypes = [
   scholarship,
   alumni,
   guest,
-  staff,
   student,
   teacher,
   category,

@@ -1,23 +1,13 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Calendar } from "@/components/ui/calendar"
 import EventCard from "./EventCard"
-
-interface Event {
-  title: string
-  datetime: string
-  slug: string
-}
-
-interface ApiEvent {
-  title?: string
-  date?: string
-}
+import { eventsResponseSchema } from "@/schemas/backend_schemas/eventsSchema"
 
 function SideCalendar() {
   const [date, setDate] = useState<Date | undefined>(new Date())
-  const [events, setEvents] = useState<Event[]>([])
+  const [events, setEvents] = useState<{ title: string; datetime: string; slug: string }[]>([])
 
   useEffect(() => {
     if (!date) return
@@ -31,14 +21,21 @@ function SideCalendar() {
         if (!res.ok) {
           throw new Error("Network response was not ok")
         }
-        const data = await res.json()
-        const normalizedEvents = Array.isArray(data.events)
-          ? data.events.map((event: ApiEvent) => ({
-            title: event.title ?? "",
-            datetime: event.date ?? "",
+
+        const parsed = eventsResponseSchema.safeParse(await res.json())
+        if (!parsed.success) {
+          console.error("Unexpected events response shape:", parsed.error)
+          setEvents([])
+          return
+        }
+
+        setEvents(
+          parsed.data.events.map((event) => ({
+            title: event.title,
+            datetime: event.date,
+            slug: event.slug,
           }))
-          : []
-        setEvents(normalizedEvents)
+        )
       } catch (error) {
         console.error("Failed to fetch events:", error)
         setEvents([])

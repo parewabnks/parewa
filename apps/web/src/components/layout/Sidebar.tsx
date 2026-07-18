@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/sidebar";
 import Image from "next/image";
 import { HOME_LAYOUT_QUERY_RESULT } from "@/sanity/types";
-import { Search } from "lucide-react";
 import { Icon } from "@iconify/react";
+import { SidebarSearch } from "./SidebarSearch";
 
 type NavLinkData = {
   url?: string | null;
@@ -60,7 +60,7 @@ export function AppSidebar({ general }: { general: HOME_LAYOUT_QUERY_RESULT }) {
           </div>
 
           <div className="mt-5 px-5 pr-10">
-            <Search size={22} className="text-accent-foreground" />
+            <SidebarSearch />
 
             <ul className="mt-5">
               {general?.categories?.map((item) => (

@@ -1,12 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { z } from "zod";
-import { ArticleSchema } from "@/schemas/backend_schemas/mainSchema";
+import { type Article } from "@/schemas/backend_schemas/articleSchema";
 import { urlFor } from "@/sanity/image";
 import { Card } from "../ui/card";
 import { CardContent } from "../ui/card";
-
-type Article = z.infer<typeof ArticleSchema>;
 
 type CategoryArticlesSectionProps = {
   article: Article;
@@ -18,12 +15,11 @@ function CategoryArticlesSection({ article }: CategoryArticlesSectionProps) {
     : "Recently";
 
   const authorLabel = article.author.displayName;
-  const tagLabel = article.tags?.[0]?.replace(/^#/, "") || "Article";
 
   const imageUrl = article.featuredImage?.asset?._ref ? urlFor(article.featuredImage).width(800).height(520).url() : null;
 
   return (
-    <Link href={`/articles/article?id=${article.slug.current}`} className="group flex w-full">
+    <Link href={`/articles/article?id=${article.slug}`} className="group flex w-full">
       <Card className="h-full relative overflow-hidden transition-shadow duration-200 z-10 flex flex-col sm:flex-row w-full py-0 bg-card text-card-foreground rounded-none ring-0">
         <div className="mx-auto relative w-full sm:w-[50%] shrink-0 h-48 sm:h-auto min-h-48 bg-muted/20">
           {imageUrl ? (

@@ -1,7 +1,7 @@
 import { sanityFetch } from '@/sanity/live';
 import { defineQuery } from 'next-sanity'
 import { ITEMS_PER_PAGE } from '@/lib/site-config';
-import { articlesResultSchema } from '@/schemas/backend_schemas/mainSchema'
+import { articlesResultSchema } from '@/schemas/backend_schemas/homePageSchema'
 import CategoryArticlesSection from '@/components/cards/CategoryArticles';
 import ArticlesPagination from '@/components/misc/Pagination';
 
@@ -44,29 +44,31 @@ const ARTICLES_QUERY = defineQuery(`
         category->title match $searchPattern ||
         count(tags[@ match $searchPattern]) > 0
       )
-    ]
-    | order(publishedAt desc)[$start...$end] {
+    ] | order(publishedAt desc) [$start...$end] {
       _id,
-      slug,
+      "slug": slug.current,
       title,
       oneLiner,
       featuredImage,
-      "author": author->{
+      publishedAt,
+      tags,
+      "category": category->{
         _id,
-        _type,
+        title,
+        "slug": slug.current
+      },
+      author->{
+        ...,
+        "role": role->title,
+        "position": position->title,
+        "department": department->title,
+        "house": house->title,
         "displayName": select(
           _type == "student" => roll + " " + fullName,
           _type == "teacher" => fullName,
           _type == "alumni" => roll + " " + fullName,
           fullName
-        ),
-      },
-      tags,
-      publishedAt,
-      "category": category->{
-        _id,
-        title,
-        "slug": slug.current
+        )
       }
     }
   }
@@ -99,6 +101,8 @@ async function Page({ searchParams }: Props) {
   });
 
   const result = articlesResultSchema.safeParse(data)
+
+  console.log(result)
 
   const totalArticles = result.data?.total || 0;
 

@@ -76,7 +76,6 @@ async function Footer() {
         <FooterNewsletter privacyPolicyLink={footer?.privacy ?? ""} />
         <div className="mt-10 border-t border-muted-foreground/40 pt-6 text-center text-muted-foreground text-xs">
           <p>PAREWA © {new Date().getFullYear()} All rights reserved</p>
-          <p>6229E Suyog</p>
         </div>
       </div>
     </footer>

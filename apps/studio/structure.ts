@@ -27,7 +27,6 @@ const structure: StructureResolver = (S) =>
             .items([
               S.documentTypeListItem('alumni').title('Alumni'),
               S.documentTypeListItem('guest').title('Guests'),
-              S.documentTypeListItem('staff').title('Staff'),
               S.documentTypeListItem('student').title('Students'),
               S.documentTypeListItem('teacher').title('Teachers'),
             ])

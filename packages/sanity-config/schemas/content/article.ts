@@ -48,10 +48,17 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'imageDescription',
+      title: 'Image Description',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
       name: 'category',
       title: 'Category',
       type: 'reference',
       to: [{ type: 'category' }],
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'author',

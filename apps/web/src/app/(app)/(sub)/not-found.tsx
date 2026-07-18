@@ -1,6 +1,6 @@
 export default function NotFound() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] bg-linear-to-br from-gray-100 px-4 text-foreground w-full">
+    <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 text-foreground w-full">
       <h1 className="font-heading text-6xl sm:text-4xl lg:text-5xl font-extrabold text-foreground drop-shadow-md">
         404
       </h1>

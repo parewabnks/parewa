@@ -65,6 +65,7 @@ export default defineType({
         _ref: 'alumni',
       },
       readOnly: true,
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'isActive',
