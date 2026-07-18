@@ -8,34 +8,44 @@ export default defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
-      validation: (Rule) => Rule.required().min(3),
+      name: "name",
+      title: "Name",
+      type: "string",
+      validation: (Rule) => Rule.required().min(0),
     }),
     defineField({
-      name: 'slug',
-      title: 'Slug',
-      type: 'slug',
-      options: { source: 'title' },
-      validation: (Rule) => Rule.required(),
+      name: "roll",
+      title: "Roll Number",
+      type: "string",
+      validation: (Rule) => Rule.required().min(0),
+    }),
+    defineField({
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: {
+        source: (document) => {
+          const name = document.name as string ?? ""
+          const roll = document.roll as string ?? ""
+          return `${roll}-${name}`.toLowerCase().trim()
+        }
+      }
     }),
     defineField({
       name: 'raised',
       title: 'Raised',
       type: 'number',
-      validation: (Rule) => Rule.required().min(0),
     }),
     defineField({
       name: 'amount',
-      title: 'Amount',
+      title: 'Amount (USD $)',
       type: 'number',
-      validation: (Rule) => Rule.required().min(0),
     }),
     defineField({
       name: 'deadline',
       title: 'Deadline',
       type: 'date',
+      validation: (Rule) => Rule.required()
     }),
     defineField({
       name: 'picture',
@@ -44,17 +54,20 @@ export default defineType({
       options: {
         hotspot: true,
       },
+      validation: (Rule) => Rule.required()
     }),
     defineField({
       name: 'videoLink',
       title: 'Video Link',
       type: 'url',
+      validation: (Rule) => Rule.required()
     }),
     defineField({
       name: 'description',
       title: 'Description',
       type: 'array',
-      of: [{ type: 'block' }]
+      of: [{ type: 'block' }],
+      validation: (Rule) => Rule.required()
     }),
     defineField({
       name: 'donors',

@@ -1136,7 +1136,14 @@
           "type": "string"
         }
       },
-      "title": {
+      "name": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "roll": {
         "type": "objectAttribute",
         "value": {
           "type": "string"
