@@ -63,10 +63,21 @@ export default defineType({
       validation: (Rule) => Rule.required()
     }),
     defineField({
-      name: 'description',
-      title: 'Description',
-      type: 'array',
-      of: [{ type: 'block' }],
+      name: 'background',
+      title: 'Background',
+      type: 'text',
+      validation: (Rule) => Rule.required()
+    }),
+    defineField({
+      name: 'goals',
+      title: 'Studies and Goals',
+      type: 'text',
+      validation: (Rule) => Rule.required()
+    }),
+    defineField({
+      name: 'reasonForAid',
+      title: 'Reason for Aid',
+      type: 'text',
       validation: (Rule) => Rule.required()
     }),
     defineField({
@@ -94,19 +105,9 @@ export default defineType({
               validation: (Rule) => Rule.required().min(0),
             }),
             defineField({
-              name: 'currency',
-              title: 'Currency',
-              type: 'string',
-              options: {
-                list: [
-                  { title: 'USD', value: 'USD' },
-                  { title: 'EUR', value: 'EUR' },
-                  { title: 'GBP', value: 'GBP' },
-                  { title: 'INR', value: 'INR' },
-                  { title: 'PKR', value: 'PKR' },
-                  { title: 'NPR', value: 'NPR' },
-                ],
-              },
+              name: "donatedAt",
+              title: "Donated At",
+              type: "datetime",
               validation: (Rule) => Rule.required(),
             }),
           ]

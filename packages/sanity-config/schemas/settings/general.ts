@@ -81,6 +81,12 @@ export default defineType({
       of: [{ type: 'reference', to: [{ type: 'socials' }] }],
     }),
     defineField({
+      name: 'supportUsText',
+      title: 'Support Us Text',
+      type: 'text',
+      group: 'general',
+    }),
+    defineField({
       name: 'about',
       title: 'About Page',
       type: 'reference',
@@ -117,6 +123,12 @@ export default defineType({
     defineField({
       name: 'privacy',
       title: 'Privacy Policy',
+      type: 'url',
+      group: 'content',
+    }),
+    defineField({
+      name: 'donorPrivacy',
+      title: 'Donor Privacy Policy',
       type: 'url',
       group: 'content',
     }),
