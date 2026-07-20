@@ -13,7 +13,7 @@ interface Props {
 
 function MainStory({ slug, featured_image, title, author, one_liner, tag, orientation = 'left' }: Props) {
   return (
-    <Link className={`w-full flex flex-col gap-5 md:h-82 ${orientation === 'right' ? 'md:flex-row-reverse' : 'md:flex-row'}`} href={`/articles/article?id=${slug}`}>
+    <Link className={`w-full flex flex-col gap-5 md:h-82 ${orientation === 'right' ? 'md:flex-row-reverse' : 'md:flex-row'}`} href={`/articles/${slug}`}>
       <div className="image relative w-full h-64 md:h-auto md:w-1/2">
         <Image
           src={featured_image}

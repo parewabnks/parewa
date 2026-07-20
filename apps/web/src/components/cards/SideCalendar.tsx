@@ -1,9 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
+
+import { eventsResponseSchema } from "@/schemas/backend_schemas/eventsSchema"
+
 import { Calendar } from "@/components/ui/calendar"
 import EventCard from "./EventCard"
-import { eventsResponseSchema } from "@/schemas/backend_schemas/eventsSchema"
 
 function SideCalendar() {
   const [date, setDate] = useState<Date | undefined>(new Date())
@@ -14,8 +16,12 @@ function SideCalendar() {
 
     const fetchEvents = async () => {
       try {
-        const formattedDate = date.toLocaleDateString("en-CA")
+        // Convert local date to UTC to avoid timezone assumptions on server
+        const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+        const formattedDate = utcDate.toISOString().split('T')[0];
+
         const params = new URLSearchParams({ date: formattedDate })
+        
         const res = await fetch(`/api/get_events?${params.toString()}`)
 
         if (!res.ok) {

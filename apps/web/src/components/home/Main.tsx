@@ -1,8 +1,10 @@
 import { defineQuery } from 'next-sanity';
 import { sanityFetch } from '@/sanity/live';
-import MainStory from '../cards/MainStory';
-import { articlesResultSchema } from '@/schemas/backend_schemas/homePageSchema';
+
 import { urlFor } from '@/sanity/image';
+import { articlesResultSchema } from '@/schemas/backend_schemas/homePageSchema';
+
+import MainStory from '../cards/MainStory';
 import SideCalendar from '../cards/SideCalendar';
 
 const MAIN_ARTICLES_QUERY = defineQuery(`
@@ -29,6 +31,7 @@ const MAIN_ARTICLES_QUERY = defineQuery(`
         _type == "student" => roll + " " + fullName,
         _type == "teacher" => fullName,
         _type == "alumni" => roll + " " + fullName,
+        _type == "guest" => fullName,
         fullName
       )
     }

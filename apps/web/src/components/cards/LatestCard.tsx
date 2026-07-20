@@ -19,7 +19,7 @@ function MostReadCard({ article, className }: MostReadCardProps) {
 
   return (
     <Link
-      href={`/articles/article?id=${article.slug}`}
+      href={`/articles/${article.slug}`}
       className={cn('group flex w-full flex-col gap-3 lg:max-w-[8em]', className)}
     >
       <div className="relative aspect-video w-full overflow-hidden bg-muted lg:aspect-square lg:w-20 xl:w-24">

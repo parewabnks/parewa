@@ -1,16 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-
-import { SidebarTrigger2 } from '../ui/sidebar'
 import Link from 'next/link'
+import { SidebarTrigger2 } from '../ui/sidebar'
 
 function SubHeader({ title, contribute }: { title: string, contribute: { title: string, link: string } }) {
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50) // threshold before it appears
+      setScrolled(window.scrollY > 50)
     }
 
     window.addEventListener('scroll', handleScroll, { passive: true })

@@ -1,15 +1,18 @@
 import { defineQuery } from "next-sanity";
-import { notFound } from "next/navigation";
+import { urlFor } from "@/sanity/image";
+import { sanityFetch } from "@/sanity/live";
+
 import Image from "next/image";
+import { notFound } from "next/navigation";
+
+import { ArticleSchema } from "@/schemas/backend_schemas/articleSchema";
 
 import { PortableText } from "@portabletext/react";
-import { ArticleSchema } from "@/schemas/backend_schemas/articleSchema";
 import { portableTextComponents } from "@/lib/portable-text";
-import { sanityFetch } from "@/sanity/live";
-import { urlFor } from "@/sanity/image";
+
 import AuthorDetailsCard from "@/components/cards/AuthorDetailsCard";
-import LatestCard from "@/components/cards/LatestCard";
 import CategoryArticlesSection from "@/components/cards/CategoryArticles";
+import LatestCard from "@/components/cards/LatestCard";
 
 const ARTICLE_DETAIL_QUERY = defineQuery(`
   *[_type == "article" && slug.current == $slug][0]{
@@ -60,6 +63,7 @@ const ARTICLE_DETAIL_QUERY = defineQuery(`
           _type == "student" => roll + " " + fullName,
           _type == "teacher" => fullName,
           _type == "alumni" => roll + " " + fullName,
+          _type == "guest" => fullName,
           fullName
         )
       }
@@ -90,6 +94,7 @@ const ARTICLE_DETAIL_QUERY = defineQuery(`
           _type == "student" => roll + " " + fullName,
           _type == "teacher" => fullName,
           _type == "alumni" => roll + " " + fullName,
+          _type == "guest" => fullName,
           fullName
         )
       }
@@ -98,14 +103,14 @@ const ARTICLE_DETAIL_QUERY = defineQuery(`
 `);
 
 interface Props {
-  searchParams: Promise<{
-    id?: string;
+  params: Promise<{
+    articleId: string;
   }>;
 }
 
-export default async function Page({ searchParams }: Props) {
+export default async function Page({ params }: Props) {
 
-  const { id: slug } = await searchParams;
+  const { articleId: slug } = await params;
 
   if (!slug) notFound();
 

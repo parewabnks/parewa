@@ -1,22 +1,19 @@
 import "@/app/globals.css";
+
 export { metadata } from "@/lib/site-config";
+
 import { oswald, inter, notoSerif, robotoMono, roboto } from "@/lib/fonts";
 
-import { Toaster } from "@/components/ui/sonner"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
-
-import { AppSidebar } from "@/components/layout/Sidebar";
-import { sanityFetch, SanityLive } from "@/sanity/live";
 import { defineQuery } from "next-sanity";
-import Footer from "@/components/layout/Footer";
+import { sanityFetch, SanityLive } from "@/sanity/live";
 
+import Footer from "@/components/layout/Footer";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/layout/Sidebar";
 
 const HOME_LAYOUT_QUERY = defineQuery(`
   *[_type == "general"][0]{
     logoText,
-    announcement->{
-      _id
-    },
     categories[]->{
       "slug": slug.current,
        title 
@@ -75,7 +72,6 @@ export default async function RootLayout({
             {children}
             <Footer />
             <SanityLive />
-            <Toaster richColors position="bottom-right" />
           </SidebarInset>
         </SidebarProvider>
       </body>

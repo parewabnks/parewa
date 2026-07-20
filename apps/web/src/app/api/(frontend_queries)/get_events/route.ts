@@ -2,7 +2,6 @@ import { defineQuery } from "next-sanity";
 import { NextRequest, NextResponse } from "next/server";
 import { datestring } from "@/schemas/backend_schemas/dateStringSchema";
 import { z } from "zod";
-import { convertToUTC } from "@/helpers/date_conversion";
 import { client } from "@/sanity/client";
 
 const GET_EVENTS_QUERY = defineQuery(`
@@ -29,19 +28,22 @@ export async function GET(request: NextRequest) {
 
     const schemaVerification = datestring.safeParse(date);
 
-    if (!schemaVerification.success){
+    if (!schemaVerification.success) {
       return NextResponse.json({
         success: false,
         message: "Invalid date format. Expected format: yyyy-mm-dd",
         errors: z.treeifyError(schemaVerification.error),
-      });
+      },
+        { status: 400 }
+      );
     }
 
-    const utcDate = convertToUTC(schemaVerification.data);
+    // Parse the UTC date string directly without timezone assumptions
+    const utcDate = new Date(`${schemaVerification.data}T00:00:00Z`).toISOString();
 
     const endDate = new Date(utcDate);
 
-    endDate.setDate(endDate.getDate() + 1);
+    endDate.setUTCDate(endDate.getUTCDate() + 1);
 
     const endDateString = endDate.toISOString();
 
@@ -51,7 +53,7 @@ export async function GET(request: NextRequest) {
         endDate: endDateString,
       }
     )
-    
+
     return NextResponse.json({
       success: true,
       message: "Events fetched successfully",

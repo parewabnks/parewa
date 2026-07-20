@@ -1,7 +1,11 @@
+import { ITEMS_PER_PAGE } from '@/lib/site-config';
+
 import { sanityFetch } from '@/sanity/live';
 import { defineQuery } from 'next-sanity'
-import { ITEMS_PER_PAGE } from '@/lib/site-config';
+import { notFound } from 'next/navigation';
+
 import { articlesResultSchema } from '@/schemas/backend_schemas/homePageSchema'
+
 import CategoryArticlesSection from '@/components/cards/CategoryArticles';
 import ArticlesPagination from '@/components/misc/Pagination';
 
@@ -75,6 +79,7 @@ const ARTICLES_QUERY = defineQuery(`
 `)
 
 async function Page({ searchParams }: Props) {
+
   const SearchParams = await searchParams;
 
   const category = (SearchParams.category || '').trim();
@@ -102,11 +107,14 @@ async function Page({ searchParams }: Props) {
 
   const result = articlesResultSchema.safeParse(data)
 
-  console.log(result)
+  if (!result.success) {
+    console.error("Failed to parse articles result:", result.error);
+    notFound();
+  }
 
-  const totalArticles = result.data?.total || 0;
+  const totalArticles = result.data.total;
 
-  const articles = result.data?.articles || [];
+  const articles = result.data.articles;
 
   const totalPages = Math.max(1, Math.ceil(totalArticles / ITEMS_PER_PAGE));
 

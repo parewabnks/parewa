@@ -19,7 +19,7 @@ function CategoryArticlesSection({ article }: CategoryArticlesSectionProps) {
   const imageUrl = article.featuredImage?.asset?._ref ? urlFor(article.featuredImage).width(800).height(520).url() : null;
 
   return (
-    <Link href={`/articles/article?id=${article.slug}`} className="group flex w-full">
+    <Link href={`/articles/${article.slug}`} className="group flex w-full">
       <Card className="h-full relative overflow-hidden transition-shadow duration-200 z-10 flex flex-col sm:flex-row w-full py-0 bg-card text-card-foreground rounded-none ring-0">
         <div className="mx-auto relative w-full sm:w-[50%] shrink-0 h-48 sm:h-auto min-h-48 bg-muted/20">
           {imageUrl ? (

@@ -1,13 +1,14 @@
 import { defineQuery } from "next-sanity";
-import Image from "next/image";
-import { Separator } from "../ui/separator";
 import { sanityFetch } from "@/sanity/live";
+
+import Image from "next/image";
 import Link from "next/link";
-import { type Article } from "@/schemas/backend_schemas/articleSchema";
-import { articlesResultSchema } from "@/schemas/backend_schemas/homePageSchema";
 import { urlFor } from "@/sanity/image";
 
-type MainArticle = Article;
+import { type Article } from "@/schemas/backend_schemas/articleSchema";
+import { articlesResultSchema } from "@/schemas/backend_schemas/homePageSchema";
+
+import { Separator } from "../ui/separator";
 
 const ARTICLES_CARD_QUERY = defineQuery(`
   *[_type == "article" && category->slug.current == $category]
@@ -34,6 +35,7 @@ const ARTICLES_CARD_QUERY = defineQuery(`
         _type == "student" => roll + " " + fullName,
         _type == "teacher" => fullName,
         _type == "alumni" => roll + " " + fullName,
+        _type == "guest" => fullName,
         fullName
       )
     }
@@ -76,11 +78,11 @@ async function ArticlesSection({ category }: { category: { slug: string, title: 
 
 export default ArticlesSection
 
-function MainArticleCard({ article }: { article: MainArticle }) {
+function MainArticleCard({ article }: { article: Article }) {
   const featuredImage = article.featuredImage;
 
   return (
-    <Link className="group" href={`/articles/article?id=${article.slug}`}>
+    <Link className="group" href={`/articles/${article.slug}`}>
       <div className="relative w-full aspect-video overflow-hidden rounded-none">
         {featuredImage?.asset?._ref ? (
           <Image
@@ -104,9 +106,9 @@ function MainArticleCard({ article }: { article: MainArticle }) {
   )
 }
 
-function SideArticleCard({ article }: { article: MainArticle }) {
+function SideArticleCard({ article }: { article: Article }) {
   return (
-    <Link href={`/articles/article?id=${article.slug}`} className="group flex gap-3 mt-3">
+    <Link href={`/articles/${article.slug}`} className="group flex gap-3 mt-3">
       <div className="relative w-44 h-58 shrink-0 overflow-hidden rounded-none">
         {article.featuredImage?.asset?._ref && (
           <Image

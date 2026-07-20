@@ -599,55 +599,11 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint;
 
-// Source: ../web/src/app/(app)/(no_sub)/supportus/page.tsx
-// Variable: SUPPORTUS_QUERY
-// Query: *[_type == "general"][0]{    logoText,    siteTitle,    supportUsText,    announcement->{      _id    },    categories[]->{      "slug": slug.current,       title     },    socials[]->{      "icon": icon.name,      label,      platform,      url    },    privacy,    terms,    donorPrivacy,    sebsdb->{      label,      openInNewTab,      url    },    supportUs->{      label,      openInNewTab,      url    },    about->{      label,      openInNewTab,      url    },    links[]->{      label,      openInNewTab,      url    }  }
-export type SUPPORTUS_QUERY_RESULT = {
-  logoText: string | null;
-  siteTitle: string | null;
-  supportUsText: string | null;
-  announcement: null;
-  categories: Array<{
-    slug: string | null;
-    title: string | null;
-  }> | null;
-  socials: Array<{
-    icon: string | null;
-    label: string | null;
-    platform: string | null;
-    url: string | null;
-  }> | null;
-  privacy: string | null;
-  terms: string | null;
-  donorPrivacy: string | null;
-  sebsdb: {
-    label: string | null;
-    openInNewTab: boolean | null;
-    url: string | null;
-  } | null;
-  supportUs: {
-    label: string | null;
-    openInNewTab: boolean | null;
-    url: string | null;
-  } | null;
-  about: {
-    label: string | null;
-    openInNewTab: boolean | null;
-    url: string | null;
-  } | null;
-  links: Array<{
-    label: string | null;
-    openInNewTab: boolean | null;
-    url: string | null;
-  }> | null;
-} | null;
-
 // Source: ../web/src/app/(app)/(root)/layout.tsx
 // Variable: HOME_LAYOUT_QUERY
-// Query: *[_type == "general"][0]{    logoText,    announcement->{      _id    },    categories[]->{      "slug": slug.current,       title     },    socials[]->{      "icon": icon.name,      label,      platform,      url    },    privacy,    terms,    sebsdb->{      label,      openInNewTab,      url    },    supportUs->{      label,      openInNewTab,      url    },    about->{      label,      openInNewTab,      url    },    links[]->{      label,      openInNewTab,      url    }  }
+// Query: *[_type == "general"][0]{    logoText,    categories[]->{      "slug": slug.current,       title     },    socials[]->{      "icon": icon.name,      label,      platform,      url    },    privacy,    terms,    sebsdb->{      label,      openInNewTab,      url    },    supportUs->{      label,      openInNewTab,      url    },    about->{      label,      openInNewTab,      url    },    links[]->{      label,      openInNewTab,      url    }  }
 export type HOME_LAYOUT_QUERY_RESULT = {
   logoText: string | null;
-  announcement: null;
   categories: Array<{
     slug: string | null;
     title: string | null;
@@ -1126,10 +1082,9 @@ export type ARTICLES_QUERY_RESULT = {
 
 // Source: ../web/src/app/(app)/(sub)/layout.tsx
 // Variable: SUB_LAYOUT_QUERY
-// Query: *[_type == "general"][0]{    logoText,    announcement->{      _id    },    categories[]->{      "slug": slug.current,       title     },    socials[]->{      "icon": icon.name,      label,      platform,      url    },    privacy,    terms,    sebsdb->{      label,      openInNewTab,      url    },    supportUs->{      label,      openInNewTab,      url    },    about->{      label,      openInNewTab,      url    },    links[]->{      label,      openInNewTab,      url    }  }
+// Query: *[_type == "general"][0]{    logoText,    categories[]->{      "slug": slug.current,       title     },    socials[]->{      "icon": icon.name,      label,      platform,      url    },    privacy,    terms,    sebsdb->{      label,      openInNewTab,      url    },    supportUs->{      label,      openInNewTab,      url    },    about->{      label,      openInNewTab,      url    },    links[]->{      label,      openInNewTab,      url    }  }
 export type SUB_LAYOUT_QUERY_RESULT = {
   logoText: string | null;
-  announcement: null;
   categories: Array<{
     slug: string | null;
     title: string | null;
@@ -1194,7 +1149,7 @@ export type UNSUBSCRIBE_NEWSLETTER_QUERY_RESULT = {
 
 // Source: ../web/src/components/cards/ArticlesSection.tsx
 // Variable: ARTICLES_CARD_QUERY
-// Query: *[_type == "article" && category->slug.current == $category]  | order(publishedAt desc)[0...3] {    _id,    "slug": slug.current,    title,    oneLiner,    featuredImage,    publishedAt,    tags,    category->{      _id,      title,      "slug": slug.current    },    author->{      ...,      "role": role->title,      "position": position->title,      "department": department->title,      "house": house->title,      "displayName": select(        _type == "student" => roll + " " + fullName,        _type == "teacher" => fullName,        _type == "alumni" => roll + " " + fullName,        fullName      )    }  }
+// Query: *[_type == "article" && category->slug.current == $category]  | order(publishedAt desc)[0...3] {    _id,    "slug": slug.current,    title,    oneLiner,    featuredImage,    publishedAt,    tags,    category->{      _id,      title,      "slug": slug.current    },    author->{      ...,      "role": role->title,      "position": position->title,      "department": department->title,      "house": house->title,      "displayName": select(        _type == "student" => roll + " " + fullName,        _type == "teacher" => fullName,        _type == "alumni" => roll + " " + fullName,        _type == "guest" => fullName,        fullName      )    }  }
 export type ARTICLES_CARD_QUERY_RESULT = Array<{
   _id: string;
   slug: string | null;
@@ -1290,9 +1245,9 @@ export type ARTICLES_CARD_QUERY_RESULT = Array<{
     | null;
 }>;
 
-// Source: ../web/src/components/home/main.tsx
+// Source: ../web/src/components/home/Main.tsx
 // Variable: MAIN_ARTICLES_QUERY
-// Query: *[_type == "article"] | order(_createdAt desc)[0...3]{    _id,    "slug": slug.current,    title,    oneLiner,    featuredImage,    publishedAt,    tags,    category->{      _id,      title,      "slug": slug.current    },    author->{      ...,      "role": role->title,      "position": position->title,      "department": department->title,      "house": house->title,      "displayName": select(        _type == "student" => roll + " " + fullName,        _type == "teacher" => fullName,        _type == "alumni" => roll + " " + fullName,        fullName      )    }  }
+// Query: *[_type == "article"] | order(_createdAt desc)[0...3]{    _id,    "slug": slug.current,    title,    oneLiner,    featuredImage,    publishedAt,    tags,    category->{      _id,      title,      "slug": slug.current    },    author->{      ...,      "role": role->title,      "position": position->title,      "department": department->title,      "house": house->title,      "displayName": select(        _type == "student" => roll + " " + fullName,        _type == "teacher" => fullName,        _type == "alumni" => roll + " " + fullName,        _type == "guest" => fullName,        fullName      )    }  }
 export type MAIN_ARTICLES_QUERY_RESULT = Array<{
   _id: string;
   slug: string | null;
@@ -1416,8 +1371,7 @@ export type FOOTER_QUERY_RESULT = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '\n  *[_type == "general"][0]{\n    logoText,\n    siteTitle,\n    supportUsText,\n    announcement->{\n      _id\n    },\n    categories[]->{\n      "slug": slug.current,\n       title \n    },\n    socials[]->{\n      "icon": icon.name,\n      label,\n      platform,\n      url\n    },\n    privacy,\n    terms,\n    donorPrivacy,\n    sebsdb->{\n      label,\n      openInNewTab,\n      url\n    },\n    supportUs->{\n      label,\n      openInNewTab,\n      url\n    },\n    about->{\n      label,\n      openInNewTab,\n      url\n    },\n    links[]->{\n      label,\n      openInNewTab,\n      url\n    }\n  }\n': SUPPORTUS_QUERY_RESULT;
-    '\n  *[_type == "general"][0]{\n    logoText,\n    announcement->{\n      _id\n    },\n    categories[]->{\n      "slug": slug.current,\n       title \n    },\n    socials[]->{\n      "icon": icon.name,\n      label,\n      platform,\n      url\n    },\n    privacy,\n    terms,\n    sebsdb->{\n      label,\n      openInNewTab,\n      url\n    },\n    supportUs->{\n      label,\n      openInNewTab,\n      url\n    },\n    about->{\n      label,\n      openInNewTab,\n      url\n    },\n    links[]->{\n      label,\n      openInNewTab,\n      url\n    }\n  }\n':
+    '\n  *[_type == "general"][0]{\n    logoText,\n    categories[]->{\n      "slug": slug.current,\n       title \n    },\n    socials[]->{\n      "icon": icon.name,\n      label,\n      platform,\n      url\n    },\n    privacy,\n    terms,\n    sebsdb->{\n      label,\n      openInNewTab,\n      url\n    },\n    supportUs->{\n      label,\n      openInNewTab,\n      url\n    },\n    about->{\n      label,\n      openInNewTab,\n      url\n    },\n    links[]->{\n      label,\n      openInNewTab,\n      url\n    }\n  }\n':
       HOME_LAYOUT_QUERY_RESULT | SUB_LAYOUT_QUERY_RESULT;
     '\n  *[_type == "general"][0]{\n    logoText,\n    sliders[]->{\n      title,\n      author,\n      image\n    },\n    categories[]->{\n    "slug": slug.current,\n     title \n    },\n    supportUs->{\n      label,\n      openInNewTab,\n      url\n    },\n    about->{\n      label,\n      openInNewTab,\n      url\n    },\n  }\n': HOME_PAGE_QUERY_RESULT;
     '\n  *[_type == "article" && slug.current == $slug][0]{\n    ...,\n    "slug": slug.current,\n    author->{\n      ...,\n      "role": role->title,\n      "position": position->title,\n      "department": department->title,\n      "house": house->title,\n      "displayName": select(\n        _type == "student" => roll + " " + fullName,\n        _type == "teacher" => fullName,\n        _type == "alumni" => roll + " " + fullName,\n        fullName\n      )\n    },\n    category->{\n      _id,\n      title,\n      "slug": slug.current\n    },\n    "relatedArticles": *[\n      _type == "article" &&\n      _id != ^._id &&\n      category._ref == ^.category._ref\n    ] | order(publishedAt desc)[0...3]{\n      _id,\n      "slug": slug.current,\n      title,\n      oneLiner,\n      featuredImage,\n      publishedAt,\n      tags,\n      category->{\n        _id,\n        title,\n        "slug": slug.current\n      },\n      author->{\n        ...,\n        "role": role->title,\n        "position": position->title,\n        "department": department->title,\n        "house": house->title,\n        "displayName": select(\n          _type == "student" => roll + " " + fullName,\n          _type == "teacher" => fullName,\n          _type == "alumni" => roll + " " + fullName,\n          fullName\n        )\n      }\n    },\n    "latestArticles": *[\n      _type == "article" &&\n      _id != ^._id\n    ] | order(publishedAt desc)[0...2]{\n      _id,\n      "slug": slug.current,\n      title,\n      oneLiner,\n      featuredImage,\n      publishedAt,\n      tags,\n      category->{\n        _id,\n        title,\n        "slug": slug.current\n      },\n      author->{\n        ...,\n        "role": role->title,\n        "position": position->title,\n        "department": department->title,\n        "house": house->title,\n        "displayName": select(\n          _type == "student" => roll + " " + fullName,\n          _type == "teacher" => fullName,\n          _type == "alumni" => roll + " " + fullName,\n          fullName\n        )\n      }\n    }\n  }\n': ARTICLE_DETAIL_QUERY_RESULT;
@@ -1425,8 +1379,8 @@ declare module "@sanity/client" {
     '\n  *[_type == "event" && date >= $startDate && date < $endDate]{\n    date,\n    location,\n    "slug": slug.current,\n    title\n  }\n': GET_EVENTS_QUERY_RESULT;
     '\n  *[_type == "newsletterEmail" && email == $email]{\n    _id,\n    email,\n    subscribed\n  }[0]\n':
       SUBSCRIBE_NEWSLETTER_QUERY_RESULT | UNSUBSCRIBE_NEWSLETTER_QUERY_RESULT;
-    '\n  *[_type == "article" && category->slug.current == $category]\n  | order(publishedAt desc)[0...3] {\n    _id,\n    "slug": slug.current,\n    title,\n    oneLiner,\n    featuredImage,\n    publishedAt,\n    tags,\n    category->{\n      _id,\n      title,\n      "slug": slug.current\n    },\n    author->{\n      ...,\n      "role": role->title,\n      "position": position->title,\n      "department": department->title,\n      "house": house->title,\n      "displayName": select(\n        _type == "student" => roll + " " + fullName,\n        _type == "teacher" => fullName,\n        _type == "alumni" => roll + " " + fullName,\n        fullName\n      )\n    }\n  }\n': ARTICLES_CARD_QUERY_RESULT;
-    '\n  *[_type == "article"] | order(_createdAt desc)[0...3]{\n    _id,\n    "slug": slug.current,\n    title,\n    oneLiner,\n    featuredImage,\n    publishedAt,\n    tags,\n    category->{\n      _id,\n      title,\n      "slug": slug.current\n    },\n    author->{\n      ...,\n      "role": role->title,\n      "position": position->title,\n      "department": department->title,\n      "house": house->title,\n      "displayName": select(\n        _type == "student" => roll + " " + fullName,\n        _type == "teacher" => fullName,\n        _type == "alumni" => roll + " " + fullName,\n        fullName\n      )\n    }\n  }\n': MAIN_ARTICLES_QUERY_RESULT;
+    '\n  *[_type == "article" && category->slug.current == $category]\n  | order(publishedAt desc)[0...3] {\n    _id,\n    "slug": slug.current,\n    title,\n    oneLiner,\n    featuredImage,\n    publishedAt,\n    tags,\n    category->{\n      _id,\n      title,\n      "slug": slug.current\n    },\n    author->{\n      ...,\n      "role": role->title,\n      "position": position->title,\n      "department": department->title,\n      "house": house->title,\n      "displayName": select(\n        _type == "student" => roll + " " + fullName,\n        _type == "teacher" => fullName,\n        _type == "alumni" => roll + " " + fullName,\n        _type == "guest" => fullName,\n        fullName\n      )\n    }\n  }\n': ARTICLES_CARD_QUERY_RESULT;
+    '\n  *[_type == "article"] | order(_createdAt desc)[0...3]{\n    _id,\n    "slug": slug.current,\n    title,\n    oneLiner,\n    featuredImage,\n    publishedAt,\n    tags,\n    category->{\n      _id,\n      title,\n      "slug": slug.current\n    },\n    author->{\n      ...,\n      "role": role->title,\n      "position": position->title,\n      "department": department->title,\n      "house": house->title,\n      "displayName": select(\n        _type == "student" => roll + " " + fullName,\n        _type == "teacher" => fullName,\n        _type == "alumni" => roll + " " + fullName,\n        _type == "guest" => fullName,\n        fullName\n      )\n    }\n  }\n': MAIN_ARTICLES_QUERY_RESULT;
     '\n  *[_type == "general"][0]{\n    footerText,\n    footerCategories[]->{\n      "slug": slug.current,\n      title\n    },\n    footerSocials[]->{\n      "icon": icon.name,\n      label,\n      platform,\n      url\n    },\n    links[]->{\n      label,\n      openInNewTab,\n      url\n    },\n    privacy,\n    logoText\n  }\n': FOOTER_QUERY_RESULT;
   }
 }

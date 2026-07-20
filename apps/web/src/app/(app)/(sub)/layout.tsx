@@ -1,24 +1,23 @@
 import "@/app/globals.css";
+
 export { metadata } from "@/lib/site-config";
+
 import { oswald, inter, notoSerif, robotoMono, roboto } from "@/lib/fonts";
-import { Toaster } from "@/components/ui/sonner"
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
-import { AppSidebar } from "@/components/layout/Sidebar";
-import { sanityFetch, SanityLive } from "@/sanity/live";
 import { defineQuery } from "next-sanity";
-import SubHeader from "@/components/layout/SubHeader";
-import Navbar from "@/components/layout/Navbar";
-import { categoriesSchema, rlinkSchema } from "@/schemas/backend_schemas/homePageSchema";
-import Footer from "@/components/layout/Footer";
+import { sanityFetch, SanityLive } from "@/sanity/live";
 
+import { categoriesSchema, rlinkSchema } from "@/schemas/backend_schemas/homePageSchema";
+
+import Navbar from "@/components/layout/Navbar";
+import SubHeader from "@/components/layout/SubHeader";
+import Footer from "@/components/layout/Footer";
+import { AppSidebar } from "@/components/layout/Sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 const SUB_LAYOUT_QUERY = defineQuery(`
   *[_type == "general"][0]{
     logoText,
-    announcement->{
-      _id
-    },
     categories[]->{
       "slug": slug.current,
        title 
@@ -81,7 +80,7 @@ export default async function RootLayout({
     : {
       label: "Support Us",
       openInNewTab: false,
-      url: "/support-us",
+      url: "https://sebsna.org/donate/",
     };
 
   const about = aboutParsed.success
@@ -123,7 +122,6 @@ export default async function RootLayout({
             </div>
             <Footer />
             <SanityLive />
-            <Toaster richColors position="bottom-right" />
           </SidebarInset>
         </SidebarProvider>
       </body>
