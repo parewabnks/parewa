@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -17,15 +17,16 @@ interface Slide {
 }
 
 function Slider({ slides }: { slides: Slide[] }) {
-  const autoplayPlugin = useRef(
+  const [autoplayPlugin] = useState(() =>
     Autoplay({ delay: 10000, stopOnInteraction: true })
   );
+
   return (
     <Carousel
       className="relative h-[50vh] w-full overflow-hidden md:h-120"
-      plugins={[autoplayPlugin.current]}
-      onMouseEnter={autoplayPlugin.current.stop}
-      onMouseLeave={autoplayPlugin.current.reset}
+      plugins={[autoplayPlugin]}
+      onMouseEnter={autoplayPlugin.stop}
+      onMouseLeave={autoplayPlugin.reset}
     >
       <CarouselContent className="h-full">
         {slides.map((slide, index) => (

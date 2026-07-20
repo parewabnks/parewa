@@ -6,7 +6,7 @@ import Slider from "@/components/home/Slider";
 import { Header } from "@/components/layout/Header";
 import { urlFor } from "@/sanity/image";
 import { categoriesSchema, rlinkSchema, slideSchema } from "@/schemas/backend_schemas/homePageSchema";
-import Main from "@/components/home/main";
+import Main from "@/components/home/Main";
 import ArticlesSection from "@/components/cards/ArticlesSection";
 
 const HOME_PAGE_QUERY = defineQuery(`

@@ -44,8 +44,10 @@ function PaginationControls({
 
     const renderPaginationLinks = () => {
         const links: React.ReactNode[] = [];
+        
         let startPage = Math.max(1, safeCurrentPage - Math.floor(MAX_PAGES_TO_SHOW / 2));
-        let endPage = Math.min(totalPages, startPage + MAX_PAGES_TO_SHOW - 1);
+
+        const endPage = Math.min(totalPages, startPage + MAX_PAGES_TO_SHOW - 1);
 
         if (endPage - startPage + 1 < MAX_PAGES_TO_SHOW) {
             startPage = Math.max(1, endPage - MAX_PAGES_TO_SHOW + 1);
