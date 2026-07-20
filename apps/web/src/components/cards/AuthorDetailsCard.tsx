@@ -46,7 +46,22 @@ function AuthorDetailsCard({
           )}
 
           <div className="flex flex-col gap-2">
-            <span className="text-lg font-mono font-bold leading-none">{displayName}</span>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-lg font-mono font-bold leading-none">{displayName}</span>
+              {tags.length > 0 && (
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag) => (
+                    <Badge
+                      key={tag}
+                      variant="default"
+                      className="rounded-full bg-accent text-muted text-sm p-3 font-normal"
+                    >
+                      {tag}
+                    </Badge>
+                  ))}
+                </div>
+              )}
+            </div>
             {role && (
               <span className="font-mono text-sm text-muted-foreground">{role}</span>
             )}
@@ -56,21 +71,8 @@ function AuthorDetailsCard({
           </div>
         </div>
 
-        <ShareArticleButton size="sm" className="shrink-0 hover:bg-primary-foreground/10 rounded-none p-4 my-auto" />
+        <ShareArticleButton size="sm" className="shrink-0 hover:bg-primary-foreground/10 rounded-none p-4 text-xs my-auto" />
       </div>
-      {tags.length > 0 && (
-        <div className="mt-1 flex flex-wrap gap-3">
-          {tags.map((tag) => (
-            <Badge
-              key={tag}
-              variant="default"
-              className="rounded-full bg-accent text-muted text-md p-3 font-normal"
-            >
-              {tag}
-            </Badge>
-          ))}
-        </div>
-      )}
     </div>
   );
 }

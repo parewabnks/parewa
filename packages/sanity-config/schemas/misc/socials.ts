@@ -7,6 +7,7 @@ export default defineType({
   icon: Globe,
   type: 'document',
   fields: [
+    // Profile
     defineField({
       name: 'platform',
       title: 'Platform',
@@ -19,6 +20,8 @@ export default defineType({
       type: 'url',
       validation: (Rule) => Rule.required(),
     }),
+    
+    // Display
     defineField({
       name: 'label',
       title: 'Label',

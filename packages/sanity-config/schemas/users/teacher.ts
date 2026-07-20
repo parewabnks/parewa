@@ -14,6 +14,7 @@ export default defineType({
     },
   },
   fields: [
+    // Identity
     defineField({
       name: 'fullName',
       title: 'Full Name',
@@ -38,6 +39,8 @@ export default defineType({
       to: { type: 'department' },
       validation: (Rule) => Rule.required(),
     }),
+    
+    // Access and position
     defineField({
       name: 'role',
       title: 'Role',

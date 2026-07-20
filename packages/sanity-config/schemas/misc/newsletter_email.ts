@@ -7,6 +7,7 @@ export default defineType({
   icon: Mail,
   type: 'document',
   fields: [
+    // Subscriber info
     defineField({
       name: 'email',
       title: 'Email',
@@ -17,6 +18,8 @@ export default defineType({
       title: 'Name',
       type: 'string',
     }),
+    
+    // Status
     defineField({
       name: 'subscribed',
       title: 'Subscribed',

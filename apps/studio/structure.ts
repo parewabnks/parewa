@@ -11,11 +11,7 @@ const structure: StructureResolver = (S) =>
             .title('Content')
             .items([
               S.documentTypeListItem('article').title('Articles'),
-              S.documentTypeListItem('announcement').title('Announcements'),
-              S.documentTypeListItem('event').title('Events'),
-              S.documentTypeListItem('fundraiser').title('Fundraisers'),
-              S.documentTypeListItem('newsletter').title('Newsletters'),
-              S.documentTypeListItem('scholarship').title('Scholarships'),
+              S.documentTypeListItem('event').title('Events')
             ])
         ),
 

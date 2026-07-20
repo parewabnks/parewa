@@ -11,7 +11,7 @@ type MainArticle = Article;
 
 const ARTICLES_CARD_QUERY = defineQuery(`
   *[_type == "article" && category->slug.current == $category]
-  | order(publishedAt desc)[0...4] {
+  | order(publishedAt desc)[0...3] {
     _id,
     "slug": slug.current,
     title,
@@ -42,7 +42,8 @@ const ARTICLES_CARD_QUERY = defineQuery(`
 
 async function ArticlesSection({ category }: { category: { slug: string, title: string } }) {
 
-  const { data: main } = await sanityFetch({query: ARTICLES_CARD_QUERY,
+  const { data: main } = await sanityFetch({
+    query: ARTICLES_CARD_QUERY,
     params: { category: category.slug },
   });
 
@@ -60,7 +61,7 @@ async function ArticlesSection({ category }: { category: { slug: string, title: 
           <Separator />
           {validatedMain[0] && <MainArticleCard article={validatedMain[0]} />}
         </div>
-        <div className="flex flex-col gap-6 w-full lg:w-1/3 h-full">
+        <div className="flex flex-col gap-6 w-full lg:w-1/2 h-full">
           {validatedMain.slice(1).map((article) => (
             <div key={article._id}>
               <Separator />
@@ -106,12 +107,19 @@ function MainArticleCard({ article }: { article: MainArticle }) {
 function SideArticleCard({ article }: { article: MainArticle }) {
   return (
     <Link href={`/articles/article?id=${article.slug}`} className="group flex gap-3 mt-3">
-      <div className="relative w-48 h-42 shrink-0 overflow-hidden rounded-none">
+      <div className="relative w-44 h-58 shrink-0 overflow-hidden rounded-none">
         {article.featuredImage?.asset?._ref && (
           <Image
-            src={urlFor(article.featuredImage).width(200).height(140).url()}
+            src={urlFor(article.featuredImage)
+              .width(352)
+              .height(464)
+              .fit('crop')
+              .quality(80)
+              .auto('format')
+              .url()}
             alt={article.title}
             fill
+            sizes="176px"
             className="object-cover transition-transform"
           />
         )}
@@ -129,6 +137,9 @@ function SideArticleCard({ article }: { article: MainArticle }) {
         </h3>
         <div className="author font-extralight text-base text-primary mt-1 font-mono">
           {article.author.displayName}
+        </div>
+        <div className="author text-base font-light text-foreground w-full sm:w-[80%] group-hover:text-primary font-serif line-clamp-3">
+          {article.oneLiner}
         </div>
       </div>
     </Link>

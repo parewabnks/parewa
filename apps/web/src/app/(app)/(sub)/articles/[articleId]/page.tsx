@@ -118,14 +118,14 @@ export default async function Page({ searchParams }: Props) {
   const article = parsed.data;
 
   return (
-    <article className="mx-auto flex min-h-screen w-full max-w-352 flex-col gap-3 px-4 py-6 sm:px-6 md:px-8 lg:px-10 lg:py-8">
+    <article className="mx-auto flex min-h-screen w-full flex-col gap-3 px-4 pb-6">
       <div className="title w-full max-w-3xl font-heading text-2xl leading-tight uppercase underline decoration-1 decoration-muted underline-offset-4 sm:text-3xl md:text-4xl lg:text-5xl">
         {article?.title}
       </div>
-      <div className="one_liner w-full max-w-3xl font-secondary text-base leading-relaxed text-foreground/60 sm:text-lg md:text-xl lg:text-2xl">
+      <div className="one_liner w-full max-w-3xl font-secondary text-base leading-relaxed text-foreground/60 sm:text-lg md:text-xl">
         {article?.oneLiner}
       </div>
-      <div className="authors-details w-full max-w-4xl">
+      <div className="authors-details w-full max-w-3xl">
         <AuthorDetailsCard
           displayName={article?.author?.displayName}
           role={article?.author?.role}
@@ -134,7 +134,7 @@ export default async function Page({ searchParams }: Props) {
           displayPictureUrl={article?.author?.displayPicture ? urlFor(article?.author?.displayPicture).url() : ""}
         />
       </div>
-      <div className="featured-image relative aspect-video w-full max-w-4xl overflow-hidden rounded-sm">
+      <div className="featured-image relative aspect-video w-full max-w-3xl overflow-hidden rounded-sm">
         {article?.featuredImage && (
           <Image
             src={urlFor(article.featuredImage).url()}
@@ -146,12 +146,12 @@ export default async function Page({ searchParams }: Props) {
         )}
       </div>
       {article?.imageDescription && (
-        <div className="my-2 w-full max-w-4xl font-mono text-sm text-muted-foreground">
+        <div className="my-2 w-full max-w-3xl font-mono text-sm text-muted-foreground">
           {article.imageDescription}
         </div>
       )}
       <div className="main flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
-        <div className="content min-w-0 flex-1">
+        <div className="content min-w-0 flex-1 max-w-2xl">
           <div className="portable-text">
             <PortableText
               value={article.content}

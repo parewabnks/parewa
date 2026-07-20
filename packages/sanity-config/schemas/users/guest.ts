@@ -13,6 +13,7 @@ export default defineType({
     },
   },
   fields: [
+    // Identity
     defineField({
       name: 'fullName',
       title: 'Full Name',
@@ -40,6 +41,8 @@ export default defineType({
       title: 'Notes',
       type: 'text',
     }),
+    
+    // Access
     defineField({
       name: 'role',
       title: 'Role',

@@ -1,10 +1,6 @@
 // Content
-import announcement from './schemas/content/announcement'
 import article from './schemas/content/article'
 import event from './schemas/content/event'
-import fundraiser from './schemas/content/fundraiser'
-import newsletter from './schemas/content/newsletter'
-import scholarship from './schemas/content/scholarship'
 
 // Users
 import alumni from './schemas/users/alumni'
@@ -31,12 +27,8 @@ import credit from './schemas/settings/credit'
 import general from './schemas/settings/general'
 
 export const schemaTypes = [
-  announcement,
   article,
   event,
-  fundraiser,
-  newsletter,
-  scholarship,
   alumni,
   guest,
   student,

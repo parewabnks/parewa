@@ -22,6 +22,7 @@ export default defineType({
     },
   },
   fields: [
+    // Identity
     defineField({
       name: 'fullName',
       title: 'Name',
@@ -40,6 +41,8 @@ export default defineType({
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),
+
+    // Relationships
     defineField({
       name: 'house',
       title: 'House',
@@ -78,7 +81,6 @@ export default defineType({
         filter: (context: ReferenceFilterResolverContext) => {
           const doc = context.document as { role?: { _ref?: string } }
           const roleRef = doc.role?._ref
-
           if (!roleRef) {
             return {
               filter: 'defined(role)'
@@ -91,6 +93,8 @@ export default defineType({
         }
       }
     }),
+
+    // Media
     defineField({
       name: 'displayPicture',
       title: 'Display Picture',

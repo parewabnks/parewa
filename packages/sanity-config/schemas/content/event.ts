@@ -6,11 +6,17 @@ export default defineType({
   title: 'Event',
   icon: Calendar,
   type: 'document',
+  groups: [
+    { name: 'general', title: 'General' },
+    { name: 'details', title: 'Details' },
+  ],
   fields: [
+    // General
     defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
+      group: 'general',
       validation: (Rule) => Rule.required().min(3),
     }),
     defineField({
@@ -18,12 +24,16 @@ export default defineType({
       title: 'Slug',
       type: 'slug',
       options: { source: 'title' },
+      group: 'general',
       validation: (Rule) => Rule.required(),
     }),
+    
+    // Details
     defineField({
       name: 'date',
       title: 'Date',
       type: 'datetime',
+      group: 'details',
       options: {
         dateFormat: 'YYYY-MM-DD',
         timeFormat: 'HH:mm',
@@ -36,6 +46,7 @@ export default defineType({
       name: 'location',
       title: 'Location',
       type: 'string',
+      group: 'details',
       validation: (Rule) => Rule.required(),
     })
   ],

@@ -18,12 +18,15 @@ export default defineType({
     select: { title: 'title' }
   },
   fields: [
+    // Metadata
     defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
       readOnly: true,
     }),
+
+    // General
     defineField({
       name: 'siteTitle',
       title: 'Site Title',
@@ -49,13 +52,8 @@ export default defineType({
       type: 'string',
       group: 'general',
     }),
-    defineField({
-      name: 'announcement',
-      title: 'Active Announcement',
-      type: 'reference',
-      group: 'content',
-      to: [{ type: 'announcement' }],
-    }),
+
+    // Content
     defineField({
       name: 'categories',
       title: 'Active Categories',
@@ -132,6 +130,8 @@ export default defineType({
       type: 'url',
       group: 'content',
     }),
+    
+    // Footer
     defineField({
       name: 'footerText',
       title: 'Footer Text',

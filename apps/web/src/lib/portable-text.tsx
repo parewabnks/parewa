@@ -5,7 +5,7 @@ import { urlFor } from "@/sanity/image";
 export const portableTextComponents: PortableTextComponents = {
   block: {
     normal: ({ children }) => (
-      <p className="mb-6 leading-loose font-serif text-xl text-muted">
+      <p className="mb-6 leading-loose font-serif text-lg text-muted">
         {children}
       </p>
     ),

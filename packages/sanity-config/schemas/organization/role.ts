@@ -7,6 +7,7 @@ export default defineType({
   icon: Users,
   type: 'document',
   fields: [
+    // Identity
     defineField({
       name: 'title',
       title: 'Title',
@@ -20,6 +21,8 @@ export default defineType({
       options: { source: 'title' },
       validation: (Rule) => Rule.required(),
     }),
+    
+    // Details
     defineField({
       name: 'description',
       title: 'Description',

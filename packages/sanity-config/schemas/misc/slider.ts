@@ -7,6 +7,7 @@ export default defineType({
   icon: Image,
   type: 'document',
   fields: [
+    // Slide content
     defineField({
       name: 'title',
       title: 'Title',
@@ -18,6 +19,8 @@ export default defineType({
       title: 'Author',
       type: 'string',
     }),
+    
+    // Media
     defineField({
       name: 'image',
       title: 'Image',

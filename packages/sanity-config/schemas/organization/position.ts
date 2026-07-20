@@ -7,6 +7,7 @@ export default defineType({
   icon: Briefcase,
   type: 'document',
   fields: [
+    // Identity
     defineField({
       name: 'title',
       title: 'Title',
@@ -26,6 +27,8 @@ export default defineType({
       type: 'reference',
       to: [{ type: 'role' }],
     }),
+    
+    // Details
     defineField({
       name: 'description',
       title: 'Description',

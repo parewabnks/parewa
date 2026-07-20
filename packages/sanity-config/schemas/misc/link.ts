@@ -7,12 +7,15 @@ export default defineType({
   icon: Link,
   type: 'document',
   fields: [
+    // Link metadata
     defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
       validation: (Rule) => Rule.required().min(2),
     }),
+    
+    // Display
     defineField({
       name: 'url',
       title: 'URL',

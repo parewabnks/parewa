@@ -6,6 +6,13 @@ export default defineType({
   title: 'Article',
   icon: FileText,
   type: 'document',
+  groups: [
+    { name: 'general', title: 'General' },
+    { name: 'content', title: 'Content' },
+    { name: 'media', title: 'Media' },
+    { name: 'taxonomy', title: 'Taxonomy' },
+    { name: 'publishing', title: 'Publishing' },
+  ],
   preview: {
     select: {
       title: 'title',
@@ -17,40 +24,52 @@ export default defineType({
       name: 'title',
       title: 'Title',
       type: 'string',
+      group: 'general',
       validation: (Rule) => Rule.required().min(3),
     }),
+
+    // General
     defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
       options: { source: 'title' },
+      group: 'general',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'oneLiner',
       title: 'One Liner',
       type: 'string',
+      group: 'content',
       validation: (Rule) => Rule.required(),
     }),
+    
+    // Content
     defineField({
       name: 'content',
       title: 'Content',
       type: 'array',
       of: [{ type: 'block' }],
+      group: 'content',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'featuredImage',
       title: 'Featured Image',
       type: 'image',
+      group: 'media',
       options: {
         hotspot: true,
       },
     }),
+
+    // Media
     defineField({
       name: 'imageDescription',
       title: 'Image Description',
       type: 'string',
+      group: 'media',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -58,8 +77,11 @@ export default defineType({
       title: 'Category',
       type: 'reference',
       to: [{ type: 'category' }],
+      group: 'taxonomy',
       validation: (Rule) => Rule.required(),
     }),
+
+    // Taxonomy
     defineField({
       name: 'author',
       title: 'Author',
@@ -69,11 +91,13 @@ export default defineType({
         { type: 'teacher' },
         { type: 'alumni' },
       ],
+      group: 'taxonomy',
     }),
     defineField({
       name: 'tags',
       title: 'Tags',
       type: 'array',
+      group: 'content',
       of: [
         {
           type: 'string',
@@ -97,10 +121,13 @@ export default defineType({
           return true
         }),
     }),
+
+    // Publishing
     defineField({
       name: 'publishedAt',
       title: 'Published At',
       type: 'datetime',
+      group: 'publishing',
       validation: (Rule) => Rule.required(),
     }),
   ],
