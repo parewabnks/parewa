@@ -15,13 +15,6 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
-export type AnnouncementReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "announcement";
-};
-
 export type CategoryReference = {
   _ref: string;
   _type: "reference";
@@ -68,7 +61,6 @@ export type General = {
   siteDescription?: string;
   supportEmail?: string;
   logoText?: string;
-  announcement?: AnnouncementReference;
   categories?: Array<
     {
       _key: string;
@@ -220,124 +212,6 @@ export type Link = {
   openInNewTab?: boolean;
 };
 
-export type AlumniReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "alumni";
-};
-
-export type GuestReference = {
-  _ref: string;
-  _type: "reference";
-  _weak?: boolean;
-  [internalGroqTypeReferenceTo]?: "guest";
-};
-
-export type Scholarship = {
-  _id: string;
-  _type: "scholarship";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name?: string;
-  roll?: string;
-  slug?: Slug;
-  raised?: number;
-  amount?: number;
-  deadline?: string;
-  picture?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  videoLink?: string;
-  background?: string;
-  goals?: string;
-  reasonForAid?: string;
-  donors?: Array<{
-    donor?: AlumniReference | GuestReference;
-    amount?: number;
-    donatedAt?: string;
-    _key: string;
-  }>;
-};
-
-export type Slug = {
-  _type: "slug";
-  current?: string;
-  source?: string;
-};
-
-export type Newsletter = {
-  _id: string;
-  _type: "newsletter";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug?: Slug;
-  subject?: string;
-  body?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
-  publishedAt?: string;
-};
-
-export type Fundraiser = {
-  _id: string;
-  _type: "fundraiser";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug?: Slug;
-  goal?: number;
-  raised?: number;
-  description?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
-  donors?: Array<{
-    donor?: AlumniReference | GuestReference;
-    amount?: number;
-    donatedAt?: string;
-    _key: string;
-  }>;
-  deadline?: string;
-};
-
 export type RoleReference = {
   _ref: string;
   _type: "reference";
@@ -371,6 +245,12 @@ export type Event = {
   location?: string;
 };
 
+export type Slug = {
+  _type: "slug";
+  current?: string;
+  source?: string;
+};
+
 export type StudentReference = {
   _ref: string;
   _type: "reference";
@@ -383,6 +263,13 @@ export type TeacherReference = {
   _type: "reference";
   _weak?: boolean;
   [internalGroqTypeReferenceTo]?: "teacher";
+};
+
+export type AlumniReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "alumni";
 };
 
 export type Article = {
@@ -421,55 +308,6 @@ export type Article = {
   };
   imageDescription?: string;
   category?: CategoryReference;
-  author?: StudentReference | TeacherReference | AlumniReference;
-  tags?: Array<string>;
-  publishedAt?: string;
-};
-
-export type Category = {
-  _id: string;
-  _type: "category";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug?: Slug;
-  description?: string;
-};
-
-export type Announcement = {
-  _id: string;
-  _type: "announcement";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug?: Slug;
-  content?: Array<{
-    children?: Array<{
-      marks?: Array<string>;
-      text?: string;
-      _type: "span";
-      _key: string;
-    }>;
-    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
-    listItem?: "bullet" | "number";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
-  featuredImage?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
   author?: StudentReference | TeacherReference | AlumniReference;
   tags?: Array<string>;
   publishedAt?: string;
@@ -608,6 +446,17 @@ export type House = {
   description?: string;
 };
 
+export type Category = {
+  _id: string;
+  _type: "category";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  description?: string;
+};
+
 export type SanityImagePaletteSwatch = {
   _type: "sanity.imagePaletteSwatch";
   background?: string;
@@ -706,7 +555,6 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
-  | AnnouncementReference
   | CategoryReference
   | SliderReference
   | SocialsReference
@@ -723,20 +571,14 @@ export type AllSanitySchemaTypes =
   | NewsletterEmail
   | Rlink
   | Link
-  | AlumniReference
-  | GuestReference
-  | Scholarship
-  | Slug
-  | Newsletter
-  | Fundraiser
   | RoleReference
   | Guest
   | Event
+  | Slug
   | StudentReference
   | TeacherReference
+  | AlumniReference
   | Article
-  | Category
-  | Announcement
   | Alumni
   | DepartmentReference
   | PositionReference
@@ -747,6 +589,7 @@ export type AllSanitySchemaTypes =
   | Position
   | Role
   | House
+  | Category
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -763,9 +606,7 @@ export type SUPPORTUS_QUERY_RESULT = {
   logoText: string | null;
   siteTitle: string | null;
   supportUsText: string | null;
-  announcement: {
-    _id: string;
-  } | null;
+  announcement: null;
   categories: Array<{
     slug: string | null;
     title: string | null;
@@ -806,9 +647,7 @@ export type SUPPORTUS_QUERY_RESULT = {
 // Query: *[_type == "general"][0]{    logoText,    announcement->{      _id    },    categories[]->{      "slug": slug.current,       title     },    socials[]->{      "icon": icon.name,      label,      platform,      url    },    privacy,    terms,    sebsdb->{      label,      openInNewTab,      url    },    supportUs->{      label,      openInNewTab,      url    },    about->{      label,      openInNewTab,      url    },    links[]->{      label,      openInNewTab,      url    }  }
 export type HOME_LAYOUT_QUERY_RESULT = {
   logoText: string | null;
-  announcement: {
-    _id: string;
-  } | null;
+  announcement: null;
   categories: Array<{
     slug: string | null;
     title: string | null;
@@ -1285,92 +1124,12 @@ export type ARTICLES_QUERY_RESULT = {
   }>;
 };
 
-// Source: ../web/src/app/(app)/(sub)/donations/page.tsx
-// Variable: DONATIONS_QUERY
-// Query: *[_type == "scholarship"]{    ...,    "slug": slug.current,    donors[]{      ...,      donor->{        ...,        "role": role->title,        "position": position->title,        "department": department->title,        "house": house->title,        "displayName": select(          _type == "student" => roll + " " + fullName,          _type == "teacher" => fullName,          _type == "alumni" => roll + " " + fullName,          _type == "guest" => fullName,          fullName        )      }    }  }
-export type DONATIONS_QUERY_RESULT = Array<{
-  _id: string;
-  _type: "scholarship";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  name?: string;
-  roll?: string;
-  slug: string | null;
-  raised?: number;
-  amount?: number;
-  deadline?: string;
-  picture?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  videoLink?: string;
-  background?: string;
-  goals?: string;
-  reasonForAid?: string;
-  donors: Array<{
-    donor:
-      | {
-          _id: string;
-          _type: "alumni";
-          _createdAt: string;
-          _updatedAt: string;
-          _rev: string;
-          fullName?: string;
-          email?: string;
-          contactNumber?: string;
-          batch?: string;
-          graduatedYear?: number;
-          roll?: string;
-          role: string | null;
-          isActive?: boolean;
-          displayPicture?: {
-            asset?: SanityImageAssetReference;
-            media?: unknown;
-            hotspot?: SanityImageHotspot;
-            crop?: SanityImageCrop;
-            _type: "image";
-          };
-          position: null;
-          department: null;
-          house: null;
-          displayName: string | null;
-        }
-      | {
-          _id: string;
-          _type: "guest";
-          _createdAt: string;
-          _updatedAt: string;
-          _rev: string;
-          fullName?: string;
-          email?: string;
-          contactNumber?: string;
-          organization?: string;
-          notes?: string;
-          role: string | null;
-          position: null;
-          department: null;
-          house: null;
-          displayName: string | null;
-        }
-      | null;
-    amount?: number;
-    donatedAt?: string;
-    _key: string;
-  }> | null;
-}>;
-
 // Source: ../web/src/app/(app)/(sub)/layout.tsx
 // Variable: SUB_LAYOUT_QUERY
 // Query: *[_type == "general"][0]{    logoText,    announcement->{      _id    },    categories[]->{      "slug": slug.current,       title     },    socials[]->{      "icon": icon.name,      label,      platform,      url    },    privacy,    terms,    sebsdb->{      label,      openInNewTab,      url    },    supportUs->{      label,      openInNewTab,      url    },    about->{      label,      openInNewTab,      url    },    links[]->{      label,      openInNewTab,      url    }  }
 export type SUB_LAYOUT_QUERY_RESULT = {
   logoText: string | null;
-  announcement: {
-    _id: string;
-  } | null;
+  announcement: null;
   categories: Array<{
     slug: string | null;
     title: string | null;
@@ -1663,7 +1422,6 @@ declare module "@sanity/client" {
     '\n  *[_type == "general"][0]{\n    logoText,\n    sliders[]->{\n      title,\n      author,\n      image\n    },\n    categories[]->{\n    "slug": slug.current,\n     title \n    },\n    supportUs->{\n      label,\n      openInNewTab,\n      url\n    },\n    about->{\n      label,\n      openInNewTab,\n      url\n    },\n  }\n': HOME_PAGE_QUERY_RESULT;
     '\n  *[_type == "article" && slug.current == $slug][0]{\n    ...,\n    "slug": slug.current,\n    author->{\n      ...,\n      "role": role->title,\n      "position": position->title,\n      "department": department->title,\n      "house": house->title,\n      "displayName": select(\n        _type == "student" => roll + " " + fullName,\n        _type == "teacher" => fullName,\n        _type == "alumni" => roll + " " + fullName,\n        fullName\n      )\n    },\n    category->{\n      _id,\n      title,\n      "slug": slug.current\n    },\n    "relatedArticles": *[\n      _type == "article" &&\n      _id != ^._id &&\n      category._ref == ^.category._ref\n    ] | order(publishedAt desc)[0...3]{\n      _id,\n      "slug": slug.current,\n      title,\n      oneLiner,\n      featuredImage,\n      publishedAt,\n      tags,\n      category->{\n        _id,\n        title,\n        "slug": slug.current\n      },\n      author->{\n        ...,\n        "role": role->title,\n        "position": position->title,\n        "department": department->title,\n        "house": house->title,\n        "displayName": select(\n          _type == "student" => roll + " " + fullName,\n          _type == "teacher" => fullName,\n          _type == "alumni" => roll + " " + fullName,\n          fullName\n        )\n      }\n    },\n    "latestArticles": *[\n      _type == "article" &&\n      _id != ^._id\n    ] | order(publishedAt desc)[0...2]{\n      _id,\n      "slug": slug.current,\n      title,\n      oneLiner,\n      featuredImage,\n      publishedAt,\n      tags,\n      category->{\n        _id,\n        title,\n        "slug": slug.current\n      },\n      author->{\n        ...,\n        "role": role->title,\n        "position": position->title,\n        "department": department->title,\n        "house": house->title,\n        "displayName": select(\n          _type == "student" => roll + " " + fullName,\n          _type == "teacher" => fullName,\n          _type == "alumni" => roll + " " + fullName,\n          fullName\n        )\n      }\n    }\n  }\n': ARTICLE_DETAIL_QUERY_RESULT;
     '\n  {\n    "total": count(*[\n      _type == "article" &&\n      ($category == "" || category->slug.current == $category) &&\n      publishedAt >= $startDate &&\n      publishedAt < $endDate &&\n      (\n        $search_string == "" ||\n        title match $searchPattern ||\n        oneLiner match $searchPattern ||\n        pt::text(content) match $searchPattern ||\n        category->title match $searchPattern ||\n        count(tags[@ match $searchPattern]) > 0\n      )\n    ]),\n    "articles": *[\n      _type == "article" &&\n      ($category == "" || category->slug.current == $category) &&\n      publishedAt >= $startDate &&\n      publishedAt < $endDate &&\n      (\n        $search_string == "" ||\n        title match $searchPattern ||\n        oneLiner match $searchPattern ||\n        pt::text(content) match $searchPattern ||\n        category->title match $searchPattern ||\n        count(tags[@ match $searchPattern]) > 0\n      )\n    ] | order(publishedAt desc) [$start...$end] {\n      _id,\n      "slug": slug.current,\n      title,\n      oneLiner,\n      featuredImage,\n      publishedAt,\n      tags,\n      "category": category->{\n        _id,\n        title,\n        "slug": slug.current\n      },\n      author->{\n        ...,\n        "role": role->title,\n        "position": position->title,\n        "department": department->title,\n        "house": house->title,\n        "displayName": select(\n          _type == "student" => roll + " " + fullName,\n          _type == "teacher" => fullName,\n          _type == "alumni" => roll + " " + fullName,\n          fullName\n        )\n      }\n    }\n  }\n': ARTICLES_QUERY_RESULT;
-    '\n  *[_type == "scholarship"]{\n    ...,\n    "slug": slug.current,\n    donors[]{\n      ...,\n      donor->{\n        ...,\n        "role": role->title,\n        "position": position->title,\n        "department": department->title,\n        "house": house->title,\n        "displayName": select(\n          _type == "student" => roll + " " + fullName,\n          _type == "teacher" => fullName,\n          _type == "alumni" => roll + " " + fullName,\n          _type == "guest" => fullName,\n          fullName\n        )\n      }\n    }\n  }\n': DONATIONS_QUERY_RESULT;
     '\n  *[_type == "event" && date >= $startDate && date < $endDate]{\n    date,\n    location,\n    "slug": slug.current,\n    title\n  }\n': GET_EVENTS_QUERY_RESULT;
     '\n  *[_type == "newsletterEmail" && email == $email]{\n    _id,\n    email,\n    subscribed\n  }[0]\n':
       SUBSCRIBE_NEWSLETTER_QUERY_RESULT | UNSUBSCRIBE_NEWSLETTER_QUERY_RESULT;
