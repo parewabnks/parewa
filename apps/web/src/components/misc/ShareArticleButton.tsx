@@ -1,8 +1,8 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import { Check, Link2, Share2 } from "lucide-react"
 import type { VariantProps } from "class-variance-authority"
+import { Check, Link2, Share2 } from "lucide-react"
 
 import { Button, type buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"

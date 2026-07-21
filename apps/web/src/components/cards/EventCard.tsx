@@ -12,7 +12,7 @@ function EventCard({ title, datetime }: EventProps) {
     : "Date TBA";
 
   return (
-    <div className="relative mt-4 px-auto lg:pl-5">
+    <div className="relative mt-4 px-0 lg:pl-5">
       <div className="absolute h-10 w-0.5 bg-primary -translate-x-4 translate-y-1 rounded-4xl"></div>
       <div className="font-extralight text-base font-serif">{title ?? "Untitled event"}</div>
       <div className="font-extralight text-base font-serif">{formatted}</div>

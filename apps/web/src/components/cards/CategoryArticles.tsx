@@ -1,7 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import { type Article } from "@/schemas/backend_schemas/articleSchema";
+
 import { urlFor } from "@/sanity/image";
+import { type Article } from "@/schemas/backend_schemas/articleSchema";
+
 import { Card } from "../ui/card";
 import { CardContent } from "../ui/card";
 

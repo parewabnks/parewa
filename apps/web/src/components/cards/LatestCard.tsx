@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { urlFor } from '@/sanity/image';
 import { cn } from '@/lib/utils';
+import { urlFor } from '@/sanity/image';
 import { Article } from '@/schemas/backend_schemas/articleSchema';
 
 type MostReadCardProps = {

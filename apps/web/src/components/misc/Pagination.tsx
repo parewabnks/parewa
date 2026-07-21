@@ -1,13 +1,13 @@
-import { MAX_PAGES_TO_SHOW } from '@/lib/site-config';
 import {
     Pagination,
     PaginationContent,
+    PaginationEllipsis,
     PaginationItem,
     PaginationLink,
-    PaginationEllipsis,
     PaginationNext,
     PaginationPrevious,
 } from '@/components/ui/pagination';
+import { MAX_PAGES_TO_SHOW } from '@/lib/site-config';
 
 interface PaginationControlsProps {
     currentPage: number;

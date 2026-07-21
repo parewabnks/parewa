@@ -1,44 +1,32 @@
 import { z } from "zod";
+
 import { ArticleAuthorSchema } from "./authorSchema";
-import { SanityImageSchema } from "./sanityImageSchema";
+import { CategoriesSchema } from "./CategoriesSchema";
 import { PortableTextContentSchema } from "./portableTextSchema";
+import { SanityImageSchema } from "./sanityImageSchema";
 
 export type { PortableTextContent } from "./portableTextSchema";
-  
-const ArticleCategorySchema = z.object({
-  _id: z.string(),
-  title: z.string(),
-  slug: z.string(),
-});
 
-export const SubArticleSchema = z.object({
+const ArticleFieldsSchema = z.object({
   _id: z.string(),
   slug: z.string(),
   title: z.string(),
-  oneLiner: z.string().nullable().optional(),
-  content: PortableTextContentSchema.nullable().optional(),
-  featuredImage: SanityImageSchema.nullable().optional(),
-  imageDescription: z.string().nullable().optional(),
+  oneLiner: z.string().nullish(),
+  content: PortableTextContentSchema.nullish(),
+  featuredImage: SanityImageSchema.nullish(),
+  imageDescription: z.string().nullish(),
   author: ArticleAuthorSchema,
-  category: ArticleCategorySchema,
-  tags: z.array(z.string()).nullable().optional(),
+  category: CategoriesSchema,
+  tags: z.array(z.string()).nullish(),
   publishedAt: z.string(),
 });
 
-export const ArticleSchema = z.object({
-  _id: z.string(),
-  slug: z.string(),
-  title: z.string(),
-  oneLiner: z.string().nullable().optional(),
-  content: PortableTextContentSchema.nullable().optional(),
-  featuredImage: SanityImageSchema.nullable().optional(),
-  imageDescription: z.string().nullable().optional(),
-  author: ArticleAuthorSchema,
-  category: ArticleCategorySchema,
-  tags: z.array(z.string()).nullable().optional(),
-  publishedAt: z.string(),
-  relatedArticles: z.array(SubArticleSchema).nullable().optional(),
-  latestArticles: z.array(SubArticleSchema).nullable().optional(),
+export const SubArticleSchema = ArticleFieldsSchema;
+
+export const ArticleSchema = ArticleFieldsSchema.extend({
+
+  relatedArticles: z.array(SubArticleSchema).nullish(),
+  latestArticles: z.array(SubArticleSchema).nullish(),
 });
 
 export type Article = z.infer<typeof ArticleSchema>;

@@ -1,8 +1,10 @@
-import { sanityFetch } from '@/sanity/live';
-import { defineQuery } from 'next-sanity'
-import { SocialInt } from '@/types/social';
-import { Social } from '../misc/Social';
 import Link from 'next/link';
+import { defineQuery } from 'next-sanity'
+
+import { sanityFetch } from '@/sanity/live';
+import { SocialInt } from '@/types/social';
+
+import { Social } from '../misc/Social';
 import FooterNewsletter from './FooterNewsletter';
 
 const FOOTER_QUERY = defineQuery(`

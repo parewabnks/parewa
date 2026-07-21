@@ -2,14 +2,15 @@ import "@/app/globals.css";
 
 export { metadata } from "@/lib/site-config";
 
-import { oswald, inter, notoSerif, robotoMono, roboto } from "@/lib/fonts";
-
 import { defineQuery } from "next-sanity";
-import { sanityFetch, SanityLive } from "@/sanity/live";
 
 import Footer from "@/components/layout/Footer";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/Sidebar";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+
+import { inter, notoSerif, oswald, roboto,robotoMono } from "@/lib/fonts";
+
+import { sanityFetch, SanityLive } from "@/sanity/live";
 
 const HOME_LAYOUT_QUERY = defineQuery(`
   *[_type == "general"][0]{

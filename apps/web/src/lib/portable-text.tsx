@@ -1,5 +1,6 @@
-import type { PortableTextComponents } from "@portabletext/react";
 import Image from "next/image";
+import type { PortableTextComponents } from "@portabletext/react";
+
 import { urlFor } from "@/sanity/image";
 
 export const portableTextComponents: PortableTextComponents = {

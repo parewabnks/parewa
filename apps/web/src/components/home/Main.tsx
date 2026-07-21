@@ -1,8 +1,8 @@
 import { defineQuery } from 'next-sanity';
-import { sanityFetch } from '@/sanity/live';
 
 import { urlFor } from '@/sanity/image';
-import { articlesResultSchema } from '@/schemas/backend_schemas/homePageSchema';
+import { sanityFetch } from '@/sanity/live';
+import { ArticlesResultSchema } from '@/schemas/backend_schemas/homePageSchema';
 
 import MainStory from '../cards/MainStory';
 import SideCalendar from '../cards/SideCalendar';
@@ -44,10 +44,10 @@ async function Main() {
 
   const { data } = await sanityFetch({ query: MAIN_ARTICLES_QUERY });
 
-  const parsedArticles = articlesResultSchema.safeParse({ total: data.length, articles: data });
+  const safeParsedArticles = ArticlesResultSchema.safeParse({ total: data.length, articles: data });
 
-  const stories = parsedArticles.success
-    ? parsedArticles.data.articles.map((article, index) => {
+  const stories = safeParsedArticles.success
+    ? safeParsedArticles.data.articles.map((article, index) => {
       const firstTag = article.tags?.[0];
 
       return {

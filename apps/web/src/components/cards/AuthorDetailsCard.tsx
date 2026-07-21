@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { Badge } from "../ui/badge";
+
 import ShareArticleButton from "../misc/ShareArticleButton";
+import { Badge } from "../ui/badge";
 
 type AuthorDetailsCardProps = {
   displayName: string;
@@ -37,7 +38,7 @@ function AuthorDetailsCard({
               alt={displayName}
               width={48}
               height={48}
-              className="h-18 w-18 shrink-0 rounded-full object-cover"
+              className="h-[4.5rem] w-[4.5rem] shrink-0 rounded-full object-cover"
             />
           ) : (
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary text-lg font-medium text-foreground">
@@ -54,7 +55,7 @@ function AuthorDetailsCard({
                     <Badge
                       key={tag}
                       variant="default"
-                      className="rounded-full bg-accent text-muted text-sm p-3 font-normal"
+                      className="rounded-full bg-accent p-3 text-sm font-normal text-muted"
                     >
                       {tag}
                     </Badge>
@@ -71,7 +72,7 @@ function AuthorDetailsCard({
           </div>
         </div>
 
-        <ShareArticleButton size="sm" className="shrink-0 hover:bg-primary-foreground/10 rounded-none p-4 text-xs my-auto" />
+        <ShareArticleButton size="sm" className="my-auto shrink-0 rounded-none p-4 text-xs hover:bg-primary-foreground/10" />
       </div>
     </div>
   );

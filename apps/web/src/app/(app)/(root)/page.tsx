@@ -1,14 +1,16 @@
 import { defineQuery } from "next-sanity";
+
+import { urlFor } from "@/sanity/image";
 import { sanityFetch } from "@/sanity/live";
 
-import { categoriesSchema, rlinkSchema, slideSchema } from "@/schemas/backend_schemas/homePageSchema";
+import { SlideSchema } from "@/schemas/backend_schemas/homePageSchema";
+import { CategoriesSchema, LinkSchema } from "@/schemas/backend_schemas/CategoriesSchema";
 
-import Navbar from "@/components/layout/Navbar";
-import Slider from "@/components/home/Slider";
-import Main from "@/components/home/Main";
 import ArticlesSection from "@/components/cards/ArticlesSection";
-import { urlFor } from "@/sanity/image";
+import Main from "@/components/home/Main";
+import Slider from "@/components/home/Slider";
 import { Header } from "@/components/layout/Header";
+import Navbar from "@/components/layout/Navbar";
 
 const HOME_PAGE_QUERY = defineQuery(`
   *[_type == "general"][0]{
@@ -19,6 +21,7 @@ const HOME_PAGE_QUERY = defineQuery(`
       image
     },
     categories[]->{
+    _id,
     "slug": slug.current,
      title 
     },
@@ -40,7 +43,7 @@ export default async function Home() {
   const { data: home } = await sanityFetch({ query: HOME_PAGE_QUERY });
 
   const slides = home?.sliders?.flatMap((slide) => {
-    const parsed = slideSchema.safeParse(slide);
+    const parsed = SlideSchema.safeParse(slide);
     if (!parsed.success) return [];
 
     return [{
@@ -51,18 +54,19 @@ export default async function Home() {
   }) || [];
 
   const categories = home?.categories?.flatMap((category) => {
-    const parsed = categoriesSchema.safeParse(category);
+    const parsed = CategoriesSchema.safeParse(category);
     if (!parsed.success) return [];
 
     return [{
+      _id: parsed.data._id,
       slug: parsed.data.slug,
       title: parsed.data.title
     }];
   }) || [];
 
-  const supportUsParsed = rlinkSchema.safeParse(home?.supportUs);
+  const supportUsParsed = LinkSchema.safeParse(home?.supportUs);
 
-  const aboutParsed = rlinkSchema.safeParse(home?.about);
+  const aboutParsed = LinkSchema.safeParse(home?.about);
 
   const supportUs = supportUsParsed.success
     ? supportUsParsed.data

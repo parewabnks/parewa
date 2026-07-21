@@ -1,6 +1,5 @@
-import { Icon } from '@iconify/react'
-
 import Link from "next/link";
+import { Icon } from '@iconify/react'
 
 export function Social({ label, icon, url }: { label: string, icon: string, url: string }) {
   if (!label) return null;

@@ -1,18 +1,15 @@
-import { defineQuery } from "next-sanity";
-import { urlFor } from "@/sanity/image";
-import { sanityFetch } from "@/sanity/live";
-
 import Image from "next/image";
 import { notFound } from "next/navigation";
-
-import { ArticleSchema } from "@/schemas/backend_schemas/articleSchema";
-
+import { defineQuery } from "next-sanity";
 import { PortableText } from "@portabletext/react";
-import { portableTextComponents } from "@/lib/portable-text";
 
 import AuthorDetailsCard from "@/components/cards/AuthorDetailsCard";
 import CategoryArticlesSection from "@/components/cards/CategoryArticles";
 import LatestCard from "@/components/cards/LatestCard";
+import { portableTextComponents } from "@/lib/portable-text";
+import { urlFor } from "@/sanity/image";
+import { sanityFetch } from "@/sanity/live";
+import { ArticleSchema } from "@/schemas/backend_schemas/articleSchema";
 
 const ARTICLE_DETAIL_QUERY = defineQuery(`
   *[_type == "article" && slug.current == $slug][0]{
@@ -116,15 +113,15 @@ export default async function Page({ params }: Props) {
 
   const { data } = await sanityFetch({ query: ARTICLE_DETAIL_QUERY, params: { slug } });
 
-  const parsed = ArticleSchema.safeParse(data);
+  const safeParsed = ArticleSchema.safeParse(data);
 
-  if (!parsed.success) notFound();
+  if (!safeParsed.success) notFound();
 
-  const article = parsed.data;
+  const article = safeParsed.data;
 
   return (
     <article className="mx-auto flex min-h-screen w-full flex-col gap-3 px-4 pb-6">
-      <div className="title w-full max-w-3xl font-heading text-2xl leading-tight uppercase underline decoration-1 decoration-muted underline-offset-4 sm:text-3xl md:text-4xl lg:text-5xl">
+      <div className="title w-full md:max-w-3xl font-heading leading-tight uppercase underline decoration-1 decoration-muted underline-offset-4 text-4xl lg:text-5xl md:mt-0 mt-5">
         {article?.title}
       </div>
       <div className="one_liner w-full max-w-3xl font-secondary text-base leading-relaxed text-foreground/60 sm:text-lg md:text-xl">

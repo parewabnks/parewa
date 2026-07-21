@@ -7,11 +7,13 @@ const PortableTextSpanSchema = z.object({
   marks: z.array(z.string()).optional(),
 });
 
+// Allow additional properties for custom mark definitions
 const PortableTextMarkDefSchema = z.object({
   _key: z.string(),
   _type: z.string(),
 }).passthrough();
 
+// Allow additional properties for custom block types
 const PortableTextBlockSchema = z.object({
   _key: z.string(),
   _type: z.string(),

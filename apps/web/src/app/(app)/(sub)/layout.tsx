@@ -2,23 +2,22 @@ import "@/app/globals.css";
 
 export { metadata } from "@/lib/site-config";
 
-import { oswald, inter, notoSerif, robotoMono, roboto } from "@/lib/fonts";
-
 import { defineQuery } from "next-sanity";
-import { sanityFetch, SanityLive } from "@/sanity/live";
 
-import { categoriesSchema, rlinkSchema } from "@/schemas/backend_schemas/homePageSchema";
-
-import Navbar from "@/components/layout/Navbar";
-import SubHeader from "@/components/layout/SubHeader";
 import Footer from "@/components/layout/Footer";
+import Navbar from "@/components/layout/Navbar";
 import { AppSidebar } from "@/components/layout/Sidebar";
+import SubHeader from "@/components/layout/SubHeader";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { inter, notoSerif, oswald, roboto,robotoMono } from "@/lib/fonts";
+import { sanityFetch, SanityLive } from "@/sanity/live";
+import { CategoriesSchema, LinkSchema } from "@/schemas/backend_schemas/CategoriesSchema";
 
 const SUB_LAYOUT_QUERY = defineQuery(`
   *[_type == "general"][0]{
     logoText,
     categories[]->{
+      _id,
       "slug": slug.current,
        title 
     },
@@ -62,18 +61,19 @@ export default async function RootLayout({
   const { data: general } = await sanityFetch({ query: SUB_LAYOUT_QUERY });
 
   const categories = general?.categories?.flatMap((category) => {
-    const parsed = categoriesSchema.safeParse(category);
+    const parsed = CategoriesSchema.safeParse(category);
     if (!parsed.success) return [];
 
     return [{
+      _id: parsed.data._id,
       slug: parsed.data.slug,
       title: parsed.data.title
     }];
   }) || [];
 
-  const supportUsParsed = rlinkSchema.safeParse(general?.supportUs);
+  const supportUsParsed = LinkSchema.safeParse(general?.supportUs);
 
-  const aboutParsed = rlinkSchema.safeParse(general?.about);
+  const aboutParsed = LinkSchema.safeParse(general?.about);
 
   const supportUs = supportUsParsed.success
     ? supportUsParsed.data

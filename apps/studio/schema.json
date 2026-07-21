@@ -91,36 +91,6 @@
   },
   {
     "type": "type",
-    "name": "rlink.reference",
-    "value": {
-      "type": "object",
-      "attributes": {
-        "_ref": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string"
-          }
-        },
-        "_type": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "string",
-            "value": "reference"
-          }
-        },
-        "_weak": {
-          "type": "objectAttribute",
-          "value": {
-            "type": "boolean"
-          },
-          "optional": true
-        }
-      },
-      "dereferencesTo": "rlink"
-    }
-  },
-  {
-    "type": "type",
     "name": "link.reference",
     "value": {
       "type": "object",
@@ -296,7 +266,7 @@
         "type": "objectAttribute",
         "value": {
           "type": "inline",
-          "name": "rlink.reference"
+          "name": "link.reference"
         },
         "optional": true
       },
@@ -304,7 +274,7 @@
         "type": "objectAttribute",
         "value": {
           "type": "inline",
-          "name": "rlink.reference"
+          "name": "link.reference"
         },
         "optional": true
       },
@@ -312,7 +282,7 @@
         "type": "objectAttribute",
         "value": {
           "type": "inline",
-          "name": "rlink.reference"
+          "name": "link.reference"
         },
         "optional": true
       },
@@ -879,71 +849,6 @@
         "optional": true
       },
       "subscribed": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "boolean"
-        },
-        "optional": true
-      }
-    }
-  },
-  {
-    "name": "rlink",
-    "type": "document",
-    "attributes": {
-      "_id": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        }
-      },
-      "_type": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string",
-          "value": "rlink"
-        }
-      },
-      "_createdAt": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        }
-      },
-      "_updatedAt": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        }
-      },
-      "_rev": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        }
-      },
-      "title": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
-      "url": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
-      "label": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
-      "openInNewTab": {
         "type": "objectAttribute",
         "value": {
           "type": "boolean"

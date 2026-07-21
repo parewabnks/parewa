@@ -11,7 +11,6 @@ import teacher from './schemas/users/teacher'
 // Misc
 import category from './schemas/misc/category'
 import link from './schemas/misc/link'
-import rlink from './schemas/misc/relative_link'
 import newsletterEmail from './schemas/misc/newsletter_email'
 import slider from './schemas/misc/slider'
 import socials from './schemas/misc/socials'
@@ -35,7 +34,6 @@ export const schemaTypes = [
   teacher,
   category,
   link,
-  rlink,
   newsletterEmail,
   slider,
   socials,

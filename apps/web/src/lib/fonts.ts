@@ -1,4 +1,4 @@
-import { Oswald, Inter, Noto_Serif, Roboto_Mono, Roboto } from "next/font/google";
+import { Inter, Noto_Serif, Oswald, Roboto,Roboto_Mono } from "next/font/google";
 
 const oswald = Oswald({
   subsets: ["latin"],
@@ -30,4 +30,4 @@ const roboto = Roboto({
   variable: '--font-roboto',
 });
 
-export { oswald, inter, notoSerif, robotoMono, roboto };
+export { inter, notoSerif, oswald, roboto,robotoMono };

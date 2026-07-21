@@ -31,6 +31,7 @@ export const SanityImageSchema = z
 		crop: SanityImageCropSchema.optional(),
 	})
 	.refine((image) => Boolean(image.asset?._ref), {
-		message: "featuredImage.asset._ref is required when featuredImage is present",
+		
+		message: "asset._ref is required when image is present",
 	});
 

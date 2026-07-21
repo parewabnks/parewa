@@ -1,13 +1,15 @@
+import Image from "next/image";
 import Link from "next/link";
+import { Icon } from "@iconify/react";
+
 import {
   Sidebar,
   SidebarContent,
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import Image from "next/image";
 import { HOME_LAYOUT_QUERY_RESULT } from "@/sanity/types";
-import { Icon } from "@iconify/react";
+
 import { SidebarSearch } from "./SidebarSearch";
 
 type NavLinkData = {
@@ -44,7 +46,7 @@ export function AppSidebar({ general }: { general: HOME_LAYOUT_QUERY_RESULT }) {
     <Sidebar
       variant="sidebar"
       collapsible="offcanvas"
-      className="fixed z-100 bg-background"
+      className="fixed z-[100] bg-background"
     >
       <SidebarContent>
         <div className="flex flex-col h-full px-8 py-10">

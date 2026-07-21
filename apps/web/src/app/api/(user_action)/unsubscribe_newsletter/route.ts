@@ -1,7 +1,8 @@
-import { z } from "zod";
-import { client } from "@/sanity/client";
-import { defineQuery } from "next-sanity";
 import { NextRequest, NextResponse } from "next/server";
+import { defineQuery } from "next-sanity";
+import { z } from "zod";
+
+import { client } from "@/sanity/client";
 import { subscribeNewsletterSchema } from "@/schemas/frontend_schemas/newsletterSchema";
 
 const UNSUBSCRIBE_NEWSLETTER_QUERY = defineQuery(`

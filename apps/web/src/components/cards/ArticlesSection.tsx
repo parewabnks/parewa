@@ -1,12 +1,11 @@
-import { defineQuery } from "next-sanity";
-import { sanityFetch } from "@/sanity/live";
-
 import Image from "next/image";
 import Link from "next/link";
-import { urlFor } from "@/sanity/image";
+import { defineQuery } from "next-sanity";
 
+import { urlFor } from "@/sanity/image";
+import { sanityFetch } from "@/sanity/live";
 import { type Article } from "@/schemas/backend_schemas/articleSchema";
-import { articlesResultSchema } from "@/schemas/backend_schemas/homePageSchema";
+import { ArticlesResultSchema } from "@/schemas/backend_schemas/homePageSchema";
 
 import { Separator } from "../ui/separator";
 
@@ -42,16 +41,16 @@ const ARTICLES_CARD_QUERY = defineQuery(`
   }
 `);
 
-async function ArticlesSection({ category }: { category: { slug: string, title: string } }) {
+async function ArticlesSection({ category }: { category: { slug: string; title: string } }) {
 
   const { data: main } = await sanityFetch({
     query: ARTICLES_CARD_QUERY,
     params: { category: category.slug },
   });
 
-  const parsedMain = articlesResultSchema.safeParse({ total: main.length, articles: main });
+  const safeParsedMain = ArticlesResultSchema.safeParse({ total: main.length, articles: main });
 
-  const validatedMain = parsedMain.success ? parsedMain.data.articles : [];
+  const validatedMain = safeParsedMain.success ? safeParsedMain.data.articles : [];
 
   return (
     <div className="w-full my-5 py-5">
@@ -79,7 +78,7 @@ async function ArticlesSection({ category }: { category: { slug: string, title: 
 export default ArticlesSection
 
 function MainArticleCard({ article }: { article: Article }) {
-  const featuredImage = article.featuredImage;
+  const featuredImage = article.featuredImage
 
   return (
     <Link className="group" href={`/articles/${article.slug}`}>
@@ -93,13 +92,13 @@ function MainArticleCard({ article }: { article: Article }) {
           />
         ) : null}
       </div>
-      <div className="font-heading text-4xl mt-3 group-hover:text-primary ">
+      <div className="mt-3 font-heading text-4xl group-hover:text-primary">
         {article.title}
       </div>
       <div className="author font-extralight text-base text-primary mt-1 font-mono">
         {article.author.displayName}
       </div>
-      <div className="author text-base font-light text-foreground w-full sm:w-[80%] group-hover:text-primary font-serif">
+      <div className="author w-full font-serif text-base font-light text-foreground group-hover:text-primary sm:w-[80%]">
         {article.oneLiner}
       </div>
     </Link>
@@ -109,15 +108,15 @@ function MainArticleCard({ article }: { article: Article }) {
 function SideArticleCard({ article }: { article: Article }) {
   return (
     <Link href={`/articles/${article.slug}`} className="group flex gap-3 mt-3">
-      <div className="relative w-44 h-58 shrink-0 overflow-hidden rounded-none">
+      <div className="relative h-[14.5rem] w-44 shrink-0 overflow-hidden rounded-none">
         {article.featuredImage?.asset?._ref && (
           <Image
             src={urlFor(article.featuredImage)
               .width(352)
               .height(464)
-              .fit('crop')
+              .fit("crop")
               .quality(80)
-              .auto('format')
+              .auto("format")
               .url()}
             alt={article.title}
             fill
@@ -134,13 +133,13 @@ function SideArticleCard({ article }: { article: Article }) {
           </div>
         )}
 
-        <h3 className="font-heading text-xl line-clamp-2  group-hover:text-primary ">
+        <h3 className="font-heading text-xl line-clamp-2 group-hover:text-primary">
           {article.title}
         </h3>
         <div className="author font-extralight text-base text-primary mt-1 font-mono">
           {article.author.displayName}
         </div>
-        <div className="author text-base font-light text-foreground w-full sm:w-[80%] group-hover:text-primary font-serif line-clamp-3">
+        <div className="author w-full font-serif text-base font-light text-foreground group-hover:text-primary sm:w-[80%] line-clamp-3">
           {article.oneLiner}
         </div>
       </div>

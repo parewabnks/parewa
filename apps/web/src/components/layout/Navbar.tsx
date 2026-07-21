@@ -1,16 +1,8 @@
-import { cn } from "@/lib/utils";
 import Link from "next/link";
 
-interface cateogry {
-  slug: string;
-  title: string;
-}
+import { cn } from "@/lib/utils";
 
-interface rlink {
-  label: string;
-  openInNewTab: boolean;
-  url: string;
-}
+import { Categories, Link as LinkType} from "@/schemas/backend_schemas/CategoriesSchema";
 
 function Navbar({
   categories,
@@ -18,9 +10,9 @@ function Navbar({
   about,
   className,
 }: {
-  categories: cateogry[];
-  supportUs: rlink;
-  about: rlink;
+  categories: Categories[];
+  supportUs: LinkType;
+  about: LinkType;
   className?: string;
 }) {
   return (

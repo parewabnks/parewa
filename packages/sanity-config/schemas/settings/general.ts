@@ -89,21 +89,21 @@ export default defineType({
       title: 'About Page',
       type: 'reference',
       group: 'content',
-      to: [{ type: 'rlink' }]
+      to: [{ type: 'link' }]
     }),
     defineField({
       name: 'sebsdb',
       title: 'SEBS DB',
       type: 'reference',
       group: 'content',
-      to: [{ type: 'rlink' }]
+      to: [{ type: 'link' }]
     }),
     defineField({
       name: 'supportUs',
       title: 'Support Us',
       type: 'reference',
       group: 'content',
-      to: [{ type: 'rlink' }]
+      to: [{ type: 'link' }]
     }),
     defineField({
       name: 'links',

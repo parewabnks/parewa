@@ -14,12 +14,12 @@ export default defineType({
       type: 'string',
       validation: (Rule) => Rule.required().min(2),
     }),
-    
+  
     // Display
     defineField({
       name: 'url',
       title: 'URL',
-      type: 'url',
+      type: 'string',
       validation: (Rule) => Rule.required(),
     }),
     defineField({

@@ -1,8 +1,9 @@
-import { defineQuery } from "next-sanity";
 import { NextRequest, NextResponse } from "next/server";
-import { datestring } from "@/schemas/backend_schemas/dateStringSchema";
+import { defineQuery } from "next-sanity";
 import { z } from "zod";
+
 import { client } from "@/sanity/client";
+import { DateStringSchema } from "@/schemas/backend_schemas/dateStringSchema";
 
 const GET_EVENTS_QUERY = defineQuery(`
   *[_type == "event" && date >= $startDate && date < $endDate]{
@@ -26,7 +27,7 @@ export async function GET(request: NextRequest) {
 
     const date = searchParams.get("date");
 
-    const schemaVerification = datestring.safeParse(date);
+    const schemaVerification = DateStringSchema.safeParse(date);
 
     if (!schemaVerification.success) {
       return NextResponse.json({
