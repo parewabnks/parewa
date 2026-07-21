@@ -37,9 +37,7 @@ export default function Page() {
           About Parewa
         </div>
         <div className="mt-3 font-secondary text-base leading-relaxed text-foreground/70 sm:mt-4 sm:text-lg">
-          Parewa is a student-driven information platform built for the Budhanilkantha School community. It exists to
-          make notices, updates, articles, and school information easier to publish, easier to find, and easier to
-          trust.
+          Parewa is a student-driven information platform built for the Budhanilkantha School community. We help connect our current students, teachers and alumni together with work that binds the BNKS community together.
         </div>
 
         <div className="mt-10 flex flex-col gap-8 sm:mt-12 sm:gap-10 lg:mt-16 lg:gap-12">
